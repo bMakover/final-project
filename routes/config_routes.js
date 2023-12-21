@@ -1,9 +1,11 @@
 const indexR = require("./index");
 const postsR = require("./posts");
 const usersR = require("./users");
+const demandsR = require("./demands");
 
 exports.routesInit = (app) => {
   app.use("/",indexR);
   app.use("/posts",postsR);
   app.use("/users",usersR);
+  app.use("/demands",demandsR)
 }

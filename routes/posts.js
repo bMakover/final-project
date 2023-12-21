@@ -1,17 +1,16 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { PostsModel, validPost } = require("../models/postsModel")
+const { PostsModel, validPost } = require("../models/postsModel");
+const { auth } = require("../middlewares/auth");
 
 const router = express.Router();
 
 router.get("/getPostsByDesNSrc/:src/:des", async (req, res) => {
     try {
         let src = req.params.src;
-        let des=req.params.des
+        let des = req.params.des
         let data;
-        data = await PostsModel.find({ source:src,destination:des })
-        //when i hava a accsess to users
-       // data = await PostsModel.deleteOne({_id:delId,user_id:req.tokenData._id})
+        data = await PostsModel.find({ source: src, destination: des })
         res.json(data);
     }
     catch (err) {
@@ -23,8 +22,7 @@ router.get("/getPostsByDesNSrc/:src/:des", async (req, res) => {
 router.get("/getAllDisplay", async (req, res) => {
     try {
         let data;
-        data = await PostsModel.find({ isDisplay:true })
-        //when i hava a accsess to users auth
+        data = await PostsModel.find({ isDisplay: true })
         res.json(data);
     }
     catch (err) {
@@ -35,8 +33,7 @@ router.get("/getAllDisplay", async (req, res) => {
 router.get("/getAllUndisplay", async (req, res) => {
     try {
         let data;
-        data = await PostsModel.find({ isDisplay:false })
-        //when i hava a accsess to users auth
+        data = await PostsModel.find({ isDisplay: false })
         res.json(data);
     }
     catch (err) {
@@ -46,14 +43,14 @@ router.get("/getAllUndisplay", async (req, res) => {
 })
 
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     let validBody = validPost(req.body);
-    req.body.createDate = Date.now()
     if (validBody.error) {
         return res.status(400).json(validBody.error.details);
     }
     try {
         let post = new PostsModel(req.body);
+        post.idDriver = req.tokenData._id
         await post.save();
         res.status(201).json(post);
     }
@@ -65,13 +62,14 @@ router.post("/", async (req, res) => {
 
 
 
-router.delete("/:delId", async (req, res) => {
+router.delete("/:delId", auth, async (req, res) => {
     try {
         let delId = req.params.delId;
         let data;
-        data = await PostsModel.deleteOne({ _id: delId })
-        //when i hava a accsess to users
-        // data = await PostsModel.deleteOne({_id:delId,user_id:req.tokenData._id})
+        if (req.tokenData.role == "admin")
+            data = await PostsModel.deleteOne({ _id: delId })
+        else
+            data = await PostsModel.deleteOne({ _id: delId, idDriver: req.tokenData._id })
         res.json(data);
     }
     catch (err) {
@@ -82,18 +80,19 @@ router.delete("/:delId", async (req, res) => {
 
 
 
-router.put("/:editId", async (req, res) => {
+router.put("/:editId", auth, async (req, res) => {
     let validBody = validPost(req.body);
-    req.body.updateDate = Date.now()
     if (validBody.error) {
         return res.status(400).json(validBody.error.details);
     }
     try {
         let editId = req.params.editId;
         let data;
-        data = await PostsModel.updateOne({ _id: editId }, req.body)
-        //when i hava a accsess to users dont forget auth
-        //  data = await CakesModel.updateOne({_id:editId,user_id:req.tokenData._id},req.body)
+        if (req.tokenData.role == "admin")
+            data = await PostsModel.updateOne({ _id: editId }, req.body)
+        else {
+            data = await PostsModel.updateOne({ _id: editId, idDriver: req.tokenData._id }, req.body)
+        }
         res.json(data);
     }
     catch (err) {

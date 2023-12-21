@@ -1,0 +1,62 @@
+[
+    {
+      "fullName": "Batsheva Makover",
+      "email": "batsheva4050@gmail.com",
+      "phone": "0556762258",
+      "password": "^&bat#$M1234",
+      "image": "https://example.com/image.jpg",
+      "location": {
+        "city": "Jerusalem",
+        "street": "maagley harim levin St",
+        "houseNumber": 111
+      },
+      "carDescription": {
+        "brand": "Toyota",
+        "color": "Red",
+        "seatsNumber": 4
+      },
+      "dateCreated": "2023-12-15T08:00:00Z",
+      "role": "admin",
+      "isActive": true,
+      "travels": [
+        {
+          "destination": "Tel Aviv",
+          "startDate": "2023-12-20T08:00:00Z",
+          "endDate": "2023-12-25T08:00:00Z"
+        },
+        {
+          "destination": "Rishon Letsion",
+          "startDate": "2024-01-05T08:00:00Z",
+          "endDate": "2024-01-10T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "fullName": "Chani Chasida",
+      "email": "chani2172003@gmail.com",
+      "phone": "0548592871",
+      "password": "TR554^$%@$77",
+      "image": "https://example.com/alice.jpg",
+      "location": {
+        "city": "Bnei Brak",
+        "street": "Chevron St",
+        "houseNumber": 10
+      },
+      "carDescription": {
+        "brand": "Honda",
+        "color": "Blue",
+        "seatsNumber": 5
+      },
+      "dateCreated": "2023-11-28T08:00:00Z",
+      "role": "user",
+      "isActive": true,
+      "travels": [
+        {
+          "destination": "Tel Aviv",
+          "startDate": "2023-12-10T08:00:00Z",
+          "endDate": "2023-12-15T08:00:00Z"
+        }
+      ]
+    }
+  ]
+  

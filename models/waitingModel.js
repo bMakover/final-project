@@ -7,12 +7,12 @@ const waitingSchema = new mongoose.Schema({
     source: {
         city: String,
         street: String,
-        houseNumber: Number
+        houseNumber: String
     },
     destanition: {
         city: String,
         street: String,
-        houseNumber: Number
+        houseNumber: String
     },
     limit:{
         date:Date,
@@ -29,12 +29,12 @@ exports.validWaiting = (_reqBody) => {
         source: Joi.object({
             city: Joi.string().required(),
             street: Joi.string().required(),
-            houseNumber: Joi.number().required()
+            houseNumber: Joi.string().required()
         }).required(),
         destanition: Joi.object({
             city: Joi.string().required(),
             street: Joi.string().required(),
-            houseNumber: Joi.number().required()
+            houseNumber: Joi.string().required()
         }).required(),
         limit: Joi.object({
             date:Joi.date().iso(),

@@ -12,12 +12,12 @@ const userSchema = new mongoose.Schema({
     location: {
         city: String,
         street: String,
-        houseNumber: Number
+        houseNumber: String
     },
     defaultDestination: {
         city: String,
         street: String,
-        houseNumber: Number
+        houseNumber: String
     },
     travels: [String],
     waits: [String],
@@ -66,12 +66,12 @@ exports.validUser = (_reqBody) => {
         location: Joi.object({
             city: Joi.string(),
             street: Joi.string(),
-            houseNumber: Joi.number()
+            houseNumber: Joi.string()
         }),
         defaultDestination: Joi.object({
             city: Joi.string(),
             street: Joi.string(),
-            houseNumber: Joi.number()
+            houseNumber: Joi.string()
         }),
         travels: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         waits: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),

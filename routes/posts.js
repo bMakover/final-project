@@ -5,12 +5,16 @@ const { auth } = require("../middlewares/auth");
 
 const router = express.Router();
 
+//get by source and destination and quary isdisplay (isdisplay need to be true or false)
 router.get("/getPostsByDesNSrc/:src/:des", async (req, res) => {
     try {
+       
+        let isdisplay=req.query.isdisplay
+        if(isdisplay!="true" && isdisplay!="false"){ return res.status(500).json({ msg: "isdisplay must to be boolean" })}
         let src = req.params.src;
         let des = req.params.des
         let data;
-        data = await PostsModel.find({ source: src, destination: des })
+        data = await PostsModel.find({ 'source.city': src, 'destination.city': des,isDisplay:isdisplay })
         res.json(data);
     }
     catch (err) {

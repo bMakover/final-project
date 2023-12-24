@@ -10,7 +10,7 @@ const eventSchema = new mongoose.Schema({
     location: {
         city: String,
         street: String,
-        houseNumber: Number
+        houseNumber: String
     },
     description:String,
     travels: [{
@@ -33,7 +33,7 @@ exports.validEvent = (_reqBody) => {
         location: Joi.object({
             city: Joi.string(),
             street: Joi.string(),
-            houseNumber: Joi.number()
+            houseNumber: Joi.string()
         }),
         description:Joi.string().allow('null'),
         travels: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),

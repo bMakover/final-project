@@ -22,7 +22,11 @@ let postsSchema = new mongoose.Schema({
   passengersList: [String],
   waitingList: [String],
   createDate: Date,
-  updateDate: Date
+  updateDate: Date,
+  departure:{
+    date:Date,
+    hour:String
+  }
 })
 
 exports.PostsModel = mongoose.model("posts", postsSchema);
@@ -45,7 +49,11 @@ exports.validPost = (_reqBody) => {
     createDate: Joi.date().default(Date.now()),
     passengersList: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
     waitingList: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
-    updateDate: Joi.date().allow(null)
+    updateDate: Joi.date().allow(null),
+    departure:Joi.object({
+      date:Joi.date().required(),
+      hour:Joi.string().required()
+    })
   })
   return joiSchema.validate(_reqBody);
 }

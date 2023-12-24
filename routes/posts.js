@@ -22,7 +22,7 @@ router.get("/getPostsByDesNSrc/:src/:des", async (req, res) => {
         res.status(500).json({ msg: "there error try again later", err })
     }
 })
-
+// get all open for display posts 
 router.get("/getAllDisplay", async (req, res) => {
     try {
         let data;
@@ -34,6 +34,7 @@ router.get("/getAllDisplay", async (req, res) => {
         res.status(500).json({ msg: "there error try again later", err })
     }
 })
+// get all open for Undisplay posts 
 router.get("/getAllUndisplay", async (req, res) => {
     try {
         let data;
@@ -46,7 +47,7 @@ router.get("/getAllUndisplay", async (req, res) => {
     }
 })
 
-
+//add post by token-must be login
 router.post("/", auth, async (req, res) => {
     let validBody = validPost(req.body);
     if (validBody.error) {
@@ -65,7 +66,7 @@ router.post("/", auth, async (req, res) => {
 })
 
 
-
+//delete post by token-must be login and id`s post in params
 router.delete("/:delId", auth, async (req, res) => {
     try {
         let delId = req.params.delId;
@@ -83,7 +84,7 @@ router.delete("/:delId", auth, async (req, res) => {
 })
 
 
-
+//update post by token-must be login and id`s post in params
 router.put("/:editId", auth, async (req, res) => {
     let validBody = validPost(req.body);
     if (validBody.error) {

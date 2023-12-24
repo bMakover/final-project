@@ -4,7 +4,7 @@ const { DemandsModel, validDemand } = require("../models/demandModel");
 const { auth } = require("../middlewares/auth");
 
 const router = express.Router();
-
+//get all demand requests
 router.get("/getAllDemands", async (req, res) => {
     try {
         let data;
@@ -17,7 +17,7 @@ router.get("/getAllDemands", async (req, res) => {
     }
 })
 
-
+//add demand request by token-must be login 
 router.post("/", auth, async (req, res) => {
     let validBody = validDemand(req.body);
     if (validBody.error) {
@@ -36,7 +36,7 @@ router.post("/", auth, async (req, res) => {
 })
 
 
-
+//delete demand request by token-must be login and id`s demand request in params
 router.delete("/:delId", auth, async (req, res) => {
     try {
         let delId = req.params.delId;
@@ -54,7 +54,7 @@ router.delete("/:delId", auth, async (req, res) => {
 })
 
 
-
+//update demand request by token-must be login and id`s demand request in params
 router.put("/:editId", auth, async (req, res) => {
     let validBody = validDemand(req.body);
     if (validBody.error) {

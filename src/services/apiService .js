@@ -2,16 +2,24 @@ import axios from "axios";
 
 const baseUrl="http://localhost:3001/";
 
-export const useFunc = () => {
+export const apiService = () => {
+
     const postData = async (url, body) => {
-        
         try  {
-            
-            await axios.post(`${baseUrl}${url}`,body);
-            
+            const response = await axios.post(`${baseUrl}${url}`, body);
+        return response; // Add this line to return the response
         }
         catch (err) {
-            console.error(`error ${err}`);
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                console.error(`Server responded with error: ${err.response.status}`, err.response.data);
+            } else if (err.request) {
+                // The request was made but no response was received
+                console.error('No response received from the server', err.request);
+            } else {
+                // Something happened in setting up the request
+                console.error('Error setting up the request', err.message);
+            }
         }
 
     }

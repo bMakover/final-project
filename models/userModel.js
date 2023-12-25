@@ -37,7 +37,6 @@ const userSchema = new mongoose.Schema({
         color: String,
         seatsNumber: Number
     },
-    
     pickUpLocation: String,
     isDriver: {
         type: Boolean,
@@ -85,11 +84,11 @@ exports.validUser = (_reqBody) => {
         waits: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         demands: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         carDescription: Joi.object({
-            brand: Joi.string().allow(null),
-            color: Joi.string().allow(null),
-            seatsNumber: Joi.number().allow(null)
+            brand: Joi.string().allow(''),
+            color: Joi.string().allow(''),
+            seatsNumber: Joi.number().allow('')
         }).allow(null),
-        pickUpLocation: Joi.string(),
+        pickUpLocation: Joi.string().allow(''),
         isDriver: Joi.boolean(),
         isActive: Joi.boolean(),
         dateCreated: Joi.date().iso(),

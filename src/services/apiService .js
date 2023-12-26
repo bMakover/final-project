@@ -4,6 +4,34 @@ const baseUrl="http://localhost:3001/";
 
 export const apiService = () => {
 
+    const methodAuthData = async (url, body,method) => {
+        try  {
+            const token =  localStorage.getItem("token")
+            const response = await axios({
+                url: `${baseUrl}${url}`,
+                method: method,
+                data: body,
+                headers: {
+                  "x-api-key": token
+                }
+              })
+        return response; // Add this line to return the response
+        }
+        catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                console.error(`Server responded with error: ${err.response.status}`, err.response.data);
+            } else if (err.request) {
+                // The request was made but no response was received
+                console.error('No response received from the server', err.request);
+            } else {
+                // Something happened in setting up the request
+                console.error('Error setting up the request', err.message);
+            }
+        }
+
+    }
+
     const postData = async (url, body) => {
         try  {
             const response = await axios.post(`${baseUrl}${url}`, body);
@@ -60,5 +88,5 @@ export const apiService = () => {
         }
     };
 
-    return { getData, postData, updateData, deleteData }
+    return { getData, postData, updateData, deleteData,methodAuthData }
 }

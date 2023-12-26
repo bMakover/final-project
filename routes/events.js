@@ -2,19 +2,32 @@ const express = require("express");
 const router = express.Router();
 const { EventModel, validEvent } = require("../models/eventModel");
 const { PostsModel, validPost } = require("../models/postsModel");
+const { authAdmin } = require("../middlewares/auth");
+
+router.get("/getAllEvents/", async (req, res) => {
+    try {
+        const events = await EventModel.find({});
+        // if (!events) return res.status(404).json({ message: "Event not found" });
+        return res.json(events);
+    } catch (err) {
+        res.status(500).json({ message: "Failed to retrieve event", error: err.message });
+    }
+});
 
 router.get("/:id", async (req, res) => {
     try {
-        const event = await EventModel.findById(req.params.id).populate('travels'); 
-        if (!event) return res.status(404).json({ message: "Event not found" });
+        const event = await EventModel.findById(req.params.id).populate('travels');
+        if (!event) return res.status(404).json({ message: "Event not found8888" });
 
         res.json(event);
     } catch (err) {
         res.status(500).json({ message: "Failed to retrieve event", error: err.message });
     }
 });
+
+
 // Create an event without posts
-router.post("/", async (req, res) => {
+router.post("/", authAdmin, async (req, res) => {
     try {
         let validBody = validEvent(req.body);
         if (validBody.error) {
@@ -34,7 +47,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update event details by ID (excluding posts)
-router.put("/:id", async (req, res) => {
+router.put("/:id", authAdmin, async (req, res) => {
     try {
         let validBody = validEvent(req.body);
         if (validBody.error) {
@@ -79,5 +92,20 @@ router.put("/:id/posts", async (req, res) => {
         res.status(500).json({ msg: "Error adding post to event", err });
     }
 });
+
+
+router.delete("/:delId", authAdmin, async (req, res) => {
+    try {
+        let delId = req.params.delId;
+        let data;
+        data = await EventModel.deleteOne({ _id: delId })
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ msg: "there error try again later", err })
+    }
+})
+
+
 
 module.exports = router;

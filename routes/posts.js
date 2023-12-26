@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const { PostsModel, validPost } = require("../models/postsModel");
 const { auth } = require("../middlewares/auth");
+const { UserModel } = require("../models/userModel");
 
 const router = express.Router();
 
@@ -162,6 +163,7 @@ router.post('/addWait/:userId/:postId', async (req, res) => {
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
+
             user.waits.push(postId); 
             await user.save();
             post.waitingList.push(userId);

@@ -19,19 +19,19 @@ let postsSchema = new mongoose.Schema({
   },
   description: String,
   seatsCount: Number,
-  passengersList:{
+  passengersList: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
-},
-  waitingList: {
+  }],
+  waitingList: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "posts",
-},
+    ref: "users",
+  }],
   createDate: Date,
   updateDate: Date,
-  departure:{
-    date:Date,
-    hour:String
+  departure: {
+    date: Date,
+    hour: String
   }
 })
 
@@ -56,9 +56,9 @@ exports.validPost = (_reqBody) => {
     passengersList: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
     waitingList: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
     updateDate: Joi.date().allow(null),
-    departure:Joi.object({
-      date:Joi.date().required(),
-      hour:Joi.string().required()
+    departure: Joi.object({
+      date: Joi.date().required(),
+      hour: Joi.string().required()
     })
   })
   return joiSchema.validate(_reqBody);

@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     }],
     waits: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "waits",
+        ref: "posts",
     }],
     demands: [{
         type: mongoose.Schema.Types.ObjectId,

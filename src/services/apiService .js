@@ -2,11 +2,11 @@ import axios from "axios";
 
 const baseUrl="http://localhost:3001/";
 
-export const useFunc = () => {
+export const apiService  = () => {
     const postData = async (url, body) => {
         
         try  {
-            
+            console.log(`${baseUrl}${url}`);
             await axios.post(`${baseUrl}${url}`,body);
             
         }
@@ -16,11 +16,11 @@ export const useFunc = () => {
 
     }
 
-    const getData = async (url, params,query) => {
+    const getData = async (url) => {
         
         try {
-            console.log(`${baseUrl}${url}${params}${query}`);
-            return await axios.get(`${baseUrl}${url}${params}${query}`);
+            console.log(`${baseUrl}${url}`);
+            return await axios.get(`${baseUrl}${url}`);
         }
         catch (err) {
             console.error(`error ${err}`);

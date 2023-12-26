@@ -97,6 +97,7 @@ router.post("/login", async (req, res) => {
 router.put("/:editId", auth, async (req, res) => {
     // Validation
     let validBody = validUser(req.body);
+
     if (validBody.error) {
         return res.status(400).json(validBody.error.details);
     }
@@ -104,13 +105,17 @@ router.put("/:editId", auth, async (req, res) => {
     try {
         let editId = req.params.editId;
         let user = await UserModel.findById(editId);
+        if (req.body.password) {
+            user.password = await bcrypt.hash(req.body.password, 10);
+        }
 
+        // Save the updated user to the database
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
 
         if (req.tokenData.role === "admin" || req.tokenData._id === editId) {
-            let data = await UserModel.findByIdAndUpdate(editId, req.body);
+            let data = await UserModel.findByIdAndUpdate(editId,user);
             return res.json(data);
         } else {
             return res.status(403).json({ msg: "Unauthorized to update this user" });

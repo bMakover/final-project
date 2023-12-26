@@ -45,6 +45,52 @@ router.get("/:id", async (req, res) => {
         errorHandler(res, err);
     }
 });
+router.get("/:id/travels", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await UserModel.findById(userId).populate('travels');
+        
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        res.json(user.travels);
+    } catch (err) {
+        errorHandler(res, err);
+    }
+});
+
+// Get waiting list for a user
+router.get("/:id/waits", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await UserModel.findById(userId).populate('waits');
+        
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        res.json(user.waits);
+    } catch (err) {
+        errorHandler(res, err);
+    }
+});
+
+// Get demand list for a user
+router.get("/:id/demands", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await UserModel.findById(userId).populate('demands');
+        
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        res.json(user.demands);
+    } catch (err) {
+        errorHandler(res, err);
+    }
+});
 
 // Create a new user
 router.post("/", async (req, res) => {
@@ -92,6 +138,30 @@ router.post("/login", async (req, res) => {
         errorHandler(res, err);
     }
 });
+// Define a route to update a user's travels
+router.post('/addTravel/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    const { travel } = req.body; // Assuming travel is a single post ID
+    
+    try {
+      // Find the user by ID
+      const user = await UserModel.findById(userId);
+    
+      // If the user exists, update the travels array with a single post ID
+      if (user) {
+        user.travels.push(travel); // Push a single post ID into the travels array
+        await user.save();
+    
+        return res.status(200).json({ message: 'Travel added to user successfully' });
+      } else {
+        return res.status(404).json({ message: 'User not found' });
+      }
+    } catch (error) {
+      console.error('Error adding travel to user:', error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
 
 // Update user details
 router.put("/:editId", auth, async (req, res) => {

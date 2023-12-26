@@ -105,4 +105,72 @@ router.put("/:editId", auth, async (req, res) => {
         res.status(500).json({ msg: "there error try again later", err })
     }
 })
+//user join to post
+router.post('/addTravel/:userId/:postId', async (req, res) => {
+    const userId = req.params.userId;
+    const postId = req.params.postId;
+
+    try {
+        // Find the user by ID
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Find the post by ID
+        const post = await PostsModel.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+
+        if (post.seatsCount > 0) {
+            // Update the seats count of the drive and add the user to the passengers list
+            post.seatsCount -= 1;
+            if (post.seatsCount == 0)
+                post.isDisplay = false
+            post.passengersList.push(userId); // Add user to passengers list
+            await post.save();
+
+            // Update the user's travels array
+            user.travels.push(postId);
+            await user.save();
+
+            return res.status(200).json({ message: 'Successfully joined the drive' });
+        } else {
+            return res.status(400).json({ message: 'No available seats in the drive' });
+        }
+    } catch (error) {
+        console.error('Error joining the drive:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
+//user join to wait list
+router.post('/addWait/:userId/:postId', async (req, res) => {
+    const userId = req.params.userId;
+    const postId = req.params.postId;
+    
+    try {
+        // Find the user by ID
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Find the post by ID
+        const post = await PostsModel.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+            user.waits.push(postId); 
+            await user.save();
+            post.waitingList.push(userId);
+            await post.save();
+            return res.status(200).json({ message: 'Wait added to user successfully' });
+  
+    } catch (error) {
+        console.error('Error adding wait to user:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
 module.exports = router;

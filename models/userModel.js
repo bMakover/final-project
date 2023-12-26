@@ -19,18 +19,26 @@ const userSchema = new mongoose.Schema({
         street: String,
         houseNumber: String
     },
-    travels: [String],
-    waits: [String],
-    demands: [String],
+    travels: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "posts"
+    }],
+    waits: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "waits",
+    }],
+    demands: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "demands",
+    }],
     //for drivers:
     carDescription: {
         brand: String,
         color: String,
         seatsNumber: Number
     },
-    pickUpLocation: {
-        location: String
-    },
+    pickUpLocation: String
+   ,
     isDriver: {
         type: Boolean,
         default: false
@@ -81,9 +89,8 @@ exports.validUser = (_reqBody) => {
             color: Joi.string(),
             seatsNumber: Joi.number()
         }).allow(null),
-        pickUpLocation: Joi.object({
-            location: Joi.string()
-        }).allow(null),
+        pickUpLocation:Joi.string().allow("")
+       ,
         isDriver: Joi.boolean(),
         isActive: Joi.boolean(),
         dateCreated: Joi.date().iso(),

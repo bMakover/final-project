@@ -3,6 +3,16 @@ const router = express.Router();
 const { EventModel, validEvent } = require("../models/eventModel");
 const { PostsModel, validPost } = require("../models/postsModel");
 
+router.get("/:id", async (req, res) => {
+    try {
+        const event = await EventModel.findById(req.params.id).populate('travels'); 
+        if (!event) return res.status(404).json({ message: "Event not found" });
+
+        res.json(event);
+    } catch (err) {
+        res.status(500).json({ message: "Failed to retrieve event", error: err.message });
+    }
+});
 // Create an event without posts
 router.post("/", async (req, res) => {
     try {

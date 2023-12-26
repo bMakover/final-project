@@ -3,6 +3,7 @@ const {config} = require("../config/secret")
 
 exports.auth = (req,res,next) => {
   let token = req.header("x-api-key");
+  // console.log(token)
   if(!token){
     return res.status(401).json({msg:"You need to send token to this endpoint url 555"})
   }

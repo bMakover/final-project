@@ -19,8 +19,14 @@ let postsSchema = new mongoose.Schema({
   },
   description: String,
   seatsCount: Number,
-  passengersList: [String],
-  waitingList: [String],
+  passengersList:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+},
+  waitingList: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "posts",
+},
   createDate: Date,
   updateDate: Date,
   departure:{
@@ -36,13 +42,13 @@ exports.validPost = (_reqBody) => {
     idDriver: Joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null),
     source: Joi.object({
       city: Joi.string().required(),
-      street: Joi.string(),
-      houseNumber: Joi.string()
+      street: Joi.string().allow(""),
+      houseNumber: Joi.string().allow("")
     }),
     destination: Joi.object({
       city: Joi.string().required(),
-      street: Joi.string(),
-      houseNumber: Joi.string()
+      street: Joi.string().allow(""),
+      houseNumber: Joi.string().allow("")
     }),
     description: Joi.string().min(3).max(10000).required(),
     seatsCount: Joi.number().min(1).required(),

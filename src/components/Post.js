@@ -27,7 +27,7 @@ const Post = ({ drive, dataType }) => {
 
   return (
     <div>
-      Source: {drive.source}, Destination: {drive.destination}, Driver ID: {drive.idDriver}
+      Source: {drive.source.city}, Destination: {drive.destination.city}, Driver ID: {drive.idDriver}
       {dataType === 'travels' ? (
         <button onClick={() => updateUserArray('join')}>Join this drive</button>
       ) : (

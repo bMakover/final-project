@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/apiService ';
-
+import Demo from './Demo'
 const SearchDrive = () => {
   const navigate = useNavigate();
   const { getData } = apiService();
@@ -11,9 +11,24 @@ const SearchDrive = () => {
   const [catchedDrivesFound, setCatchedDrivesFound] = useState(false);
   const [undisplayedDrives, setUndisplayedDrives] = useState([]);
 
+
+  const handleSourceSelect = (value) => {
+    if (value && value.description) {
+      const city = value.description.split(',')[1].trim(); // Extract the city name
+      setSource(city);
+    }
+  };
+  
+  const handleDestinationSelect = (value) => {
+    if (value && value.description) {
+      const city = value.description.split(',')[1].trim(); // Extract the city name
+      setDestination(city);
+    }
+  };
   const findDrives = async () => {
     try {
       const response = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=true`);
+      console.log(destination,"ללל")
       console.log(response);
       if (response && response.data && response.data.length > 0) {
         const drivesData = response.data;
@@ -36,8 +51,10 @@ const SearchDrive = () => {
 
   return (
     <>
-      <input placeholder='from where?' onChange={(e) => setSource(e.target.value)} />
-      <input placeholder='to where?' onChange={(e) => setDestination(e.target.value)} />
+      {/* Render the GoogleMaps component for source */}
+      <Demo onInput={handleSourceSelect}/>
+      {/* Render the GoogleMaps component for destination */}
+      <Demo onInput={handleDestinationSelect} />
       <button onClick={findDrives}>Search Available Drives</button>
       {noDrivesFound && <p>No drives found</p>}
       {catchedDrivesFound && (

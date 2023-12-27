@@ -9,7 +9,7 @@ const AvailableDrives = () => {
   return (
     <>
       <div>
-        <h2>Available Drives:</h2>
+        <h2> Drives:</h2>
         {drivesData.map((drive) => (
            <Post key={drive._id} drive={drive} dataType={dataType}/>
         ))}

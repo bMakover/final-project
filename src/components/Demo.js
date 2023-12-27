@@ -26,7 +26,7 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-export default function GoogleMaps({ onInput }) {
+export default function GoogleMaps({onInput}) {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
@@ -88,9 +88,7 @@ export default function GoogleMaps({ onInput }) {
       active = false;
     };
   }, [value, inputValue, fetch]);
-  React.useEffect(() => {
-    onInput(inputValue); // Call the callback function whenever inputValue changes
-  }, [inputValue, onInput]);
+
   return (
     <Autocomplete
       id="google-map-demo"
@@ -108,9 +106,11 @@ export default function GoogleMaps({ onInput }) {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
+        onInput(newValue); 
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
+        
       }}
       renderInput={(params) => (
         <TextField {...params} label="Add a location" fullWidth />
@@ -123,9 +123,8 @@ export default function GoogleMaps({ onInput }) {
           option.structured_formatting.main_text,
           matches.map((match) => [match.offset, match.offset + match.length]),
         );
-console.log(inputValue)
+
         return (
-            <>
           <li {...props}>
             <Grid container alignItems="center">
               <Grid item sx={{ display: 'flex', width: 44 }}>
@@ -147,8 +146,6 @@ console.log(inputValue)
               </Grid>
             </Grid>
           </li>
-          
-          </>
         );
       }}
     />

@@ -1,0 +1,27 @@
+[
+    {
+        "_id": "65882c3afa4b6b353a6716c2",
+        "isDisplay": false,
+        "idDriver": "615ab8a4f96ff5a41c579440",
+        "source": "Bnei Brak",
+        "destination": "Jerusalem",
+        "description": null,
+        "seatsCount": 0,
+        "passengersList": [
+            "615ab8a4f96ff5a41c57943e",
+            "65833a00467c0a5aa42e575e",
+            "65833a00467c0a5aa42e575e",
+            "65833a00467c0a5aa42e575e"
+        ],
+        "waitingList": [
+            "65833a00467c0a5aa42e575e",
+            "65833a00467c0a5aa42e575e",
+            "65833a00467c0a5aa42e575e",
+            "65833a00467c0a5aa42e575e",
+            "65833a00467c0a5aa42e575e"
+        ],
+        "createDate": "2023-12-22T09:45:00.000Z",
+        "updateDate": null,
+        "__v": 8
+    }
+]

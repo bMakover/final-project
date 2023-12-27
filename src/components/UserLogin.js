@@ -20,13 +20,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        console.log(formData)
+      console.log(formData)
       const response = await postData('users/login', formData); // Assuming 'login' is the login endpoint
       console.log('Login response:', response ? response.data : 'Response is undefined');
       const { token } = response.data;
       localStorage.setItem('token', token);
       console.log('Login successful! Token:', token);
     } catch (error) {
+      alert("פרטי התחברות שגויים")
       console.error('Error logging in:', error);
     }
   };

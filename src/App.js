@@ -11,6 +11,7 @@ import NewEvent from './components/newEvent';
 import AdminFeature from './components/adminFeature';
 import SignUp from './components/SignUp';
 import Exmple from './components/exmple';
+import JoinToTravelEvent from './components/JoinToTravelEvent';
 
 
 function App() {
@@ -26,8 +27,8 @@ function App() {
           <Route path='/showSinglePost' element={<ShowPost />}></Route>
           <Route path="/SearchDrive" element={<SearchDrive />} />
           <Route path="/drives" element={<AvailableDrives />} />
-          {/* <Route path="/demo" element={<PreDemo />} />
-          <Route path="/try" element={<Try />} /> */}
+        <Route path="/event" element={<JoinToTravelEvent />} />
+          {/* <Route path="/try" element={<Try />} />  */}
                <Route path="/admin" element={<AdminFeature />} />
           <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
         </Routes>

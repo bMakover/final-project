@@ -5,7 +5,7 @@ import { apiService } from '../services/apiService ';
 import { validateDate } from './validDate'
 import GoogleMaps from './Demo';
 
-const NewPost = () => {
+const NewPost = ({ SetidEvent }) => {
     const { register, handleSubmit, formState: { errors }, getValues } = useForm()
     // const nav = useNavigate()
     let src = {}
@@ -51,7 +51,7 @@ const NewPost = () => {
 
     const onSub = async (databody) => {
         let flag = validateDate(document.querySelector("#dateInput").value, document.querySelector("#timeInput").value)
-        if (flag == true&&src.city!=" "&&des.city!=" ") {
+        if (flag == true && src.city != " " && des.city != " ") {
             const obj = {
                 isDisplay: true,
                 source: src,
@@ -68,8 +68,10 @@ const NewPost = () => {
                 idDriver: null,
                 createDate: new Date(Date.now())
             }
-            await methodAuthData("posts/", obj, "POST")
-            console.log(obj)
+            let data = await methodAuthData("posts/", obj, "POST")
+            console.log(data)
+            if (SetidEvent)
+                SetidEvent(data.data._id)
         }
     }
     return (<>

@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const { auth, authAdmin } = require("../middlewares/auth");
 const { UserModel, validUser, validLogin, createToken } = require("../models/userModel");
+const { PostsModel } = require("../models/postModel");
 const router = express.Router();
 
 // Error handler middleware
@@ -125,6 +126,29 @@ router.put("/:editId", auth, async (req, res) => {
     }
 });
 
+// update waiting list of user
+router.put('/deleteWait/:postId/:userId',async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.params.userId;
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const postIndex = user.waits.indexOf(postId);
+        if (postIndex === -1) {
+            return res.status(404).json({ message: "Post not found in the waitings list" });
+        }
+
+        user.waits.splice(postIndex, 1); // Remove post from waitings list
+        await user.save();
+        return res.status(200).json({ message: "successs" });
+    } catch (error) {
+        console.error("Error canceling post's join:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
 // Activate/Deactivate user
 router.put("/:editId/changeStatus", authAdmin, async (req, res) => {
     try {

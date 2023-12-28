@@ -12,12 +12,12 @@ const userSchema = new mongoose.Schema({
     location: {
         city: String,
         street: String,
-        houseNumber: Number
+        houseNumber: String
     },
     defaultDestination: {
         city: String,
         street: String,
-        houseNumber: Number
+        houseNumber: String
     },
     travels: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     }],
     waits: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "waits",
+        ref: "posts",
     }],
     demands: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -37,7 +37,8 @@ const userSchema = new mongoose.Schema({
         color: String,
         seatsNumber: Number
     },
-    pickUpLocation: String,
+    pickUpLocation: String
+   ,
     isDriver: {
         type: Boolean,
         default: false
@@ -73,22 +74,23 @@ exports.validUser = (_reqBody) => {
         location: Joi.object({
             city: Joi.string(),
             street: Joi.string(),
-            houseNumber: Joi.number()
+            houseNumber: Joi.string()
         }),
         defaultDestination: Joi.object({
             city: Joi.string(),
             street: Joi.string(),
-            houseNumber: Joi.number()
+            houseNumber: Joi.string()
         }),
         travels: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         waits: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         demands: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         carDescription: Joi.object({
-            brand: Joi.string().allow(''),
-            color: Joi.string().allow(''),
-            seatsNumber: Joi.number().allow('')
+            brand: Joi.string().allow(""),
+            color: Joi.string().allow(""),
+            seatsNumber: Joi.number()
         }).allow(null),
-        pickUpLocation: Joi.string().allow(''),
+        pickUpLocation:Joi.string().allow("")
+       ,
         isDriver: Joi.boolean(),
         isActive: Joi.boolean(),
         dateCreated: Joi.date().iso(),

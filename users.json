@@ -1,62 +1,44 @@
 [
-    {
-      "fullName": "Batsheva Makover",
-      "email": "batsheva4050@gmail.com",
-      "phone": "0556762258",
-      "password": "^&bat#$M1234",
-      "image": "https://example.com/image.jpg",
-      "location": {
-        "city": "Jerusalem",
-        "street": "maagley harim levin St",
-        "houseNumber": 111
-      },
-      "carDescription": {
-        "brand": "Toyota",
-        "color": "Red",
-        "seatsNumber": 4
-      },
-      "dateCreated": "2023-12-15T08:00:00Z",
-      "role": "admin",
-      "isActive": true,
-      "travels": [
-        {
-          "destination": "Tel Aviv",
-          "startDate": "2023-12-20T08:00:00Z",
-          "endDate": "2023-12-25T08:00:00Z"
-        },
-        {
-          "destination": "Rishon Letsion",
-          "startDate": "2024-01-05T08:00:00Z",
-          "endDate": "2024-01-10T08:00:00Z"
-        }
-      ]
+  {
+    "idUser": "5f4e8b5d96a75f14a8d7001a",
+    "source": {
+      "city": "City1",
+      "street": "Street1",
+      "houseNumber": "123"
     },
-    {
-      "fullName": "Chani Chasida",
-      "email": "chani2172003@gmail.com",
-      "phone": "0548592871",
-      "password": "TR554^$%@$77",
-      "image": "https://example.com/alice.jpg",
-      "location": {
-        "city": "Bnei Brak",
-        "street": "Chevron St",
-        "houseNumber": 10
-      },
-      "carDescription": {
-        "brand": "Honda",
-        "color": "Blue",
-        "seatsNumber": 5
-      },
-      "dateCreated": "2023-11-28T08:00:00Z",
-      "role": "user",
-      "isActive": true,
-      "travels": [
-        {
-          "destination": "Tel Aviv",
-          "startDate": "2023-12-10T08:00:00Z",
-          "endDate": "2023-12-15T08:00:00Z"
-        }
-      ]
-    }
-  ]
-  
+    "destination": {
+      "city": "City2",
+      "street": "Street2",
+      "houseNumber": "456"
+    },
+    "limitDate": "2023-01-15T12:00:00Z"
+  },
+  {
+    "idUser": "5f4e8b5d96a75f14a8d7001b",
+    "source": {
+      "city": "City3",
+      "street": "Street3",
+      "houseNumber": "789"
+    },
+    "destination": {
+      "city": "City4",
+      "street": "Street4",
+      "houseNumber": "101"
+    },
+    "limitDate": "2023-02-28T18:30:00Z"
+  },
+  {
+    "idUser": null,
+    "source": {
+      "city": "City5",
+      "street": "Street5",
+      "houseNumber": "222"
+    },
+    "destination": {
+      "city": "City6",
+      "street": "Street6",
+      "houseNumber": "333"
+    },
+    "limitDate": "2023-03-10T08:45:00Z"
+  }
+]

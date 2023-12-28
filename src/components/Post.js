@@ -1,24 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { apiService } from '../services/apiService ';
-
 const Post = ({ drive, dataType }) => {
-  const { postData } = apiService();
+  const [userId, setUserId] = useState('');
+  const { methodAuthData,postData } = apiService();
 
+ // Removed the dependency array to resolve the exhaustive-deps warning
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await methodAuthData('users/myInfo', {}, 'GET');
+      console.log(response,"!!!")
+      setUserId(response.data._id);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      // Handle error scenarios here
+    }
+  };
+
+  fetchData(); // Immediately invoke the async function
+}, []); 
   const updateUserArray = async (actionType) => {
     try {
-      const userId = '658aa6af166d69f4c7cc08b7'; // Replace this with the actual user ID
+    
+     
+        let endpoint = '';
+        if (dataType === 'travels' && actionType === 'join') {
+          endpoint = `posts/addTravel/${userId}/${drive._id}`;
+        } else if (dataType === 'waits' && actionType === 'wait') {
+          endpoint = `posts/addWait/${userId}/${drive._id}`;
+        }
 
-      let endpoint = '';
-      if (dataType === 'travels' && actionType === 'join') {
-        endpoint = `posts/addTravel/${userId}/${drive._id}`;
-      } else if (dataType === 'waits' && actionType === 'wait') {
-        endpoint = `posts/addWait/${userId}/${drive._id}`;
-      }
-
-      if (endpoint) {
-        const response = await postData(endpoint);
-        console.log(response); // Logging the response from the backend
-      }
+        if (endpoint) {
+          // Your postData function goes here...
+          const response = await postData(endpoint);
+          console.log('Making API call:', endpoint);
+        }
     } catch (error) {
       console.error('Error updating user array:', error);
       // Handle error scenarios here

@@ -19,6 +19,7 @@ export const validateDate = (date,time) => {
                     if (day == currentDay) {
                         validateDateTime(time)
                     }
+                    else return true
                 }
                 else {
                     alert("יום שגוי")
@@ -41,7 +42,6 @@ export const validateDate = (date,time) => {
         const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false });
 
         if (inputTime > currentTime) {
-            
             alert('התאריך והשעה חוקיים.');
             return true
         } else {

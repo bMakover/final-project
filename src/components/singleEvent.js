@@ -19,26 +19,30 @@ const SingleEvent = (props) => {
     const hourRef = register("hour", { required: true })
 
     const onSub = async (databody) => {
-        let t = validateDate(document.querySelector("#dateId").value, document.querySelector("#timeId").value)
-        const obj = {
-            Name: databody.name,
-            Date: databody.date,
-            hour: databody.hour,
-            location: {
-                city: databody.location_city,
-                street: databody.location_street,
-                houseNumber: databody.location_houseNumber
-            },
-            description: databody.description,
-            travels: item.travels,
-            dateCreated: item.dateCreated
+        let flag = validateDate(document.querySelector("#dateId").value, document.querySelector("#timeId").value)
+        console.log(flag)
+        if (flag == true) {
+            const obj = {
+                Name: databody.name,
+                Date: databody.date,
+                hour: databody.hour,
+                location: {
+                    city: databody.location_city,
+                    street: databody.location_street,
+                    houseNumber: databody.location_houseNumber
+                },
+                description: databody.description,
+                travels: item.travels,
+                dateCreated: item.dateCreated
+            }
+            console.log(obj)
+            const data = await methodAuthData(`events/${item._id}`, obj, "PUT")
+
         }
-        console.log(obj)
-        const data = await methodAuthData(`events/${item._id}`, obj, "PUT")
-        console.log(data)
     }
     const daleteEvent = async () => {
         const data = await methodAuthData(`events/${item._id}`, {}, "DELETE")
+        console.log(data)
     }
 
     useEffect(() => {
@@ -48,7 +52,6 @@ const SingleEvent = (props) => {
         const year = d.getFullYear();
         const formattedDate = `${year}-${month}-${day}`;
         setDate(formattedDate)
-        console.log(formattedDate)
     }, [])
 
     return (

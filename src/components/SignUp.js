@@ -1,9 +1,9 @@
-// RegistrationForm.js
+// SignUp.js
 import React, { useState } from 'react';
 import { apiService } from '../services/apiService ';
 
 
-const RegistrationForm = () => {
+const SignUp = () => {
   const {postData} = apiService();
   const [formData, setFormData] = useState({
     fullName: '',
@@ -189,4 +189,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default SignUp;

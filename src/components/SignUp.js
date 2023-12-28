@@ -18,7 +18,7 @@ const SignUp = () => {
   const carDescription_colorRef = register("color", { minLength: 4 })
   const carDescription_seatsNumberRef = register("seatsNumber", { minLength: 1 })
   let locationObj = {}
-  let pickUpLocationOBJ = {}
+  let pickUpLocationOBJ = " "
   let defaultDestinationObj = {}
 
 
@@ -28,38 +28,44 @@ const SignUp = () => {
       databody.carDescription.brand = null
       databody.carDescription.seatsNumber = null
     }
-    let obj = {
-      fullName: databody.fullName,
-      email: databody.email,
-      phone: databody.phone,
-      password: databody.password,
-      image: databody.image,
-      location: locationObj,
-      defaultDestination: defaultDestinationObj,
-      travels: [],
-      waits: [],
-      demands: [],
-      carDescription: {
-        brand: databody.brand,
-        color: databody.color,
-        seatsNumber: databody.seatsNumber
-      },
-      pickUpLocation: pickUpLocationOBJ
-      ,
-      isDriver: check,
-      isActive: true,
-      dateCreated: new Date(Date.now()),
-      role: "user"
+    if (defaultDestinationObj != {} && locationObj != {} && pickUpLocationOBJ != " ") {
+      let obj = {
+        fullName: databody.fullName,
+        email: databody.email,
+        phone: databody.phone,
+        password: databody.password,
+        image: databody.image,
+        location: locationObj,
+        defaultDestination: defaultDestinationObj,
+        travels: [],
+        waits: [],
+        demands: [],
+        carDescription: {
+          brand: databody.brand,
+          color: databody.color,
+          seatsNumber: Number(databody.seatsNumber)
+        },
+        pickUpLocation: pickUpLocationOBJ
+        ,
+        isDriver: check,
+        isActive: true,
+        dateCreated: new Date(Date.now()),
+        role: "user"
 
+      }
+      try {
+        console.log(obj)
+        await postData("users", obj);
+        // Assuming 'users' is the endpoint you want to hit
+        console.log('User registered successfully');
+      } catch (error) {
+        console.error('Error registering user:', error);
+      }
     }
-    try {
-      console.log(obj)
-      // await postData("users", formData); // Assuming 'users' is the endpoint you want to hit
-      console.log('User registered successfully');
-    } catch (error) {
-      console.error('Error registering user:', error);
+    else{
+      alert( "!!הכנס כתובות שוב  ")
     }
-  };
+  }
   const handleSourceSelect = (obj) => {
     const parts = obj?.description.split(', ');
     console.log(parts)
@@ -95,7 +101,7 @@ const SignUp = () => {
     console.log(defaultDestinationObj)
   }
   const handelPickUp = (obj) => {
-    pickUpLocationOBJ = handleSourceSelect(obj)
+    pickUpLocationOBJ = obj.description
     console.log(pickUpLocationOBJ)
   }
   return (<>

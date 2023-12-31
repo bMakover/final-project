@@ -11,8 +11,8 @@ import UserWaitingList from './components/UserWaitingsList'
 import HomePage from './components/homePage';
 import NewPost from './components/newPost';
 import ShowEvents from './components/showEvents';
-
-
+import UserEditProfile from './components/UserEditProfile';
+import MyDemandsList from './components/MyDemandsList';
 
 function App() {
 
@@ -32,7 +32,11 @@ function App() {
 
                    <Route path="/searchdrives" element={<SearchDrive/>}/>
                    <Route path="/waiting-list" element={<UserWaitingList/>}/>
+                   <Route path="/demand-list" element={<MyDemandsList />}/>
+
                    <Route path="/events" element={<ShowEvents/>}/>
+                   <Route path="/profile" element={<UserEditProfile />}/>
+
 
 
 

@@ -1,96 +1,77 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { apiService } from '../services/apiService '
-
+import { validateDate } from './validDate'
+import GoogleMaps from './Demo'
 const NewEvent = () => {
     const { register, handleSubmit, formState: { errors }, getValues } = useForm()
-    // const nav = useNavigate()
+    let src = {}
     const { methodAuthData } = apiService()
     const nameRef = register("name", { required: true, minLength: 2 })
-    const location_cityRef = register("location_city", { required: true, minLength: 2 })
-    const location_streetRef = register("location_street", { minLength: 2 })
-    const location_houseNumberRef = register("location_houseNumber", { minLength: 1 })
     const dateRef = register("date", { required: true, type: Date })
     const descriptionRef = register("description", { minLength: 4, required: true })
     const hourRef = register("hour", { required: true })
-    const onSub = async (databody) => {
-        validateDate()
-        const obj = {
-            Name: databody.name,
-            Date: databody.date,
-            hour: databody.hour,
-            location: {
-                city: databody.location_city,
-                street: databody.location_street,
-                houseNumber: databody.location_houseNumber
-            },
-            description: databody.description,
-            travels: [],
-            dateCreated: new Date(Date.now())
+
+    const handleSourceSelect = (obj) => {
+        const parts = obj?.description.split(', ');
+        console.log(parts)
+        if (parts != undefined) {
+            // המספר בית יהיה המספר הראשון שמופיע בקטע שבו יש מספרים
+            const houseNumber = " "
+            let street = parts[1];
+            let city = parts[0];
+            if (/\d+/.test(city)) {
+                street = parts[0]
+                city = parts[1]
+            }
+            if (street == "ישראל")
+                street = " "
+            const addressObject = {
+                city,
+                street,
+                houseNumber
+            };
+
+            console.log(addressObject);
+            return addressObject
         }
-        await methodAuthData("events/", obj, "POST")
-        console.log(obj)
-        console.log(databody)
+    }
+
+    const handelSRC = (obj) => {
+        src = handleSourceSelect(obj)
     }
 
 
-    const validateDate = () => {
-        const inputDate = document.getElementById('dateInput').value;
-        let parts = inputDate.split('-');
-        let now = new Date();
-        let year = parseInt(parts[0], 10);
-        let currentYear = now.getFullYear();
-        let currentMonth = now.getMonth();
-        let currentDay = now.getDate();
-        let month = (parts[1][0] === '0') ? parseInt(parts[1][1], 10) : parseInt(parts[1], 10);
-        let day = (parts[2][0] === '0') ? parseInt(parts[2][1], 10) : parseInt(parts[2], 10);
-
-        if (year >= currentYear) {
-            if (month >= currentMonth) {
-                if (day >= currentDay) {
-                    if (day == currentDay) {
-                        validateDateTime()
-                    }
-                }
-                else {
-                    alert("יום שגוי")
-                }
+    const onSub = async (databody) => {
+        let flag = validateDate(document.querySelector("#dateInput").value, document.querySelector("#timeInput").value)
+        if (flag == true&&src.city!=" ") {
+            const obj = {
+                Name: databody.name,
+                Date: databody.date,
+                hour: databody.hour,
+                location:src,
+                description: databody.description,
+                travels: [],
+                dateCreated: new Date(Date.now())
             }
-            else {
-                alert("חודש שגויה")
-            }
+            await methodAuthData("events/", obj, "POST")
+            console.log(obj)
+            console.log(databody)
         }
-        else {
-            alert("שנה שגויה")
-        }
-    };
-    const validateDateTime = () => {
-        const inputTime = document.getElementById('timeInput').value;
-        const currentDate = new Date();
-        const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false });
-
-        if (inputTime > currentTime) {
-            alert('התאריך והשעה חוקיים.');
-        } else {
-            alert('השעה עברה כבר. אנא בחר שעה חדשה.');
-        }
-
     }
     return (
         <>
-
             <form onSubmit={handleSubmit(onSub)}>
-
                 <label>שם האירוע</label>
                 <input  {...nameRef} type='text' />
                 {errors.name && <div>*חובה להכניס עיר מקור</div>}
-                <label>עיר:</label>
+                {/* <label>עיר:</label>
                 <input   {...location_cityRef} type='text' />
                 <label>רחוב:</label>
                 <input  {...location_streetRef} type='text' />
                 <label>מספר:</label>
                 <input  {...location_houseNumberRef} type='text' />
-                {errors.destanation_city && <div>*חובה להכניס עיר יעד</div>}
+                {errors.destanation_city && <div>*חובה להכניס עיר יעד</div>} */}
                 <label>תאריך</label>
                 <input id="dateInput"  {...dateRef} type='date' />
                 {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
@@ -102,6 +83,7 @@ const NewEvent = () => {
                 {errors.description && <div>חובה להכניס תאור*</div>}
                 <button>פרסום האירוע</button>
             </form>
+            <GoogleMaps onInput={handelSRC} />
         </>
     )
 }

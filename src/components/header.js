@@ -1,28 +1,75 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemText, Typography } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Header = () => {
-    return (
-        <><header style={{ width: "1100px" }} className="container-fluid  navbar navbar-expand bg-dark ">
-            <div className="container" style={{ width: "100%" }}>
-                <div className="row align-items-center">
-                    <div className='col-auto'>
-                    </div>
-                    <nav className='nav-col-auto  navbar-nav p-0'>
-                        <ul className='d-flex '>
-                            <li className='nav-item'><Link className='m-3  text-light' to="/newPost">הוספת פוסט</Link></li>
-                            <li><Link className='m-3 text-light ' to="/login" > התחברות</Link></li>
-                            <li><Link className='m-3  text-light' to="/signup"> הרשמה</Link></li>
-                            <li><Link className='m-3  text-light' to="/events"> אירועים</Link></li>
-                            <li><Link className='m-3  text-light' to="/searchdrives"> חיפוש נסיעות</Link></li>
-                            <li><Link className='m-3  text-light' to="/waiting-list"> ההמתנות שלי</Link></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        </>
-    )
-}
+    const [openDrawer, setOpenDrawer] = useState(false);
 
-export default Header
+    const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setOpenDrawer(open);
+    };
+
+    return (
+        <>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={toggleDrawer(true)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Typography variant="h6" style={{ marginRight: '20px' }}>
+                            Your Logo
+                        </Typography>
+                    </Link>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <Link to="/login" style={{ textDecoration: 'none', color: 'inherit', marginRight: '10px' }}>
+                            <Typography variant="subtitle1">התחברות</Typography>
+                        </Link>
+                        <Link to="/signup" style={{ textDecoration: 'none', color: 'inherit', marginRight: '10px' }}>
+                            <Typography variant="subtitle1">הרשמה</Typography>
+                        </Link>
+                        <Link to="/events" style={{ textDecoration: 'none', color: 'inherit', marginRight: '10px' }}>
+                            <Typography variant="subtitle1">אירועים</Typography>
+                        </Link>
+                        <Link to="/searchdrives" style={{ textDecoration: 'none', color: 'inherit', marginRight: '10px' }}>
+                            <Typography variant="subtitle1">חיפוש נסיעות</Typography>
+                        </Link>
+                    </div>
+                </Toolbar>
+            </AppBar>
+            <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
+                <div
+                    role="presentation"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
+                    <List>
+                       
+                        <ListItem button component={Link} to="/profile">
+                            <ListItemText primary="Profile" />
+                        </ListItem>
+                        <ListItem button component={Link} to="/waiting-list">
+                            <ListItemText primary=" נסיעות שאני מחכה להם" />
+                        </ListItem>
+                        <ListItem button component={Link} to="/demand-list">
+                            <ListItemText primary="בקשות לנסיעות" />
+                        </ListItem>
+                        {/* Add other sidebar links or content */}
+                    </List>
+                </div>
+            </Drawer>
+        </>
+    );
+};
+
+export default Header;

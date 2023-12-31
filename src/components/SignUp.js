@@ -1,7 +1,7 @@
 // RegistrationForm.js
 import React, { useState } from 'react';
 import { apiService } from '../services/apiService ';
-
+import { TextField, Checkbox, FormControlLabel, Button, Box } from '@mui/material';
 
 const SignUp = () => {
   const {postData} = apiService();
@@ -99,92 +99,32 @@ const SignUp = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Render form fields using controlled components */}
-      <label>
-        Full Name:
-        <input type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} required />
-      </label>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '400px', margin: 'auto' }}>
+        <TextField label="Full Name" type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} required />
+        <TextField label="Email" type="email" name="email" value={formData.email} onChange={handleInputChange} required />
+        <TextField label="Phone" type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required />
+        <TextField label="Password" type="password" name="password" value={formData.password} onChange={handleInputChange} required />
+        <TextField label="Image" type="text" name="image" onChange={handleInputChange} />
+        <TextField label="Location City" type="text" name="city" value={formData.location.city} onChange={handleLocationChange} />
+        {/* Add similar TextField components for other fields */}
+        <FormControlLabel
+          control={<Checkbox checked={formData.isDriver} onChange={handleCheckboxChange} name="isDriver" />}
+          label="Is Driver"
+        />
+        {formData.isDriver && (
+          <div>
+            {/* Additional fields for driver */}
+            <TextField label="Car Brand" type="text" name="brand" value={formData.carDescription.brand} onChange={handleCarDescriptionChange} />
+            <TextField label="seatsNumber" type="text" name="seatsNumber" value={formData.carDescription.seatsNumber} onChange={handleCarDescriptionChange} />
+            <TextField label="pickUpLocation" type="text" name="pickUpLocation" value={formData.pickUpLocation} onChange={handleInputChange} />
 
-      <label>
-        Email:
-        <input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
-      </label>
-
-      <label>
-        Phone:
-        <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required />
-      </label>
-
-      <label>
-        Password:
-        <input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
-      </label>
-
-      <label>
-        Image:
-        <input type="text" name="image" onChange={handleImageChange} />
-      </label>
-
-      <label>
-        Location City:
-        <input type="text" name="city" value={formData.location.city} onChange={handleLocationChange} />
-      </label>
-
-      <label>
-        Location Street:
-        <input type="text" name="street" value={formData.location.street} onChange={handleLocationChange} />
-      </label>
-
-      <label>
-        Location House Number:
-        <input type="text" name="houseNumber" value={formData.location.houseNumber} onChange={handleLocationChange} />
-      </label>
-
-      <label>
-        Default Destination City:
-        <input type="text" name="city" value={formData.defaultDestination.city} onChange={handleDefaultDestinationChange} />
-      </label>
-
-      <label>
-        Default Destination Street:
-        <input type="text" name="street" value={formData.defaultDestination.street} onChange={handleDefaultDestinationChange} />
-      </label>
-
-      <label>
-        Default Destination House Number:
-        <input type="text" name="houseNumber" value={formData.defaultDestination.houseNumber} onChange={handleDefaultDestinationChange} />
-      </label>
-
-      <label>
-        Is Driver:
-        <input type="checkbox" name="isDriver" checked={formData.isDriver} onChange={handleCheckboxChange} />
-      </label>
-
-      {formData.isDriver && (
-        <div>
-          <label>
-            Car Brand:
-            <input type="text" name="brand" value={formData.carDescription.brand} onChange={handleCarDescriptionChange} />
-          </label>
-
-          <label>
-            Car Color:
-            <input type="text" name="color" value={formData.carDescription.color} onChange={handleCarDescriptionChange} />
-          </label>
-
-          <label>
-            Number of Seats:
-            <input type="number" name="seatsNumber" value={formData.carDescription.seatsNumber} onChange={handleCarDescriptionChange} />
-          </label>
-
-          <label>
-            Pick-Up Location:
-            <input type="text" name="pickUpLocation" value={formData.pickUpLocation} onChange={handleInputChange} />
-          </label>
-        </div>
-      )}
-
-      <button type="submit">Register</button>
+            {/* Add similar TextField components for other driver-related fields */}
+          </div>
+        )}
+        <Button variant="contained" type="submit">
+          Register
+        </Button>
+      </Box>
     </form>
   );
 };

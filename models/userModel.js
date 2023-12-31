@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "demands",
     }],
+    myPosts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "posts"
+    }],
     //for drivers:
     carDescription: {
         brand: String,
@@ -84,6 +88,7 @@ exports.validUser = (_reqBody) => {
         travels: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         waits: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         demands: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
+        myPosts: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         carDescription: Joi.object({
             brand: Joi.string(),
             color: Joi.string(),
@@ -110,3 +115,46 @@ exports.validLogin = (_reqBody) => {
 
     return joiSchema.validate(_reqBody);
 };
+
+
+
+
+
+exports.validEditUser = (_reqBody) => {
+    let joiSchema = Joi.object({
+        fullName: Joi.string().min(2).max(99).required(),
+        email: Joi.string().min(2).max(99).email().required(),
+        phone: Joi.string().required(),
+        image: Joi.string(),
+        location: Joi.object({
+            city: Joi.string(),
+            street: Joi.string(),
+            houseNumber: Joi.string()
+        }),
+        defaultDestination: Joi.object({
+            city: Joi.string(),
+            street: Joi.string(),
+            houseNumber: Joi.string()
+        }),
+        travels: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
+        waits: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
+        demands: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
+        myPosts: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
+        carDescription: Joi.object({
+            brand: Joi.string(),
+            color: Joi.string(),
+            seatsNumber: Joi.number()
+        }).allow(null),
+        pickUpLocation:Joi.string().allow("")
+       ,
+        isDriver: Joi.boolean(),
+        isActive: Joi.boolean(),
+        dateCreated: Joi.date().iso(),
+        role: Joi.string()
+    });
+
+
+
+    return joiSchema.validate(_reqBody);
+};
+

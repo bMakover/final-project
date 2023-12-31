@@ -125,10 +125,9 @@ router.post('/addTravel/:userId/:postId', async (req, res) => {
         }
 
 
-        if (post.seatsCount > 0) {
-            // Update the seats count of the drive and add the user to the passengers list
-            post.seatsCount -= 1;
-            if (post.seatsCount == 0)
+        if (post.passengersList.length < post.seatsCount) {
+       
+            if (post.passengersList.length == post.seatsCount-1)
                 post.isDisplay = false
             post.passengersList.push(userId); // Add user to passengers list
             await post.save();
@@ -175,4 +174,21 @@ router.post('/addWait/:userId/:postId', async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
+//get post by id
+router.get("/:id", auth, async (req, res) => {
+    try {
+      const id = req.params.id;
+      // Find the post by ID
+      const data = await PostsModel.findOne({ _id: id });
+      if (!data) {
+        return res.status(404).json({ msg: "Post not found" });
+      }
+      res.json(data);
+    } catch (err) {
+        console.error(err);  // Add this line to log the error
+        res.status(500).json({ msg: "Internal Server Error" });
+      }
+  });
+
+
 module.exports = router;

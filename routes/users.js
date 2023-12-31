@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { auth, authAdmin } = require("../middlewares/auth");
-const { UserModel, validUser, validLogin, createToken } = require("../models/userModel");
+const { UserModel, validUser, validLogin, createToken, validEditUser } = require("../models/userModel");
 const router = express.Router();
 
 // Error handler middleware
@@ -19,7 +19,30 @@ router.get("/myInfo", auth, async (req, res) => {
         res.status(500).json({ msg: "err", err })
     }
 })
+router.get("/myPosts", auth, async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.tokenData._id).populate('myPosts');
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
 
+        res.json(user.myPosts);
+    } catch (err) {
+        errorHandler(res, err);
+    }
+})
+
+router.get("/myInfoWithPass", auth, async (req, res) => {
+    try {
+        let userInfo = await UserModel.findOne({ _id: req.tokenData._id });
+        userInfo.password
+        res.json(userInfo);
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json({ msg: "err", err })
+    }
+})
 
 router.get("/usersList", authAdmin, async (req, res) => {
     try {
@@ -49,7 +72,7 @@ router.get("/:id/travels", async (req, res) => {
     try {
         const userId = req.params.id;
         const user = await UserModel.findById(userId).populate('travels');
-        
+
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
@@ -60,12 +83,15 @@ router.get("/:id/travels", async (req, res) => {
     }
 });
 
+
+
+
 // Get waiting list for a user
 router.get("/:id/waits", async (req, res) => {
     try {
         const userId = req.params.id;
         const user = await UserModel.findById(userId).populate('waits');
-        
+
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
@@ -81,7 +107,7 @@ router.get("/:id/demands", async (req, res) => {
     try {
         const userId = req.params.id;
         const user = await UserModel.findById(userId).populate('demands');
-        
+
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }
@@ -126,7 +152,7 @@ router.post("/login", async (req, res) => {
         if (!user) {
             return res.status(401).json({ msg: "Email or password is incorrect" });
         }
-        
+
         let authPassword = await bcrypt.compare(req.body.password, user.password);
         if (!authPassword) {
             return res.status(401).json({ msg: "Email or password is incorrect" });
@@ -142,31 +168,57 @@ router.post("/login", async (req, res) => {
 router.post('/addTravel/:userId', async (req, res) => {
     const userId = req.params.userId;
     const { travel } = req.body; // Assuming travel is a single post ID
-    
-    try {
-      // Find the user by ID
-      const user = await UserModel.findById(userId);
-    
-      // If the user exists, update the travels array with a single post ID
-      if (user) {
-        user.travels.push(travel); // Push a single post ID into the travels array
-        await user.save();
-    
-        return res.status(200).json({ message: 'Travel added to user successfully' });
-      } else {
-        return res.status(404).json({ message: 'User not found' });
-      }
-    } catch (error) {
-      console.error('Error adding travel to user:', error);
-      return res.status(500).json({ message: 'Internal server error' });
-    }
-  });
 
+    try {
+        // Find the user by ID
+        const user = await UserModel.findById(userId);
+
+        // If the user exists, update the travels array with a single post ID
+        if (user) {
+            user.travels.push(travel); // Push a single post ID into the travels array
+            await user.save();
+
+            return res.status(200).json({ message: 'Travel added to user successfully' });
+        } else {
+            return res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error adding travel to user:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+router.put('/updateUserPosts/:updateID', auth, async (req, res) => {
+    // Validation
+    let validBody = validEditUser(req.body);
+    if (validBody.error) {
+        return res.status(400).json(validBody.error.details);
+    }
+    try {
+        let updateID = req.params.updateID;
+        let user = await UserModel.findById(updateID)
+        // Save the updated user to the database
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        if (req.tokenData.role === "admin" || req.tokenData._id === updateID) {
+            let data = await UserModel.updateOne({ _id: updateID }, req.body);
+            return res.json(data);
+        } else {
+            return res.status(403).json({ msg: "Unauthorized to update this user" });
+        }
+    } catch (err) {
+        errorHandler(res, err);
+    }
+});
 
 // Update user details
 router.put("/:editId", auth, async (req, res) => {
     // Validation
+
     let validBody = validUser(req.body);
+    console.log(validBody)
     if (validBody.error) {
         return res.status(400).json(validBody.error.details);
     }
@@ -174,7 +226,11 @@ router.put("/:editId", auth, async (req, res) => {
     try {
         let editId = req.params.editId;
         let user = await UserModel.findById(editId);
+        if (req.body.password) {
+            user.password = await bcrypt.hash(req.body.password, 10);
+        }
 
+        // Save the updated user to the database
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }

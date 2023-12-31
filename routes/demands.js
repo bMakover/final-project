@@ -76,4 +76,16 @@ router.put("/:editId", auth, async (req, res) => {
     }
 })
 
+//get my demand requests
+router.get("/getMyDemand",auth,async(req,res)=>{
+    try {
+        const userDemands = await DemandsModel.find({ idUser: req.tokenData._id });      
+        res.status(200).json(userDemands);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ msg: "there error try again later", err })
+    }
+})
+
 module.exports = router;

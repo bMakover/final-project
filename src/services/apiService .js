@@ -60,17 +60,18 @@ export const apiService = () => {
         }
     };
 
+    // console.log(data);
     const methodAuthData = async (url, body,method) => {
         try  {
             const token =  localStorage.getItem("token")
             const response = await axios({
                 url: `${baseUrl}${url}`,
-                method: method,
                 data: body,
+                method: method,
                 headers: {
                   "x-api-key": token
                 }
-              })
+            })
         return response; // Add this line to return the response
         }
         catch (err) {

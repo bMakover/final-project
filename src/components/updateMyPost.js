@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router";
-import { useForm } from "react-hook-form";
-import { apiService } from '../services/apiService ';
+import { apiService } from '../services/apiService '
+import { useForm } from 'react-hook-form'
+import GoogleMaps from './Demo'
 import { validateDate } from './validDate'
-import GoogleMaps from './Demo';
+import { useParams } from 'react-router'
+
+const UpdateMyPost = ({ item }) => {
 
 
-const NewPost = ({ SetidEvent }) => {
     const { register, handleSubmit, formState: { errors }, getValues } = useForm()
-    // const nav = useNavigate()
+    const [date, setDate] = useState()
     let src = {}
     let des = {}
     const { methodAuthData, getData } = apiService()
@@ -16,7 +17,14 @@ const NewPost = ({ SetidEvent }) => {
     const departure_hourRef = register("departure_hour", { required: true, minLength: 4 })
     const descriptionRef = register("discription", { minLength: 4, required: true })
     const seatSCountRef = register("seatSCount", { required: true, minLength: 1 })
-
+    useEffect(() => {
+        let d = new Date(item.departure.date)
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        const formattedDate = `${year}-${month}-${day}`;
+        setDate(formattedDate)
+    }, [])
 
     const handleSourceSelect = (obj) => {
         const parts = obj?.description.split(', ');
@@ -55,64 +63,49 @@ const NewPost = ({ SetidEvent }) => {
         console.log(flag)
         if (flag == true && src.city != " " && des.city != " ") {
             const obj = {
-                isDisplay: true,
-                source: src,
-                destination: des,
-                description: databody.discription,
-                seatsCount: Number(databody.seatSCount),
-                passengersList: [],
-                waitingList: [],
-                updateDate: null,
+                isDisplay: true || item.isDisplay,
+                source: src || item.source,
+                destination: des || item.source,
+                description: databody.discription || item.discription,
+                seatsCount: Number(databody.seatSCount) || item.seatsCount,
+                passengersList: item.passengersList,
+                waitingList: item.waitingList,
+                updateDate: new Date(Date.now()),
                 departure: {
-                    date: new Date(databody.departure_date),
-                    hour: databody.departure_hour
+                    date: new Date(databody.departure_date) || item.departure.date,
+                    hour: databody.departure_hour || item.departure.hour
                 },
-                idDriver: null,
-                createDate: new Date(Date.now())
+                idDriver: item.idDriver,
+                createDate: item.createDate
             }
-            let data = await methodAuthData("posts/", obj, "POST")
+            let data = await methodAuthData(`posts/${item._id}`, obj, "PUT")
             console.log(data)
-            UpdateMyPosts(data.data._id)
-            if (SetidEvent)
-                SetidEvent(data.data._id)
         }
     }
 
-    const UpdateMyPosts = async (_id) => {
-        let user = await methodAuthData("users/myInfoWithPass", {}, "GET")
-        user = user.data
-        user.myPosts.push(_id)
-        console.log(user)
-        const userid = user._id
-        delete user._id
-        delete user.__v
-        delete user.password
-        let data = await methodAuthData(`users/updateUserPosts/${userid}`, user, "PUT")
-        console.log(data)
-    }
+
     return (<>
         <form onSubmit={handleSubmit(onSub)}>
             <label>מקור הנסיעה:</label>
             <label>זמן יציאה:</label>
             <label>תאריך</label>
-            <input id="dateInput"  {...departure_dateRef} type='date' />
+            <input id="dateInput" defaultValue={date}  {...departure_dateRef} type='date' />
             {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
             <label >שעה:</label>
-            <input id="timeInput"  {...departure_hourRef} type='time' />
+            <input id="timeInput" defaultValue={item.departure.hour} {...departure_hourRef} type='time' />
             {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
             <label>כמות מקומות ישיבה</label>
-            <input  {...seatSCountRef} type='number' />
+            <input defaultValue={item.seatsCount} {...seatSCountRef} type='number' />
             {errors.seatSCount && <div>חובה להכניס כמות מושבים*</div>}
             <label>תאור הפוסט</label>
-            <textarea  {...descriptionRef}></textarea>
+            <textarea defaultValue={item.description}  {...descriptionRef}></textarea>
             {errors.description && <div>חובה להכניס תאור*</div>}
             <button>פרסום הפוסט</button>
         </form>
-
         <GoogleMaps onInput={handelSRC} />
         <GoogleMaps onInput={handelDES} />
     </>
     )
 }
 
-export default NewPost
+export default UpdateMyPost

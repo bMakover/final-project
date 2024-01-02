@@ -14,6 +14,7 @@ import Exmple from './components/exmple';
 import JoinToTravelEvent from './components/JoinToTravelEvent';
 import MyPosts from './components/myPosts';
 import UpdateMyPost from './components/updateMyPost';
+import MyTravelsList from './components/myTravelsList';
 
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
           <Route path="/drives" element={<AvailableDrives />} />
           <Route path="/myPosts" element={<MyPosts />} />
           <Route path="/updateMyPost" element={<UpdateMyPost />} />
-          {/* <Route path="/try" element={<Try />} />  */}
+          <Route path="/try" element={<MyTravelsList />} /> 
                <Route path="/admin" element={<AdminFeature />} />
           <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
         </Routes>

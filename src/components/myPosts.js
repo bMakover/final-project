@@ -14,18 +14,20 @@ const MyPosts = () => {
     const [flagPassengersMap, setFlagPassengersMap] = useState({});
     const nav = useNavigate()
     const getmyPosts = async () => {
-        const data = await methodAuthData("users/myPosts", {}, "GET")
-        setMyPosts(data.data)
-        console.log(data.data)
-
-    }
-    useEffect(() => {
         try {
-            getmyPosts()
+            const data = await methodAuthData("users/myPosts", {}, "GET")
+            setMyPosts(data.data)
+            console.log(data.data)
         }
         catch (err) {
             alert("פג תוקף התחברותך התחברי שוב")
         }
+    }
+    useEffect(() => {
+
+        getmyPosts()
+
+
     }, [])
 
 
@@ -37,36 +39,32 @@ const MyPosts = () => {
                 return (<div key={postId}>
 
                     <p>מיקום מקור נסיעה:</p>
-                    <p>עיר:{item.source.city}</p>
-                    {item.source.street && <p>רחוב:{item.source.street}</p>}
-                    {item.source.houseNumber && <p>מספר בית:{item.source.houseNumber}</p>}
+                    <p>כתובת:{item.source.city}  {item.source.street}   {item.source.houseNumber}</p>
                     <p>מיקום יעד נסיעה:</p>
-                    <p>עיר:{item.destination.city}</p>
-                    {item.destination.street && <p>רחוב:{item.destination.street}</p>}
-                    {item.destination.houseNumber && <p> מספר בית:{item.destination.houseNumber}</p>}
+                    <p>כתובת:{item.destination.city}  {item.destination.street}  {item.destination.houseNumber}</p>
                     <p>תאור פוסט:</p>
                     <p>{item.description}</p>
                     <p>כמות מושבים:{item.seatsCount}</p>
-                    <p>תאריך יציאה:{(new Date(item.departure.date)).toLocaleDateString()},
-                        {item.departure.hour}</p>
+                    <p>תאריך יציאה:{(new Date(item.departure.date)).toLocaleDateString()}</p>
+                    <p>שעת יציאה: {item.departure.hour}</p>
                     <button onClick={() => {
                         setFlagUpdateMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
-                    }}>עדכון הפוסט</button> {flagUpdateMap[postId] && <UpdateMyPost item={item} />}
+                    }}><i className="fa fa-pencil" aria-hidden="true"></i></button> {flagUpdateMap[postId] && <UpdateMyPost item={item} />}
                     <button onClick={() => {
                         setFlagDeleteMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
-                    }}>מחיקת הפוסט</button>{flagDeleteMap[postId] && <DeleteMyPost item={item} />}
+                    }}><i class="fa fa-trash" aria-hidden="true"></i></button>{flagDeleteMap[postId] && <DeleteMyPost item={item} />}
                     <button onClick={() => {
                         setFlagPassengersMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
-                    }}>רשימת הנוסעים</button>{flagPassengersMap[postId]&&<PassengersList itemId={item._id} />}
+                    }}> <i class="fa fa-list" aria-hidden="true"></i>  רשימת הנוסעים  </button>{flagPassengersMap[postId] && <PassengersList itemId={item._id} />}
                 </div>
 
                 )

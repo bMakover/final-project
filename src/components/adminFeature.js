@@ -7,15 +7,15 @@ const AdminFeature = () => {
     const [seeEventsFlag, setseeEventsFlag] = useState()
     return (
         <>
-            <button onClick={() => {
+            <button  className=' class="btn btn-white btn-animation-1' onClick={() => {
                 setNewEventFlag(!newEventFlag)
-            }}>הוספת אירוע</button>
+            }}>הוספת אירוע  <i class="fa fa-plus" aria-hidden="true"></i></button>
             {newEventFlag && <NewEvent />}
            
            
             <button onClick={() => {
                 setseeEventsFlag(!seeEventsFlag)
-            }}>צפייה באירועים</button>
+            }}>צפייה באירועים <i class="fa fa-eye" aria-hidden="true"></i></button>
             {seeEventsFlag && <ShowEvents />}
         </>
     )

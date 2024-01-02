@@ -15,7 +15,7 @@ import JoinToTravelEvent from './components/JoinToTravelEvent';
 import MyPosts from './components/myPosts';
 import UpdateMyPost from './components/updateMyPost';
 import MyTravelsList from './components/myTravelsList';
-
+import "./cssFiles/buttons.css"
 
 function App() {
   return (

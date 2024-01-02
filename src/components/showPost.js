@@ -13,11 +13,17 @@ const ShowPost = (props) => {
             const driver = user.data
             setDriverDetails(driver)
         }
-        getMyInfo()
+        try {
+            getMyInfo()
+        }
+        catch (err) {
+            alert("פג תוקף התחברותך התחברי שוב")
+        }
+
 
     }, [])
 
-    
+
     return (
 
         <><div>
@@ -43,8 +49,8 @@ const ShowPost = (props) => {
                         <p>תאור פוסט:</p>
                         <p>{item.description}</p>
                         <p>כמות מושבים:{item.seatsCount}</p>
-                        <p>תאריך יציאה:{item.createDate}</p>
-                        
+                        <p>תאריך יציאה:{new Date(item.createDate).toLocaleDateString()}</p>
+
                         <p>---------------------------------------------</p>
                     </div>
                 </div>}

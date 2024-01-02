@@ -32,7 +32,8 @@ function App() {
           <Route path="/drives" element={<AvailableDrives />} />
           <Route path="/myPosts" element={<MyPosts />} />
           <Route path="/updateMyPost" element={<UpdateMyPost />} />
-          <Route path="/try" element={<MyTravelsList />} /> 
+          <Route path="/travelslist" element={<MyTravelsList />} /> 
+          <Route path="/home" element={<HomePage />} /> 
                <Route path="/admin" element={<AdminFeature />} />
           <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
         </Routes>

@@ -38,11 +38,11 @@ const SearchDrive = () => {
     <>
       <input placeholder='from where?' onChange={(e) => setSource(e.target.value)} />
       <input placeholder='to where?' onChange={(e) => setDestination(e.target.value)} />
-      <button onClick={findDrives}>Search Available Drives</button>
-      {noDrivesFound && <p>No drives found</p>}
+      <button onClick={findDrives}>חפשי נסיעות פנויות</button>
+      {noDrivesFound && <p>אין נסיעות פנויות</p>}
       {catchedDrivesFound && (
         <button onClick={() => navigate('/drives', { state: { undisplayedDrives, dataType: 'waits' } })}>
-          There are closed drives. Want to enter the waiting list?
+         יש נסיעה קרובה אך מלאה עלייך להיכנס לרשימת המתנה מעוניינת?
         </button>
       )}
     </>

@@ -5,15 +5,21 @@ import SearchEvents from './searchEvents'
 import JoinToTravelEvent from './JoinToTravelEvent'
 
 const ShowEvents = () => {
-    const { getData } = apiService()
+    const { getData, methodAuthData } = apiService()
     const [allEvents, setAllEvents] = useState([])
-    let role="user"
+    const [thisUser, setThisUser] = useState([])
     useEffect(() => {
+
         const getAllEvents = async () => {
+            const user = await methodAuthData("users/myInfo", {}, "GET")
+            setThisUser(user.data)
             const data = await getData("events/getAllEvents")
             setAllEvents(data.data)
         }
-        getAllEvents()
+        try { getAllEvents() }
+        catch (err) {
+            alert("פג תוקף התחברותך התחברי שוב")
+        }
     }, [])
     const setData = (data) => {
         setAllEvents(data)
@@ -23,13 +29,13 @@ const ShowEvents = () => {
     return (
         <>
 
-            <SearchEvents  items={allEvents} setData={setData} />
-            {role=="admin"?allEvents?.map((item, i) => (
+            <SearchEvents items={allEvents} setData={setData} />
+            {thisUser.role == "admin" ? allEvents?.map((item, i) => (
                 <SingleEvent item={item} key={item._id} />
-            )) :allEvents?.map((item, i) => (
+            )) : allEvents?.map((item, i) => (
                 <JoinToTravelEvent item={item} key={item._id} />
             ))}
-           
+
         </>
     )
 }

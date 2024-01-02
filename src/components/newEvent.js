@@ -44,19 +44,26 @@ const NewEvent = () => {
 
     const onSub = async (databody) => {
         let flag = validateDate(document.querySelector("#dateInput").value, document.querySelector("#timeInput").value)
-        if (flag == true&&src.city!=" ") {
-            const obj = {
-                Name: databody.name,
-                Date: databody.date,
-                hour: databody.hour,
-                location:src,
-                description: databody.description,
-                travels: [],
-                dateCreated: new Date(Date.now())
+        try {
+            if (flag == true && src.city != " ") {
+                const obj = {
+                    Name: databody.name,
+                    Date: databody.date,
+                    hour: databody.hour,
+                    location: src,
+                    description: databody.description,
+                    travels: [],
+                    dateCreated: new Date(Date.now())
+                }
+                await methodAuthData("events/", obj, "POST")
+                console.log(obj)
+                console.log(databody)
             }
-            await methodAuthData("events/", obj, "POST")
-            console.log(obj)
-            console.log(databody)
+            else {
+                alert("הכנס כתובת שוב")
+            }
+        } catch (err) {
+            alert("פג תוקף התחברותך התחברי שוב")
         }
     }
     return (
@@ -65,13 +72,6 @@ const NewEvent = () => {
                 <label>שם האירוע</label>
                 <input  {...nameRef} type='text' />
                 {errors.name && <div>*חובה להכניס עיר מקור</div>}
-                {/* <label>עיר:</label>
-                <input   {...location_cityRef} type='text' />
-                <label>רחוב:</label>
-                <input  {...location_streetRef} type='text' />
-                <label>מספר:</label>
-                <input  {...location_houseNumberRef} type='text' />
-                {errors.destanation_city && <div>*חובה להכניס עיר יעד</div>} */}
                 <label>תאריך</label>
                 <input id="dateInput"  {...dateRef} type='date' />
                 {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}

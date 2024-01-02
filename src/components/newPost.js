@@ -53,28 +53,33 @@ const NewPost = ({ SetidEvent }) => {
     const onSub = async (databody) => {
         let flag = validateDate(document.querySelector("#dateInput").value, document.querySelector("#timeInput").value)
         console.log(flag)
-        if (flag == true && src.city != " " && des.city != " ") {
-            const obj = {
-                isDisplay: true,
-                source: src,
-                destination: des,
-                description: databody.discription,
-                seatsCount: Number(databody.seatSCount),
-                passengersList: [],
-                waitingList: [],
-                updateDate: null,
-                departure: {
-                    date: new Date(databody.departure_date),
-                    hour: databody.departure_hour
-                },
-                idDriver: null,
-                createDate: new Date(Date.now())
+        try {
+            if (flag == true && src.city != " " && des.city != " ") {
+                const obj = {
+                    isDisplay: true,
+                    source: src,
+                    destination: des,
+                    description: databody.discription,
+                    seatsCount: Number(databody.seatSCount),
+                    passengersList: [],
+                    waitingList: [],
+                    updateDate: null,
+                    departure: {
+                        date: new Date(databody.departure_date),
+                        hour: databody.departure_hour
+                    },
+                    idDriver: null,
+                    createDate: new Date(Date.now())
+                }
+                let data = await methodAuthData("posts/", obj, "POST")
+                console.log(data)
+                UpdateMyPosts(data.data._id)
+                if (SetidEvent)
+                    SetidEvent(data.data._id)
             }
-            let data = await methodAuthData("posts/", obj, "POST")
-            console.log(data)
-            UpdateMyPosts(data.data._id)
-            if (SetidEvent)
-                SetidEvent(data.data._id)
+        }
+        catch (err) {
+            alert("פג תוקף התחברותך התחברי שוב")
         }
     }
 

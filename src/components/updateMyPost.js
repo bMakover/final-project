@@ -60,8 +60,7 @@ const UpdateMyPost = ({ item }) => {
 
     const onSub = async (databody) => {
         let flag = validateDate(document.querySelector("#dateInput").value, document.querySelector("#timeInput").value)
-        console.log(flag)
-        if (flag == true && src.city != " " && des.city != " ") {
+        if (flag == true && src.city && des.city) {
             const obj = {
                 isDisplay: true || item.isDisplay,
                 source: src || item.source,
@@ -80,6 +79,9 @@ const UpdateMyPost = ({ item }) => {
             }
             let data = await methodAuthData(`posts/${item._id}`, obj, "PUT")
             console.log(data)
+        }
+        else{
+            alert("הכניסי כתובות שוב!")
         }
     }
 
@@ -100,7 +102,7 @@ const UpdateMyPost = ({ item }) => {
             <label>תאור הפוסט</label>
             <textarea defaultValue={item.description}  {...descriptionRef}></textarea>
             {errors.description && <div>חובה להכניס תאור*</div>}
-            <button>פרסום הפוסט</button>
+            <button>עידכון הפוסט</button>
         </form>
         <GoogleMaps onInput={handelSRC} />
         <GoogleMaps onInput={handelDES} />

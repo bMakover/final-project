@@ -4,27 +4,37 @@ import UpdateMyPost from './updateMyPost'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import DeleteMyPost from './deleteMyPost'
+import PassengersList from './passengersList'
 
 const MyPosts = () => {
     const { getData, methodAuthData } = apiService()
     const [myPosts, setMyPosts] = useState()
-    const [flag, setFlagUpdate] = useState(false)
-    const [Dflag, setDeleteFlag] = useState(false)
+    const [flagUpdateMap, setFlagUpdateMap] = useState({});
+    const [flagDeleteMap, setFlagDeleteMap] = useState({});
+    const [flagPassengersMap, setFlagPassengersMap] = useState({});
     const nav = useNavigate()
     const getmyPosts = async () => {
         const data = await methodAuthData("users/myPosts", {}, "GET")
         setMyPosts(data.data)
         console.log(data.data)
+
     }
     useEffect(() => {
-        getmyPosts()
+        try {
+            getmyPosts()
+        }
+        catch (err) {
+            alert("פג תוקף התחברותך התחברי שוב")
+        }
     }, [])
 
- 
+
+
     return (
         <>
             {myPosts?.map((item) => {
-                return (<div key={item._id}>
+                const postId = item._id;
+                return (<div key={postId}>
 
                     <p>מיקום מקור נסיעה:</p>
                     <p>עיר:{item.source.city}</p>
@@ -37,15 +47,26 @@ const MyPosts = () => {
                     <p>תאור פוסט:</p>
                     <p>{item.description}</p>
                     <p>כמות מושבים:{item.seatsCount}</p>
-                    <p>תאריך יציאה:{item.departure.date},
+                    <p>תאריך יציאה:{(new Date(item.departure.date)).toLocaleDateString()},
                         {item.departure.hour}</p>
-                    <p>---------------------------------------------</p>
                     <button onClick={() => {
-                        setFlagUpdate(!flag)
-                    }}>עדכון הפוסט</button> {flag && <UpdateMyPost item={item} />}
+                        setFlagUpdateMap((prev) => ({
+                            ...prev,
+                            [postId]: !prev[postId]
+                        }));
+                    }}>עדכון הפוסט</button> {flagUpdateMap[postId] && <UpdateMyPost item={item} />}
                     <button onClick={() => {
-                        setDeleteFlag(!Dflag)
-                    }}>מחיקת הפוסט</button>{Dflag&&<DeleteMyPost  item={item}/>}
+                        setFlagDeleteMap((prev) => ({
+                            ...prev,
+                            [postId]: !prev[postId]
+                        }));
+                    }}>מחיקת הפוסט</button>{flagDeleteMap[postId] && <DeleteMyPost item={item} />}
+                    <button onClick={() => {
+                        setFlagPassengersMap((prev) => ({
+                            ...prev,
+                            [postId]: !prev[postId]
+                        }));
+                    }}>רשימת הנוסעים</button>{flagPassengersMap[postId]&&<PassengersList itemId={item._id} />}
                 </div>
 
                 )

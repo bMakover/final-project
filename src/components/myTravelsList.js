@@ -20,23 +20,29 @@ const MyTravelsList = () => {
 
 
     const cancelJoin = async (arg) => {
-        let arr = thisuser.travels.filter(val => { return val != arg._id });
-        let obj = thisuser
-        let userID=thisuser._id
-        let TravelID=arg._id
-        obj.travels = arr
-        delete obj._id
-        delete obj.__v
-        console.log(obj)
-        console.log(userID)
-        const user = await methodAuthData(`users/updateUserPosts/${userID}`,obj, "PUT")
-        let Parr = arg.passengersList.filter(val => { return val != userID });
-        let Pobj = arg
-        Pobj.passengersList = Parr
-        delete Pobj._id
-        delete Pobj.__v
-        console.log(Pobj)
-        const post = await methodAuthData(`posts/${TravelID}`, Pobj, "PUT")
+        try {
+            let arr = thisuser.travels.filter(val => { return val != arg._id });
+            let obj = thisuser
+            let userID = thisuser._id
+            let TravelID = arg._id
+            obj.travels = arr
+            delete obj._id
+            delete obj.__v
+            console.log(obj)
+            console.log(userID)
+            const user = await methodAuthData(`users/updateUserPosts/${userID}`, obj, "PUT")
+            let Parr = arg.passengersList.filter(val => { return val != userID });
+            let Pobj = arg
+            Pobj.passengersList = Parr
+            delete Pobj._id
+            delete Pobj.__v
+            console.log(Pobj)
+            const post = await methodAuthData(`posts/${TravelID}`, Pobj, "PUT")
+            alert("השתתפותך בוטלה בהצלחה!!")
+        }
+        catch (err) {
+            alert(" נסי להתחבר שוב פוסט זה ככל הנראה נמחק!")
+        }
 
 
     }
@@ -56,7 +62,7 @@ const MyTravelsList = () => {
                         <p>תאור פוסט:</p>
                         <p>{item.description}</p>
                         <p>כמות מושבים:{item.seatsCount}</p>
-                        <p>תאריך יציאה:{item.createDate}</p>
+                        <p>תאריך יציאה:{new Date(item.createDate).toLocaleDateString()}</p>
                         <button onClick={() => {
                             cancelJoin(item)
                         }}>ביטול השתתפות</button>

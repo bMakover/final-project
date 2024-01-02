@@ -14,7 +14,7 @@ const Header = () => {
                             <li><Link className='m-3 text-light ' to="/login" > התחברות</Link></li>
                             <li><Link className='m-3  text-light' to="/register"> הרשמה</Link></li>
                             <li><Link className='m-3  text-light' to="/events"> אירועים</Link></li>
-                            <li><Link className='m-3  text-light' to="/myPosts"> אירועים</Link></li>
+                            <li><Link className='m-3  text-light' to="/myPosts"> הפוסטים שלי</Link></li>
                         </ul>
                     </nav>
                 </div>

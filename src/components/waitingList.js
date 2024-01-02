@@ -20,6 +20,7 @@ function UserWaitingList() {
               const postResponse = await methodAuthData(`posts/${postId}`, {}, 'GET');
               return postResponse.data;
             } catch (error) {
+              alert("פג תוקף התחברותך התחברי שוב")
               console.error('Error fetching post:', error);
               return null;
             }
@@ -31,6 +32,7 @@ function UserWaitingList() {
           setWaitingList([]);
         }
       } catch (error) {
+        alert("פג תוקף התחברותך התחברי שוב")
         console.error('Error fetching waiting list:', error);
       }
     };

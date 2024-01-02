@@ -7,6 +7,7 @@ const DeleteMyPost = ({ item }) => {
 
     }, [])
     const deletepost = async () => {
+
         const user = await methodAuthData(`users/myInfo`, {}, 'GET');
         console.log(user)
         user.data.myPosts = user.data.myPosts?.filter(myitem => myitem !== item._id);
@@ -16,14 +17,18 @@ const DeleteMyPost = ({ item }) => {
         let data = await methodAuthData(`users/updateUserPosts/${userId}`, user.data, "PUT")
         const response = await methodAuthData(`posts/${item._id}`, {}, 'DELETE');
         console.log(response)
-
+        if (response.data.deletedCount == 1)
+            alert("הפוסט נמחק בהצלחה!!")
+        else{
+            alert("פג תוקף התחברותך התחברי שוב")
+        }
     }
 
     return (
         <>
             <button onClick={() => {
                 deletepost()
-            }}>sure?</button>
+            }}>האם את בטוחה שברצונך למחוק פוסט זה?</button>
         </>
     )
 }

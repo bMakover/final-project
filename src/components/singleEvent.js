@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { apiService } from '../services/apiService '
 import { useForm } from 'react-hook-form'
 import { validateDate } from './validDate'
+import GoogleMaps from './Demo'
 
 
 const SingleEvent = (props) => {
@@ -11,26 +12,19 @@ const SingleEvent = (props) => {
     const { methodAuthData } = apiService()
     const { register, handleSubmit, formState: { errors }, getValues } = useForm()
     const nameRef = register("name", { required: true, minLength: 2 })
-    const location_cityRef = register("location_city", { required: true, minLength: 2 })
-    const location_streetRef = register("location_street", { minLength: 2 })
-    const location_houseNumberRef = register("location_houseNumber", { minLength: 1 })
     const dateRef = register("date", { required: true, type: Date })
     const descriptionRef = register("description", { minLength: 4, required: true })
     const hourRef = register("hour", { required: true })
-
+    let des = {}
     const onSub = async (databody) => {
         let flag = validateDate(document.querySelector("#dateId").value, document.querySelector("#timeId").value)
         console.log(flag)
-        if (flag == true) {
+        if (flag == true && des.city) {
             const obj = {
                 Name: databody.name,
                 Date: databody.date,
                 hour: databody.hour,
-                location: {
-                    city: databody.location_city,
-                    street: databody.location_street,
-                    houseNumber: databody.location_houseNumber
-                },
+                location: des,
                 description: databody.description,
                 travels: item.travels,
                 dateCreated: item.dateCreated
@@ -39,10 +33,18 @@ const SingleEvent = (props) => {
             const data = await methodAuthData(`events/${item._id}`, obj, "PUT")
 
         }
+        else {
+            alert("הכניסי כתובת שוב")
+        }
     }
     const daleteEvent = async () => {
-        const data = await methodAuthData(`events/${item._id}`, {}, "DELETE")
-        console.log(data)
+        try {
+            const data = await methodAuthData(`events/${item._id}`, {}, "DELETE")
+            console.log(data)
+        }
+        catch (err) {
+            alert("פג תוקף התחברותך התחברי שוב")
+        }
     }
 
     useEffect(() => {
@@ -54,30 +56,58 @@ const SingleEvent = (props) => {
         setDate(formattedDate)
     }, [])
 
+    const handleSourceSelect = (obj) => {
+        const parts = obj?.description.split(', ');
+        console.log(parts)
+        if (parts != undefined) {
+            // המספר בית יהיה המספר הראשון שמופיע בקטע שבו יש מספרים
+            const houseNumber = " "
+            let street = parts[1];
+            let city = parts[0];
+            if (/\d+/.test(city)) {
+                street = parts[0]
+                city = parts[1]
+            }
+            if (street == "ישראל")
+                street = " "
+            const addressObject = {
+                city,
+                street,
+                houseNumber
+            };
+
+            console.log(addressObject);
+            return addressObject
+        }
+    }
+
+
+    const handelDES = (obj) => {
+        des = handleSourceSelect(obj)
+    }
+
     return (
         <>
             <div>
                 <div>
-                    <p>{item.Name}</p>
-                    <p>{item.location.city}</p>
-                    <p>{item.location.street}</p>
-                    <p>{item.location.houseNumber}</p>
-                    <p>{item.Date}</p>
-                    <p>{item.description}</p>
-                    <p>{item.hour}</p>
+                    <p>שם האירוע:{item.Name}</p>
+                    <p>מיקום האירוע: {item.location.city} {item.location.street} {item.location.houseNumber}</p>
+                    <p>תאריך האירוע:{new Date(item.Date).toLocaleDateString()}</p>
+                    <p>שעת האירוע:{item.hour}</p>
+                    <p>פרטים:{item.description}</p>
+
                     <button onClick={() => {
                         setUpdateFlag(!UpdateFlag)
-                    }}>עידכון האירוע</button>{UpdateFlag &&
+                    }}>עידכון האירוע</button>{UpdateFlag && <div>
                         <form onSubmit={handleSubmit(onSub)}>
                             <input {...nameRef} defaultValue={item.Name} type='text' />
-                            <input {...location_cityRef} defaultValue={item.location.city} type='text' />
-                            <input {...location_streetRef} defaultValue={item.location.street} type='text' />
-                            <input  {...location_houseNumberRef} defaultValue={item.location.houseNumber} type='text' />
                             <input {...dateRef} id="dateId" defaultValue={date} type='date' />
                             <input {...hourRef} id="timeId" defaultValue={item.hour} type='time' />
                             <textarea {...descriptionRef} defaultValue={item.description}></textarea>
                             <button>עדכון</button>
                         </form>
+                        <GoogleMaps onInput={handelDES} />
+                    </div>
                     }
                 </div>
                 <button onClick={() => { daleteEvent() }} >מחיקת האירוע</button>

@@ -14,8 +14,8 @@ const SignUp = () => {
   const passwordRef = register("password", { required: true, minLength: 1 })
   const imageRef = register("image", { required: true, minLength: 1 })
   const [check, setCheck] = useState(true)
-  const carDescription_brandRef = register("brand", { minLength: 4, type: Date })
-  const carDescription_colorRef = register("color", { minLength: 4 })
+  const carDescription_brandRef = register("brand", { minLength: 1, type: Date })
+  const carDescription_colorRef = register("color", { minLength: 1 })
   const carDescription_seatsNumberRef = register("seatsNumber", { minLength: 1 })
   let locationObj = {}
   let pickUpLocationOBJ = " "
@@ -63,7 +63,7 @@ const SignUp = () => {
       }
     }
     else{
-      alert( "!!הכנס כתובות שוב  ")
+      alert( "!הכנס כתובות שוב  ")
     }
   }
   const handleSourceSelect = (obj) => {

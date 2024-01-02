@@ -9,7 +9,7 @@ const JoinToTravelEvent = ({ item }) => {
     const nav = useNavigate()
     const { methodAuthData } = apiService()
     let obj
-    let id=item._id
+    let id = item._id
     useEffect(() => {
         if (idPost && item) {
             console.log(item._id)
@@ -17,7 +17,12 @@ const JoinToTravelEvent = ({ item }) => {
             obj = item
             delete obj._id
             delete obj.__v
-            update()
+            try {
+                update()
+            }
+            catch (err) {
+                alert("פג תוקף התחברותך התחברי שוב")
+            }
         }
 
 
@@ -29,13 +34,12 @@ const JoinToTravelEvent = ({ item }) => {
     }
     return (
         <>
-            <p>{item.Name}</p>
-            <p>{item.location.city}</p>
-            <p>{item.location.street}</p>
-            <p>{item.location.houseNumber}</p>
-            <p>{item.Date}</p>
-            <p>{item.description}</p>
-            <p>{item.hour}</p>
+            <p>שם האירוע:{item.Name}</p>
+            <p>כתובת:{item.location.city} {item.location.street} {item.location.houseNumber}</p>
+            <p>תאריך:{new Date(item.Date).toLocaleDateString()}</p>
+            <p>שעה:{item.hour}</p>
+            <p>פרטים:{item.description}</p>
+
             <button onClick={() => {
                 setflag(!flag)
             }}>צור פוסט נסיעה לארוע זה</button>

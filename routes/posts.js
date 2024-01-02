@@ -174,6 +174,19 @@ router.post('/addWait/:userId/:postId', async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
+router.get('/passengersList/:idPassengers', auth, async (req, res) => {
+    try {
+        const idPassengers=req.params.idPassengers
+        const post = await PostsModel.findOne({idDriver:req.tokenData._id,_id:idPassengers}).populate('passengersList');
+        if (!post) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        res.json(post.passengersList);
+    } catch (err) {
+        errorHandler(res, err);
+    }
+})
 //get post by id
 router.get("/:id", auth, async (req, res) => {
     try {

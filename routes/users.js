@@ -21,7 +21,7 @@ router.get("/myInfo", auth, async (req, res) => {
 })
 router.get("/myPosts", auth, async (req, res) => {
     try {
-        const user = await UserModel.findById(req.tokenData._id).populate('myPosts');
+        const user = await UserModel.findOne({_id:req.tokenData._id}).populate('myPosts');
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
         }

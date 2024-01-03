@@ -90,9 +90,9 @@ exports.validUser = (_reqBody) => {
         demands: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         myPosts: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).allow(null),
         carDescription: Joi.object({
-            brand: Joi.string(),
-            color: Joi.string(),
-            seatsNumber: Joi.number()
+            brand: Joi.string().allow(null),
+            color: Joi.string().allow(null),
+            seatsNumber: Joi.number().allow(null)
         }).allow(null),
         pickUpLocation:Joi.string().allow("")
        ,

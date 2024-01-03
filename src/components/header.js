@@ -10,11 +10,11 @@ const Header = () => {
                     </div>
                     <nav className='nav-col-auto  navbar-nav p-0'>
                         <ul className='d-flex '>
-                            <li className='nav-item'><Link className='m-3  text-light' to="/newPost">הוספת פוסט</Link></li>
                             <li><Link className='m-3 text-light ' to="/login" > התחברות</Link></li>
                             <li><Link className='m-3  text-light' to="/register"> הרשמה</Link></li>
                             <li><Link className='m-3  text-light' to="/events"> אירועים</Link></li>
-                            <li><Link className='m-3  text-light' to="/myPosts"> הפוסטים שלי</Link></li>
+                            <li><Link className='m-3  text-light' to="/PersonalArea">אזור אשי</Link></li>
+                            <li className='nav-item'><Link className='m-3  text-light' to="/newPost">יצירת פוסט</Link></li>
                         </ul>
                     </nav>
                 </div>

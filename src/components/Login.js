@@ -42,24 +42,28 @@ const Login = () => {
   };
 
   return (<>
-    <form onSubmit={handleSubmit}>
+    {/* <h2 style={{margin:'auto',color:'red'}}>התחברות</h2> */}
+    <form className=" myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+      <div style={{display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
+      <img src='images/login.jpg' style={{ width: '85%', height: "200px" ,borderRadius:'20px'}} />
       {error}
-      <label>
-        הכנס מייל:
-        <input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
-      </label>
+      <div className="flex m-3 items-center border-b border-black-500 py-2">
+        <label> מייל: </label>
+        <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="email" name="email" value={formData.email} onChange={handleInputChange} required />
 
-      <label>
-        הכנס סיסמא:
-        <input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
-      </label>
+      </div>
+      <div className="flex m-3 items-center border-b border-black-500 py-2">
+        <label> סיסמא: </label>
+        <input type="password" className=" myFiled appearance-none  border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" name="password" value={formData.password} onChange={handleInputChange} required />
 
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" style={{backgroundColor:"#e36eaa"}} type="submit">התחברות</button>
-      
+      </div>
+      <div className="container">
+        <button className="mybtn  m-3 text-white font-bold py-2 px-4 rounded-full" type="submit">התחברות</button>
+        <Link className='m-3 text-light' to="/register">עוד לא רשומה?</Link></div></div>
     </form>
-    <Link className='m-3  text-light' to="/register">עוד לא רשומה?</Link>
-    
-    </>
+
+
+  </>
   );
 };
 

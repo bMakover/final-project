@@ -101,7 +101,7 @@ export default function GoogleMaps({onInput}) {
         includeInputInList
         filterSelectedOptions
         value={value}
-        noOptionsText="No locations"
+        noOptionsText="לא נימצא מיקום"
         onChange={(event, newValue) => {
           setOptions(newValue ? [newValue, ...options] : options);
           setValue(newValue);
@@ -112,7 +112,7 @@ export default function GoogleMaps({onInput}) {
           
         }}
         renderInput={(params) => (
-          <TextField {...params} label="Add a location" fullWidth />
+          <TextField {...params} label="חפש מיקום" fullWidth />
         )}
         renderOption={(props, option) => {
           const matches =

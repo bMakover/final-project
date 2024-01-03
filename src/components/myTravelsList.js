@@ -63,7 +63,7 @@ const MyTravelsList = () => {
                         <p>{item.description}</p>
                         <p>כמות מושבים:{item.seatsCount}</p>
                         <p>תאריך יציאה:{new Date(item.createDate).toLocaleDateString()}</p>
-                        <button onClick={() => {
+                        <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                             cancelJoin(item)
                         }}>ביטול השתתפות</button>
                     </div>

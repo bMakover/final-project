@@ -96,21 +96,21 @@ const SingleEvent = (props) => {
                     <p>שעת האירוע:{item.hour}</p>
                     <p>פרטים:{item.description}</p>
 
-                    <button onClick={() => {
+                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                         setUpdateFlag(!UpdateFlag)
-                    }}>עידכון האירוע</button>{UpdateFlag && <div>
+                    }}><i class="fa fa-pencil" aria-hidden="true"></i></button>{UpdateFlag && <div>
                         <form onSubmit={handleSubmit(onSub)}>
                             <input {...nameRef} defaultValue={item.Name} type='text' />
                             <input {...dateRef} id="dateId" defaultValue={date} type='date' />
                             <input {...hourRef} id="timeId" defaultValue={item.hour} type='time' />
                             <textarea {...descriptionRef} defaultValue={item.description}></textarea>
-                            <button>עדכון</button>
+                            <button className="mybtn text-white font-bold py-2 px-4 rounded-full">עדכון </button>
                         </form>
                         <GoogleMaps onInput={handelDES} />
                     </div>
                     }
                 </div>
-                <button onClick={() => { daleteEvent() }} >מחיקת האירוע</button>
+                <button   className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => { daleteEvent() }} ><i class="fa fa-trash" aria-hidden="true"></i></button>
             </div>
 
         </>

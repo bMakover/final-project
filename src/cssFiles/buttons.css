@@ -1,3 +1,20 @@
+
 button:hover{
-    background-color:"#9e4092"
+    background-color:#9e4092
+}
+.mybtn{
+    background-color:#e36eaa
+}
+.myform{
+  width:400px;
+/* margin:auto; */
+border:2px solid silver;
+min-height:200px;
+flex-shrink: 0;
+
+
+justify-content:center
+}
+.myFiled{
+width:100%
 }

@@ -47,19 +47,19 @@ const MyPosts = () => {
                     <p>כמות מושבים:{item.seatsCount}</p>
                     <p>תאריך יציאה:{(new Date(item.departure.date)).toLocaleDateString()}</p>
                     <p>שעת יציאה: {item.departure.hour}</p>
-                    <button onClick={() => {
+                    <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                         setFlagUpdateMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
                     }}><i className="fa fa-pencil" aria-hidden="true"></i></button> {flagUpdateMap[postId] && <UpdateMyPost item={item} />}
-                    <button onClick={() => {
+                    <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                         setFlagDeleteMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
                     }}><i class="fa fa-trash" aria-hidden="true"></i></button>{flagDeleteMap[postId] && <DeleteMyPost item={item} />}
-                    <button onClick={() => {
+                    <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                         setFlagPassengersMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]

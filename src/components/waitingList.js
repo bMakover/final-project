@@ -47,22 +47,22 @@ function UserWaitingList() {
 
   return (
     <div>
-      <h2>Waiting List</h2>
+      <h2> רשימת המתנה:</h2>
       <ul>
         {waitingList.map((post) => (
           <li key={post._id}>
             <p>
-              Source: {post.source.city}, {post.source.street}, {post.source.houseNumber}
+              כתובת מקור: {post.source.city}, {post.source.street}, {post.source.houseNumber}
               <br />
-              Destination: {post.destination.city}, {post.destination.street}, {post.destination.houseNumber}
+              כתובת יעד: {post.destination.city}, {post.destination.street}, {post.destination.houseNumber}
             </p>
-            <button onClick={() => handleWaitClick(post)}>
+            <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => handleWaitClick(post)}>
               {selectedWait === post ? 'Hide Details' : 'Show Details'}
             </button>
             {selectedWait === post && (
               <div>
-                <p>Description: {post.description}</p>
-                <p>Departure: {new Date(post.departure.date).toLocaleDateString()}, {post.departure.hour}</p>
+                <p>פרטים: {post.description}</p>
+                <p>זמן יציאה: {new Date(post.departure.date).toLocaleDateString()}, {post.departure.hour}</p>
               </div>
             )}
           </li>

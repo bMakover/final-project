@@ -81,7 +81,7 @@ const NewEvent = () => {
                 <label>תאור האירוע</label>
                 <textarea  {...descriptionRef}></textarea>
                 {errors.description && <div>חובה להכניס תאור*</div>}
-                <button>פרסום האירוע</button>
+                <button className="mybtn text-white font-bold py-2 px-4 rounded-full">פרסום האירוע</button>
             </form>
             <GoogleMaps onInput={handelSRC} />
         </>

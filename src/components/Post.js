@@ -13,7 +13,6 @@ const Post = ({ drive, dataType }) => {
       console.log(response,"!!!")
       setUserId(response.data._id);
     } catch (error) {
-      alert("פג תוקף התחברותך התחברי שוב")
       console.error('Error fetching user data:', error);
       // Handle error scenarios here
     }
@@ -45,11 +44,11 @@ const Post = ({ drive, dataType }) => {
 
   return (
     <div>
-      מקור הנסיעה: {drive.source.city}, יעד הנסיעה: {drive.destination.city}, Driver ID: {drive.idDriver}
+      Source: {drive.source.city}, Destination: {drive.destination.city}, Driver ID: {drive.idDriver}
       {dataType === 'travels' ? (
-        <button onClick={() => updateUserArray('join')}>הצטרף לנסיעה זו</button>
+        <button onClick={() => updateUserArray('join')}>Join this drive</button>
       ) : (
-        <button onClick={() => updateUserArray('wait')}>הכנס לרשימת המתנה של נסיעה זו</button>
+        <button onClick={() => updateUserArray('wait')}>Wait for this drive</button>
       )}
     </div>
   );

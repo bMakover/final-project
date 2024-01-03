@@ -1,5 +1,5 @@
 // SignUp.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { apiService } from '../services/apiService ';
 import { useForm } from 'react-hook-form';
 import GoogleMaps from './Demo';
@@ -22,13 +22,10 @@ const SignUp = () => {
   let defaultDestinationObj = {}
 
 
+
   const onSub = async (databody) => {
-    if (check == false) {
-      databody.carDescription.color = null
-      databody.carDescription.brand = null
-      databody.carDescription.seatsNumber = null
-    }
-    if (defaultDestinationObj != {} && locationObj != {} && pickUpLocationOBJ != " ") {
+
+    if (defaultDestinationObj.city  && locationObj.city  && pickUpLocationOBJ != " ") {
       let obj = {
         fullName: databody.fullName,
         email: databody.email,
@@ -41,9 +38,9 @@ const SignUp = () => {
         waits: [],
         demands: [],
         carDescription: {
-          brand: databody.brand,
-          color: databody.color,
-          seatsNumber: Number(databody.seatsNumber)
+          brand: databody.brand||null,
+          color: databody.color||null,
+          seatsNumber: Number(databody.seatsNumber)||null
         },
         pickUpLocation: pickUpLocationOBJ
         ,
@@ -58,12 +55,14 @@ const SignUp = () => {
         await postData("users", obj);
         // Assuming 'users' is the endpoint you want to hit
         console.log('User registered successfully');
+        alert("נרשמת בהצלחה!!")
       } catch (error) {
         console.error('Error registering user:', error);
+        alert("רשומה כבר התחברי!")
       }
     }
-    else{
-      alert( "!הכנס כתובות שוב  ")
+    else {
+      alert("!הכנס כתובות שוב  ")
     }
   }
   const handleSourceSelect = (obj) => {
@@ -92,7 +91,6 @@ const SignUp = () => {
   }
 
   const handelSRC = (obj) => {
-
     locationObj = handleSourceSelect(obj)
     console.log(locationObj)
   }
@@ -104,67 +102,80 @@ const SignUp = () => {
     pickUpLocationOBJ = obj.description
     console.log(pickUpLocationOBJ)
   }
-  return (<>
-    <form onSubmit={handleSubmit(onSub)}>
-      <label>
-        שם מלא:
-        <input type="text" {...fullNameRef} />
-      </label>
-
-      <label>
-        אימייל:
-        <input type="email" {...emailRef} />
-      </label>
-
-      <label>
-        טלפון:
-        <input type="tel" {...phoneRef} />
-      </label>
-
-      <label>
-        סיסמא:
-        <input type="password" {...passwordRef} />
-      </label>
-
-      <label>
-        תמונת פרופיל:
-        <input type="text" {...imageRef} />
-      </label>
-
-      <label>
-        האם אתה נהג?
-        <input type="checkbox" defaultChecked={true} onChange={() => { setCheck(!check) }} />
-      </label>
-
-      {
-        check &&
-        <div>
-          <label>
-            סוג הרכב:
-            <input type="text" name="brand" {...carDescription_brandRef} />
-          </label>
-
-          <label>
-            צבע רכב:
-            <input type="text" {...carDescription_colorRef} />
-          </label>
-
-          <label>
-            כמות מושבים:
-            <input type="number" {...carDescription_seatsNumberRef} />
-          </label>
+  return (<div className="col-md-12 mt-4" style={{display:'flex',flexWrap:'wrap',justifyContent:'space-around'}}>
+     
+    <form className="col-md-3 myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSub)}> <h2>פרטים אישיים:</h2>
+      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-user" aria-hidden="true"></i>
+          <label className='m-2'>
+          </label>    שם מלא:
+          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" name="fullname" type="text" {...fullNameRef} />
         </div>
-      }
+        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-envelope-o" aria-hidden="true"></i>
+          <label className='m-2'>
+            אימייל: </label>
+          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" name="email" type="email" {...emailRef} />
+        </div>
+        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-phone-square" aria-hidden="true"></i>
+          <label className='m-2'>
+            טלפון:  </label>
+          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="tel" {...phoneRef} />
 
-      <button>הרשמה</button>
+        </div>
+        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+          <label className='m-2'>
+            סיסמא:</label>
+          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="password" {...passwordRef} />
+
+        </div > 
+        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-picture-o" aria-hidden="true"></i>
+          <label className='m-2'>
+            תמונת פרופיל:</label>
+          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" {...imageRef} />
+
+        </div>
+        <label>
+          האם אתה נהג?
+          {check?<i class="fa fa-toggle-on" aria-hidden="true" onClick={()=>{setCheck(false)}}></i>:<i class="fa fa-toggle-off" aria-hidden="true"  onClick={()=>{setCheck(true)}}></i>}
+          {/* <input type="checkbox" defaultChecked={true} onChange={() => {  }} /> */}
+        </label>
+        {
+          check &&
+          <div>
+            <div className="flex m-3 items-center border-b border-black-500 py-2"> <i class="fa fa-car" aria-hidden="true"></i>
+              <label className='m-2'>
+              סוג הרכב:</label>
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" name="brand" {...carDescription_brandRef} />
+
+            </div>
+            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-paint-brush" aria-hidden="true"></i>
+              <label className='m-2'>
+                צבע רכב: </label>
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" {...carDescription_colorRef} />
+
+            </div>
+            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-users" aria-hidden="true"></i>
+              <label className='m-2'>
+                כמות מושבים:</label>
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="number" {...carDescription_seatsNumberRef} />
+            </div>
+          </div>
+        }
+
+        <button className="mybtn text-white font-bold py-2 px-4 rounded-full m-3">הרשמה</button></div>
     </form>
+
+    <div style={{height:'400px'}} className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4">    <h2>כתובות:</h2>
+      <p className="text-danger">מלאי כתובות אלו לפני לחיצה על ההרשמה!</p>
+      <br></br>
+      <br></br>
     <label>מיקום</label>
     <GoogleMaps id="1" onInput={handelSRC} />
     <label>מיקום ברירת מחדל לפוסטים</label>
     <GoogleMaps id="2" onInput={handelDefDes} />
     <label>נקודת מפגש</label>
-    <GoogleMaps id="3" onInput={handelPickUp} />
-  </>
+    <GoogleMaps id="3" onInput={handelPickUp} /></div>
+  </div>
   );
 };
 

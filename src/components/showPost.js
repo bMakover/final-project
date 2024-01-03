@@ -27,7 +27,7 @@ const ShowPost = (props) => {
     return (
 
         <><div>
-            <button onClick={() => { setflag(!flag) }}>צפייה בפוסט</button></div>
+            <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => { setflag(!flag) }}>צפייה בפוסט</button></div>
             {flag &&
                 <div class="container">
                     <div class="row">

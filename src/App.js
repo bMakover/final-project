@@ -16,6 +16,7 @@ import MyPosts from './components/myPosts';
 import UpdateMyPost from './components/updateMyPost';
 import MyTravelsList from './components/myTravelsList';
 import "./cssFiles/buttons.css"
+import PersonalArea from './components/PersonalArea';
 
 function App() {
   return (
@@ -32,14 +33,15 @@ function App() {
           <Route path="/drives" element={<AvailableDrives />} />
           <Route path="/myPosts" element={<MyPosts />} />
           <Route path="/updateMyPost" element={<UpdateMyPost />} />
-          <Route path="/travelslist" element={<MyTravelsList />} /> 
-          <Route path="/home" element={<HomePage />} /> 
-               <Route path="/admin" element={<AdminFeature />} />
+          <Route path="/travelslist" element={<MyTravelsList />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/events" element={<AdminFeature />} />
+          <Route path="/PersonalArea" element={<PersonalArea />} />
           <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
         </Routes>
       </BrowserRouter>
       {/* <Exmple/> */}
-      </>
+    </>
 
 
   );

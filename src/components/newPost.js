@@ -95,28 +95,36 @@ const NewPost = ({ SetidEvent }) => {
         let data = await methodAuthData(`users/updateUserPosts/${userid}`, user, "PUT")
         console.log(data)
     }
-    return (<>
-        <form onSubmit={handleSubmit(onSub)}>
-            <label>מקור הנסיעה:</label>
+    return (<div className="container" style={{ display: 'flex' ,justifyContent:'center'}}>
+        <img src='images/carPost.jpg' style={{ width: '700px',marginBottom:'20px' }} />
+<div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', height: '300px' }} className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" >
+            <div className='m-0 p-0 ' >
+                <label>מקור הנסיעה:</label>
+                <GoogleMaps onInput={handelSRC} />
+            </div>
+            <div className='m-0 p-0'>
+                <label>יעד הנסיעה:</label>
+                <GoogleMaps onInput={handelDES} />  </div></div>
+        <form className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSub)}>
+
             <label>זמן יציאה:</label>
             <label>תאריך</label>
-            <input id="dateInput"  {...departure_dateRef} type='date' />
+            <input class="form-control w-200" id="dateInput"  {...departure_dateRef} type='date' />
             {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
             <label >שעה:</label>
-            <input id="timeInput"  {...departure_hourRef} type='time' />
+            <input class="form-control" id="timeInput"  {...departure_hourRef} type='time' />
             {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
             <label>כמות מקומות ישיבה</label>
-            <input  {...seatSCountRef} type='number' />
+            <input class="form-control"  {...seatSCountRef} type='number' />
             {errors.seatSCount && <div>חובה להכניס כמות מושבים*</div>}
             <label>תאור הפוסט</label>
-            <textarea  {...descriptionRef}></textarea>
+            <textarea class="form-control"  {...descriptionRef}></textarea>
             {errors.description && <div>חובה להכניס תאור*</div>}
-            <button>פרסום הפוסט</button>
+            <button className="mybtn text-white font-bold py-2 px-4 rounded-full">פרסום הפוסט</button>
         </form>
-
-        <GoogleMaps onInput={handelSRC} />
-        <GoogleMaps onInput={handelDES} />
-    </>
+        </div>
+    </div>
     )
 }
 

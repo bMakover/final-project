@@ -102,7 +102,7 @@ const UpdateMyPost = ({ item }) => {
             <label>תאור הפוסט</label>
             <textarea defaultValue={item.description}  {...descriptionRef}></textarea>
             {errors.description && <div>חובה להכניס תאור*</div>}
-            <button>עידכון הפוסט</button>
+            <button  className="mybtn text-white font-bold py-2 px-4 rounded-full">עידכון הפוסט</button>
         </form>
         <GoogleMaps onInput={handelSRC} />
         <GoogleMaps onInput={handelDES} />

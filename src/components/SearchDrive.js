@@ -1,19 +1,76 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/apiService ';
-
+import Demo from './Demo'
 const SearchDrive = () => {
   const navigate = useNavigate();
-  const { getData } = apiService();
+  const { getData,methodAuthData } = apiService();
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [noDrivesFound, setNoDrivesFound] = useState(false);
   const [catchedDrivesFound, setCatchedDrivesFound] = useState(false);
   const [undisplayedDrives, setUndisplayedDrives] = useState([]);
+  const [userId, setUserId] = useState('');
+  const [showSelectDate, setShowSelectDate] = useState(false)
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('')
 
+
+
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
+  };
+  
+  const handleTimeChange = (event) => {
+    setSelectedTime(event.target.value);
+  };
+  const handleSourceSelect = (value) => {
+    if (value && value.description) {
+      const descriptionArray = value.description.split(',');
+      const city = descriptionArray[descriptionArray.length-2]?.trim(); // Extract the city name
+      if (city) {
+        setSource(city);
+      }
+    }
+  };
+  
+  const handleDestinationSelect = (value) => {
+    if (value && value.description) {
+      const descriptionArray = value.description.split(',');
+      const city = descriptionArray[descriptionArray.length-2]?.trim(); // Extract the city name
+      if (city) {
+        setDestination(city);
+      }
+    }
+  };
+  const saveDemand = async () => {
+    try {
+      
+      const response = await methodAuthData('users/myInfo', {}, 'GET');
+      console.log(response, "!!!")
+      setUserId(response.data._id);
+      const obj = {
+        idUser: response.data._id,
+        source: {
+          city: source,
+        },
+        destination: {
+          city: destination,
+        },
+        limitDate: selectedDate, // Use the selected date here
+      };
+  
+      const data = await methodAuthData(`demands/`, obj, "POST");
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error scenarios here
+    }
+  };
+  
   const findDrives = async () => {
     try {
       const response = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=true`);
+      console.log(destination,"ללל")
       console.log(response);
       if (response && response.data && response.data.length > 0) {
         const drivesData = response.data;
@@ -36,15 +93,30 @@ const SearchDrive = () => {
 
   return (
     <>
-      <input placeholder='from where?' onChange={(e) => setSource(e.target.value)} />
-      <input placeholder='to where?' onChange={(e) => setDestination(e.target.value)} />
-      <button onClick={findDrives}>חפשי נסיעות פנויות</button>
-      {noDrivesFound && <p>אין נסיעות פנויות</p>}
+      {/* Render the GoogleMaps component for source */}
+      <Demo onInput={handleSourceSelect}/>
+      {/* Render the GoogleMaps component for destination */}
+      <Demo onInput={handleDestinationSelect} />
+      <button onClick={findDrives}>Search Available Drives</button>
+      {noDrivesFound &&<><p>No drives found</p>
       {catchedDrivesFound && (
         <button onClick={() => navigate('/drives', { state: { undisplayedDrives, dataType: 'waits' } })}>
-         יש נסיעה קרובה אך מלאה עלייך להיכנס לרשימת המתנה מעוניינת?
+          There are closed drives. Want to enter the waiting list?
         </button>
       )}
+   <button onClick={() => setShowSelectDate(true)}>
+  רוצה לשמור בקשה
+</button>
+   {showSelectDate &&<> <label htmlFor="datePicker">Select Date:</label>
+    <input type="date" id="datePicker" value={selectedDate} onChange={handleDateChange} />
+
+    <label htmlFor="timePicker">Select Time:</label>
+    <input type="time" id="timePicker" value={selectedTime} onChange={handleTimeChange} /></>}
+    <button onClick={saveDemand}>
+שלח לי כשיהיה
+        </button>
+      </> }
+      
     </>
   );
 };

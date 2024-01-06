@@ -33,38 +33,44 @@ const MyPosts = () => {
 
 
     return (
-        <>
+        <div className='container d-flex d-flex-wrap align-items-start'>
             {myPosts?.map((item) => {
                 const postId = item._id;
-                return (<div key={postId}>
-
-                    <p>מיקום מקור נסיעה:</p>
-                    <p>כתובת:{item.source.city}  {item.source.street}   {item.source.houseNumber}</p>
-                    <p>מיקום יעד נסיעה:</p>
-                    <p>כתובת:{item.destination.city}  {item.destination.street}  {item.destination.houseNumber}</p>
-                    <p>תאור פוסט:</p>
+                return (<div className='border m-2 w-80' key={postId}>
+                    <h2>הפוסט שלי</h2>
+                    <p><strong>מיקום מקור נסיעה:</strong></p>
+                    <p>{item.source.city}  {item.source.street}   {item.source.houseNumber}</p>
+                    <p><strong>מיקום יעד נסיעה:</strong></p>
+                    <p>{item.destination.city}  {item.destination.street}  {item.destination.houseNumber}</p>
+                    <p><strong>תאור פוסט:</strong></p>
                     <p>{item.description}</p>
-                    <p>כמות מושבים:{item.seatsCount}</p>
-                    <p>תאריך יציאה:{(new Date(item.departure.date)).toLocaleDateString()}</p>
-                    <p>שעת יציאה: {item.departure.hour}</p>
-                    <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                    <p><strong>כמות מושבים:{item.seatsCount}</strong></p>
+                    <p><strong>תאריך יציאה:</strong></p>
+                    <p>{(new Date(item.departure.date)).toLocaleDateString()}</p>
+                    <p><strong>שעת יציאה:</strong></p>
+                    <p> {item.departure.hour}</p>
+                    <img src='images/littelcar.png' style={{ width: "200px", height: "100px" }} />
+                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                         setFlagUpdateMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
-                    }}><i className="fa fa-pencil" aria-hidden="true"></i></button> {flagUpdateMap[postId] && <UpdateMyPost item={item} />}
-                    <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                    }}><i className="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                         setFlagDeleteMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
-                    }}><i class="fa fa-trash" aria-hidden="true"></i></button>{flagDeleteMap[postId] && <DeleteMyPost item={item} />}
-                    <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                    }}><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                         setFlagPassengersMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
-                    }}> <i class="fa fa-list" aria-hidden="true"></i>  רשימת הנוסעים  </button>{flagPassengersMap[postId] && <PassengersList itemId={item._id} />}
+                    }}> <i class="fa fa-list" aria-hidden="true"></i>  רשימת הנוסעים  </button>
+                    {flagUpdateMap[postId] && <UpdateMyPost item={item} />}
+                    {flagDeleteMap[postId] && <DeleteMyPost item={item} />}
+                    {flagPassengersMap[postId] && <PassengersList itemId={item._id} />}
                 </div>
 
                 )
@@ -72,7 +78,7 @@ const MyPosts = () => {
 
 
 
-        </>
+        </div>
     )
 }
 

@@ -43,7 +43,7 @@ const Login = () => {
 
   return (<>
     {/* <h2 style={{margin:'auto',color:'red'}}>התחברות</h2> */}
-    <form className=" myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+    <form className="container mt-2 myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
       <div style={{display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
       <img src='images/login.jpg' style={{ width: '85%', height: "200px" ,borderRadius:'20px'}} />
       {error}

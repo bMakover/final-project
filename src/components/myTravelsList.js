@@ -7,11 +7,16 @@ const MyTravelsList = () => {
     const [thisuser, setthisuser] = useState()
     useEffect(() => {
         const getMyTravels = async () => {
-            const user = await methodAuthData("users/myInfo", {}, "GET")
-            setthisuser(user.data)
-            const data = await getData(`users/${user.data._id}/travels`)
-            console.log(data.data)
-            setMyTravels(data.data)
+            try {
+                const user = await methodAuthData("users/myInfo", {}, "GET")
+                setthisuser(user.data)
+                const data = await getData(`users/${user.data._id}/travels`)
+                console.log(data.data)
+                setMyTravels(data.data)
+            }
+            catch (err) {
+                alert("פג תוקף התחברותך התחברי שוב")
+            }
 
         }
         getMyTravels()
@@ -47,29 +52,27 @@ const MyTravelsList = () => {
 
     }
     return (
-        <>
+        <div className='container d-flex d-flex-wrap align-items-start'>
             {mytravels?.map(item => {
                 return (
-                    <div key={item._id}>
-                        <p>מיקום מקור נסיעה:</p>
-                        <p>עיר:{item.source.city}</p>
-                        {item.source.street && <p>רחוב:{item.source.street}</p>}
-                        {item.source.houseNumber && <p>מספר בית:{item.source.houseNumber}</p>}
-                        <p>מיקום יעד נסיעה:</p>
-                        <p>עיר:{item.destination.city}</p>
-                        {item.destination.street && <p>רחוב:{item.destination.street}</p>}
-                        {item.destination.houseNumber && <p> מספר בית:{item.destination.houseNumber}</p>}
-                        <p>תאור פוסט:</p>
+                    <div className='border m-2 w-80' key={item._id}>
+                        <p><strong>מיקום מקור נסיעה:</strong></p>
+                        <p>{item.source.city} {item.source.street} {item.source.houseNumber}</p>
+                        <p><strong>יעד נסיעה:</strong> </p>
+                        <p>{item.destination.city} {item.destination.street} {item.destination.houseNumber}</p>
+                        <p><strong>פרטי פוסט:</strong></p>
                         <p>{item.description}</p>
-                        <p>כמות מושבים:{item.seatsCount}</p>
-                        <p>תאריך יציאה:{new Date(item.createDate).toLocaleDateString()}</p>
-                        <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                        <p><strong>כמות מושבים:</strong></p>
+                        <p>{item.seatsCount}</p>
+                        <p><strong>תאריך יציאה:</strong></p>
+                        <p>{new Date(item.createDate).toLocaleDateString()}</p>
+                        <button className="mybtn text-white font-bold py-2 px-4 rounded-full m-2" onClick={() => {
                             cancelJoin(item)
                         }}>ביטול השתתפות</button>
                     </div>
                 )
             })}
-        </>
+        </div>
     )
 }
 

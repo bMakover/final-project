@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Header = () => {
     return (
-        <><header style={{ width: "1100px" }} className="container-fluid  navbar navbar-expand bg-dark ">
+        <><header className="container-fluid  navbar navbar-expand bg-dark ">
             <div className="container" style={{ width: "100%" }}>
                 <div className="row align-items-center">
                     <div className='col-auto'>
@@ -13,7 +13,7 @@ const Header = () => {
                             <li><Link className='m-3 text-light ' to="/login" > התחברות</Link></li>
                             <li><Link className='m-3  text-light' to="/register"> הרשמה</Link></li>
                             <li><Link className='m-3  text-light' to="/events"> אירועים</Link></li>
-                            <li><Link className='m-3  text-light' to="/PersonalArea">אזור אשי</Link></li>
+                            <li><Link className='m-3  text-light' to="/PersonalArea">אזור אישי</Link></li>
                             <li className='nav-item'><Link className='m-3  text-light' to="/newPost">יצירת פוסט</Link></li>
                         </ul>
                     </nav>

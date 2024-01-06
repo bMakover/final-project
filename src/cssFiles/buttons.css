@@ -11,10 +11,30 @@ button:hover{
 border:2px solid silver;
 min-height:200px;
 flex-shrink: 0;
-
-
 justify-content:center
 }
 .myFiled{
 width:100%
 }
+.myHorizentalForm{
+  width:50%;
+  border:2px solid silver;
+}
+.myPostButton{
+  background-size: cover;
+  background-repeat:no-reapet;
+  border:2px solid silver;
+  border-radius:20px;
+  margin:10px;
+}
+.mypost{
+  background-color:silver
+}
+.myMenu{
+  border-radius: 20px 0px 0 20px 
+
+  
+}
+
+
+

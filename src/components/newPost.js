@@ -96,7 +96,7 @@ const NewPost = ({ SetidEvent }) => {
         console.log(data)
     }
     return (<div className="container" style={{ display: 'flex' ,justifyContent:'center'}}>
-        <img src='images/carPost.jpg' style={{ width: '700px',marginBottom:'20px' }} />
+        <img src='images/carPost.jpg' className=' d-lg-block d-sm-none' style={{ width: '700px',marginBottom:'20px' }} />
 <div>
         <div style={{ display: 'flex', flexWrap: 'wrap', height: '300px' }} className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" >
             <div className='m-0 p-0 ' >

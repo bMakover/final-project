@@ -20,6 +20,7 @@ const MyDemandsList = () => {
       setMyDemands(filteredDemands);
     } catch (error) {
       console.error('Error fetching demands:', error);
+      alert("פג תוקף התחברותך התחברי שוב")
     }
   };
 
@@ -33,21 +34,22 @@ const MyDemandsList = () => {
         fetchMyDemands();
       } catch (error) {
         console.error('Error deleting demand:', error);
+        alert("פג תוקף התחברותך התחברי שוב")
       }
     }
   };
 
   return (
-    <div>
+    <div className='container d-flex d-flex-wrap align-items-start'>
       <h2>רשימת הבקשות שלי:</h2>
       <ul>
         {myDemands.map((demand) => (
-          <li key={demand._id}>
+          <li className='border m-2 w-80' key={demand._id}>
             <strong>כתובת מקור :</strong> {demand.source.city}, {demand.source.street}, {demand.source.houseNumber}<br />
             <strong>כתובת יעד:</strong> {demand.destination.city}, {demand.destination.street}, {demand.destination.houseNumber}<br />
             <strong>תאריך אחרון למימוש הבקשה :</strong> {new Date(demand.limitDate).toLocaleDateString()}<br />
             {/* Add other demand details as needed */}
-            <button onClick={() => handleDeleteDemand(demand._id)}>מחק בקשה זו</button>
+            <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => handleDeleteDemand(demand._id)}> מחק בקשה זו <i className="fa fa-trash" aria-hidden="true"></i></button>
           </li>
         ))}
       </ul>

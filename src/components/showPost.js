@@ -26,35 +26,54 @@ const ShowPost = (props) => {
 
     return (
 
-        <><div>
-            <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => { setflag(!flag) }}>צפייה בפוסט</button></div>
+        <div  className='  col-md-4 col-sm-12 col-lg-4 col-xl-4 p-0 m-0' >
+            <button className='myPostButton ' data-toggle="modal" data-target="#myModal" style={{  backgroundImage: 'url("images/road.jpg")',height: "220px",minWidth:"280px", color: 'white',color: 'white', backgroundColor: 'rgba(255, 0, 0, 1)'}} onClick={() => { setflag(!flag) }}>
+                <strong>
+                    הפוסט של:</strong>
+                {driverDetails?.fullName}<br></br>
+                <strong>
+                    מקור:</strong>{item.source.city}<br></br>
+                <strong>
+                    יעד:</strong>{item.destination.city}<br></br>
+                <strong>
+                    צפייה בפוסט &gt;&gt;</strong>
+            </button>
             {flag &&
-                <div class="container">
-                    <div class="row">
-                        <div>
-                            <p>שם הנהגת: {driverDetails?.fullName}</p>
-                            <p>פרטי יצירת קשר:</p>
-                            <p> אימייל:{driverDetails?.email}</p>
-                            <p> טלפון:{driverDetails?.phone}</p>
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal fade" id='myModal' role="dialog">
+                    <div className="modal-dialog">
+                        <div className="row modal-content mypost" style={{ borderRadius: "20px" }}>
+                            <div className="modal-header"> <h4 className="modal-title" style={{ direction: 'rtl' }}>פרטי הפוסט</h4>
+                                <button type="button" className="close" data-dismiss="modal" onClick={() => { setflag(false) }}>&times;</button>
 
+                            </div>
+                            <div>
+                                <strong>שם הנהגת: </strong> 
+                                <p> {driverDetails?.fullName}</p>  
+                                <strong>פרטי יצירת קשר:</strong><br></br>
+                                <strong> אימייל:</strong>
+                                <p>{driverDetails?.email}</p>
+                                <strong> טלפון:</strong>
+                                <p>{driverDetails?.phone}</p>
+
+                            </div>
+                            <div >
+                            <strong>כתובת מקור נסיעה:</strong>
+                            <p>{item.source.city} {item.source.street} {item.source.houseNumber}</p>
+                            <strong>כתובת יעד נסיעה:</strong>
+                            <p>{item.destination.city} {item.destination.street} {item.destination.houseNumber}</p>
+                            <strong>תאור פוסט:</strong>
+                            <p>{item.description}</p>
+                            <strong>כמות מושבים:</strong>
+                            <p>  {item.seatsCount}</p>
+                            <strong>תאריך יציאה:</strong>
+                            <div style={{ width:'100%',display:'flex',justifyContent:'space-between',margin:"0px",padding:"0px"}}>
+                            <p>{new Date(item.departure.date).toLocaleDateString()}  {item.departure.hour}</p>
+                            <img src='images/littelcar.png' style={{width:"200px",height:"100px"}}/>
+                            </div>
+                            </div>
                         </div>
-                        <p>מיקום מקור נסיעה:</p>
-                        <p>עיר:{item.source.city}</p>
-                        {item.source.street && <p>רחוב:{item.source.street}</p>}
-                        {item.source.houseNumber && <p>מספר בית:{item.source.houseNumber}</p>}
-                        <p>מיקום יעד נסיעה:</p>
-                        <p>עיר:{item.destination.city}</p>
-                        {item.destination.street && <p>רחוב:{item.destination.street}</p>}
-                        {item.destination.houseNumber && <p> מספר בית:{item.destination.houseNumber}</p>}
-                        <p>תאור פוסט:</p>
-                        <p>{item.description}</p>
-                        <p>כמות מושבים:{item.seatsCount}</p>
-                        <p>תאריך יציאה:{new Date(item.createDate).toLocaleDateString()}</p>
-
-                        <p>---------------------------------------------</p>
-                    </div>
-                </div>}
-        </>
+                    </div></div>}
+        </div>
     )
 }
 

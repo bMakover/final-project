@@ -1,30 +1,36 @@
-import React from 'react'
-import GoogleMaps from './Demo'
+import React, { useEffect, useRef } from 'react'
 
 const Exmple = () => {
+  
 
-    const handleSourceSelect = (obj) => {
-        const parts = obj?.description.split(', ');
-        if (parts != undefined) {
-            // המספר בית יהיה המספר הראשון שמופיע בקטע שבו יש מספרים
-            const houseNumber = parts?.find(part => /\d+/.test(part));
-            const street = parts[1];
-            const city = parts[2];
+  return (
 
-            const addressObject = {
-                city,
-                street,
-                houseNumber
-            };
+<>
 
-            console.log(addressObject);
-        }
-    }
-    return (
-        <>
 
-            <GoogleMaps onInput={handleSourceSelect} /></>
-    )
+<button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+
+<div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal fade" id='myModal'  role="dialog">
+  <div className="modal-dialog">
+
+    <div className="modal-content">
+      <div className="modal-header">
+        <button type="button" className="close" data-dismiss="modal">&times;</button>
+        <h4 className="modal-title">Modal Header</h4>
+      </div>
+      <div className="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+    </>
+  )
 }
 
 export default Exmple

@@ -9,24 +9,24 @@ const HomePage = () => {
     const nav = useNavigate()
     useEffect(() => {
         const getAllPosts = async () => {
-            const data = await getData("posts/getAllDisplay","/","/")
+            const data = await getData("posts/getAllDisplay", "/", "/")
             setAllPosts(data.data)
         }
         getAllPosts()
     }, [])
     return (
-        <>
-            {
+        <div className='container'>
+            <div className='d-flex container  flex-wrap justify-content-center  ' >  {
                 allPosts?.map(item => {
                     return (
-                        <>
-                            <ShowPost key={item._id} item={item} />
 
-                        </>
+                        <ShowPost key={item._id} item={item} />
+
+
                     )
                 })
-            }
-        </>
+            }       </div>
+        </div>
     )
 }
 

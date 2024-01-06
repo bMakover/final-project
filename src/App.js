@@ -37,6 +37,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/events" element={<AdminFeature />} />
           <Route path="/PersonalArea" element={<PersonalArea />} />
+          <Route path="/ex" element={<Exmple />} />
           <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
         </Routes>
       </BrowserRouter>

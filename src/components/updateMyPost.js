@@ -86,27 +86,29 @@ const UpdateMyPost = ({ item }) => {
     }
 
 
-    return (<>
-        <form onSubmit={handleSubmit(onSub)}>
-            <label>מקור הנסיעה:</label>
-            <label>זמן יציאה:</label>
-            <label>תאריך</label>
-            <input id="dateInput" defaultValue={date}  {...departure_dateRef} type='date' />
-            {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
-            <label >שעה:</label>
-            <input id="timeInput" defaultValue={item.departure.hour} {...departure_hourRef} type='time' />
-            {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
-            <label>כמות מקומות ישיבה</label>
-            <input defaultValue={item.seatsCount} {...seatSCountRef} type='number' />
-            {errors.seatSCount && <div>חובה להכניס כמות מושבים*</div>}
-            <label>תאור הפוסט</label>
-            <textarea defaultValue={item.description}  {...descriptionRef}></textarea>
-            {errors.description && <div>חובה להכניס תאור*</div>}
-            <button  className="mybtn text-white font-bold py-2 px-4 rounded-full">עידכון הפוסט</button>
-        </form>
+    return (<div className=' '>
+         <label className='block' ><strong>מקור הנסיעה:</strong></label>
         <GoogleMaps onInput={handelSRC} />
+        <label className='block'><strong>יעד הנסיעה:</strong></label>
         <GoogleMaps onInput={handelDES} />
-    </>
+        <form onSubmit={handleSubmit(onSub)}>
+            <label className='block'><strong>זמן יציאה:</strong></label>
+            <label className='block'><strong>תאריך</strong></label>
+            <input className='  appearance-none border-none w-50 text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none' id="dateInput" defaultValue={date}  {...departure_dateRef} type='date' />
+            {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
+            <label className='block'><strong>שעה : </strong></label>
+            <input  className='  appearance-none border-none w-50 text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none' id="timeInput" defaultValue={item.departure.hour} {...departure_hourRef} type='time' />
+            {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
+            <label className='block'><strong>כמות מקומות ישיבה</strong></label>
+            <input className='  appearance-none border-none w-50  text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none' defaultValue={item.seatsCount} {...seatSCountRef} type='number' />
+            {errors.seatSCount && <div>חובה להכניס כמות מושבים*</div>}
+            <label className='block'><strong>תאור הפוסט</strong></label>
+            <textarea className='  appearance-none border-none w-50  text-gray-700 mr-3 py-1  px-2 leading-tight ' defaultValue={item.description}  {...descriptionRef}></textarea>
+            {errors.description && <div>חובה להכניס תאור*</div>}
+            <button  className=" d-block mybtn text-white font-bold py-2 px-4 rounded-full m-2">עידכון הפוסט</button>
+        </form>
+   
+    </div>
     )
 }
 

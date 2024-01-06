@@ -13,15 +13,19 @@ const ShowEvents = () => {
     useEffect(() => {
 
         const getAllEvents = async () => {
-            const user = await methodAuthData("users/myInfo", {}, "GET")
-            setThisUser(user.data)
-            const data = await getData("events/getAllEvents")
-            setAllEvents(data.data)
+            try {
+                const user = await methodAuthData("users/myInfo", {}, "GET")
+                setThisUser(user.data)
+                const data = await getData("events/getAllEvents")
+                setAllEvents(data.data)
+                { }
+            }
+            catch (err) {
+                alert("פג תוקף התחברותך התחברי שוב")
+            }
         }
-        try { getAllEvents() }
-        catch (err) {
-            alert("פג תוקף התחברותך התחברי שוב")
-        }
+        getAllEvents()
+
     }, [])
     const setData = (data) => {
         setAllEvents(data)
@@ -37,9 +41,9 @@ const ShowEvents = () => {
             ))}  <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                 setNewEventFlag(!newEventFlag)
             }}>הוספת אירוע  <i class="fa fa-plus" aria-hidden="true"></i></button>
-            {newEventFlag && <NewEvent />}</>: allEvents?.map((item, i) => (
-                <JoinToTravelEvent item={item} key={item._id} />
-            ))}
+                {newEventFlag && <NewEvent />}</> : allEvents?.map((item, i) => (
+                    <JoinToTravelEvent item={item} key={item._id} />
+                ))}
 
         </>
     )

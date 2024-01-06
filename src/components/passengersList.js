@@ -15,12 +15,17 @@ const PassengersList = ({ itemId }) => {
     return (
         <>
             {myPassengers?.map(item => {
-                return (<div  key={item._id}style={{border:"solid black 2px"}}>
-                    <p>שם הנוסעת:{item.fullName}</p>
-                    <p>פרטים ליצירת קשר</p>
-                    <p>  טלפון:   {item.phone}</p>
-                    <p>אימייל:{item.email}</p>
-                </div>)
+                return (<table className='table' key={item._id}>
+                    <tr>
+                    <th  className='p-1'>שם הנוסעת: </th>
+                    <th  className='p-1'>טלפון:   </th>
+                    <th  className='p-1'>אימייל: </th></tr>
+                    <tr >
+                        <td>{item.fullName}</td>
+                        <td>{item.phone}</td>
+                        <td>{item.email}</td>
+                    </tr>
+                </table>)
             })}
         </>
     )

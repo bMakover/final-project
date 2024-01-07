@@ -15,18 +15,18 @@ import TypingEffect from './TypingEffect';
 
 const steps = [
   {
-    label: 'From where do you want?',
+    label: 'מאיפה את רוצה לצאת?',
     input: 'source', // Tag to identify the input type
   },
   {
-    label: 'To where do you want?',
+    label: 'לאן את רוצה להגיע?',
     input: 'destination', // Tag to identify the input type
   },
 ];
 
 const SearchDrive = () => {
   const navigate = useNavigate();
-  const { getData,methodAuthData } = apiService();
+  const { getData, methodAuthData } = apiService();
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [noDrivesFound, setNoDrivesFound] = useState(false);
@@ -41,7 +41,7 @@ const SearchDrive = () => {
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
-  
+
   const handleTimeChange = (event) => {
     setSelectedTime(event.target.value);
   };
@@ -66,42 +66,42 @@ const SearchDrive = () => {
 
   const handleInput = (value, inputType) => {
     const descriptionArray = value.description.split(',');
-    const city = descriptionArray[descriptionArray.length-2]?.trim(); 
+    const city = descriptionArray[descriptionArray.length - 2]?.trim();
     if (inputType === 'source') {
       setSource(city);
     } else if (inputType === 'destination') {
       setDestination(city);
     }
   };
- 
+
   const findDrives = async () => {
     try {
-        const response = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=true`);
-        console.log(destination,"ללל")
-        console.log(response);
-        if (response && response.data && response.data.length > 0) {
-          const drivesData = response.data;
-          console.log(drivesData);
-          navigate('/drives', { state: { drivesData, dataType: 'travels' } });
-        } else {
-          setNoDrivesFound(true);
-          const undisplayedResponse = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=false`);
-          if (undisplayedResponse && undisplayedResponse.data && undisplayedResponse.data.length > 0) {
-            console.log('Undisplayed drives found');
-            setCatchedDrivesFound(true);
-            setUndisplayedDrives(undisplayedResponse.data);
-          }
+      const response = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=true`);
+      console.log(destination, "ללל")
+      console.log(response);
+      if (response && response.data && response.data.length > 0) {
+        const drivesData = response.data;
+        console.log(drivesData);
+        navigate('/drives', { state: { drivesData, dataType: 'travels' } });
+      } else {
+        setNoDrivesFound(true);
+        const undisplayedResponse = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=false`);
+        if (undisplayedResponse && undisplayedResponse.data && undisplayedResponse.data.length > 0) {
+          console.log('Undisplayed drives found');
+          setCatchedDrivesFound(true);
+          setUndisplayedDrives(undisplayedResponse.data);
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        // Handle error scenarios here
       }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error scenarios here
+    }
   };
 
 
   const saveDemand = async () => {
     try {
-      
+
       const response = await methodAuthData('users/myInfo', {}, 'GET');
       console.log(response, "!!!")
       setUserId(response.data._id);
@@ -115,78 +115,78 @@ const SearchDrive = () => {
         },
         limitDate: selectedDate, // Use the selected date here
       };
-  
+
       const data = await methodAuthData(`demands/`, obj, "POST");
     } catch (error) {
       console.error('Error fetching data:', error);
       // Handle error scenarios here
     }
   };
-  
-  return (
-    <Box sx={{ maxWidth: 400 }}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.map((step, index) => (
-          <Step key={step.label}>
-            <StepLabel>{step.label}</StepLabel>
-            <StepContent>
-              {activeStep === index && (
-                <>
-                  <TypingEffect text={step.label} /> {/* Show typing effect */}
-                  <Demo onInput={(value) => handleInput(value, step.input)} />
-                  <Box sx={{ mb: 2 }}>
-                    <div>
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          handleNext();
-                          handleStepCompletion();
-                        }}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                      </Button>
-                      <Button
-                        disabled={index === 0}
-                        onClick={handleBack}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        Back
-                      </Button>
-                    </div>
-                  </Box>
-                </>
-              )}
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3 }}>
-         
-          {noDrivesFound &&<><p>No drives found</p>
-      {catchedDrivesFound && (
-        <Button variant="outlined" onClick={() => navigate('/drives', { state: { undisplayedDrives, dataType: 'waits' } })}>
-          There are closed drives. Want to enter the waiting list?
-        </Button>
-      )}
-   <Button variant="outlined" onClick={() => setShowSelectDate(true)}>
-                  רוצה לשמור בקשה
-</Button>
-   {showSelectDate &&<> <label htmlFor="datePicker">Select Date:</label>
-    <input type="date" id="datePicker" value={selectedDate} onChange={handleDateChange} />
 
-    <label htmlFor="timePicker">Select Time:</label>
-    <input type="time" id="timePicker" value={selectedTime} onChange={handleTimeChange} />
-    <Button variant="outlined" onClick={saveDemand}>
-שלח לי כשיהיה
-        </Button>
-        </>}
-      </> }
-        </Paper>
-      )}
-      {/* Additional buttons or components based on conditions... */}
-    </Box>
+  return (
+    <div className='container d-flex justify-contant-center'>
+      <Box sx={{ maxWidth: 400 }}>
+        <Stepper activeStep={activeStep} orientation="vertical" sx={{ direction: 'rtl' }}>
+          {steps.map((step, index) => (
+            <Step key={step.label}>
+              <StepLabel>{step.label}</StepLabel>
+              <StepContent>
+                {activeStep === index && (
+                  <>
+                    <TypingEffect text={step.label} /> {/* Show typing effect */}
+                    <Demo className="w-50" onInput={(value) => handleInput(value, step.input)} />
+                    <Box sx={{ mb: 2 }}>
+                      <div>
+                        <Button className="button-56" style={{ backgroundColor: "#fee6e3" }}
+                          variant="contained"
+                          onClick={() => {
+                            handleNext();
+                            handleStepCompletion();
+                          }}
+                          sx={{ mt: 1, mr: 1 }}
+                        >
+                          {index === steps.length - 1 ? 'סיום' : 'המשך'}
+                        </Button>
+                        <Button
+                          disabled={index === 0}
+                          onClick={handleBack}
+                          sx={{ mt: 1, mr: 1 }}
+                        >
+                          חזור
+                        </Button>
+                      </div>
+                    </Box>
+                  </>
+                )}
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === steps.length && (
+          <Paper square elevation={0} sx={{ p: 3 }}>
+
+            {noDrivesFound && <><p>לא נמצאו נסיעות </p>
+              {catchedDrivesFound && (
+                <Button className='button-56' variant="outlined" onClick={() => navigate('/drives', { state: { undisplayedDrives, dataType: 'waits' } })}>
+                  ישנה נסיעה קרובה רוצה להכניסה לרשימת המתנה?
+                </Button>
+              )}
+              <Button className='button-56' style={{ color: "pink", border: "2px solid pink" }} variant="outlined" onClick={() => setShowSelectDate(true)}>
+                רוצה לשמור בקשה
+              </Button>
+              {showSelectDate && <> <label htmlFor="datePicker">בחר תאריך:</label>
+                <input className='form-control m-2' type="date" id="datePicker" value={selectedDate} onChange={handleDateChange} />
+                <label htmlFor="timePicker"> בחרי זמן:</label>
+                <input className='form-control m-2' type="time" id="timePicker" value={selectedTime} onChange={handleTimeChange} />
+                <Button className='button-56' style={{ color: "pink", border: "2px solid pink" }} variant="outlined" onClick={saveDemand}>
+                  שלח לי כשיהיה
+                </Button>
+              </>}
+            </>}
+          </Paper>
+        )}
+        {/* Additional buttons or components based on conditions... */}
+      </Box></div>
   );
 };
 

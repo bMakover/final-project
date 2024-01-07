@@ -5,7 +5,7 @@ import '../cssFiles/buttons.css'
 const Footer = () => {
   return (
     <>
-      <footer className="text-center bg-body-tertiary">
+      <footer style={{minHeight:"400px"}} className="text-center bg-body-tertiary">
         <div className="container pt-4">
           <section className="mb-4">
             <a

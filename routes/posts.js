@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const { PostsModel, validPost } = require("../models/postsModel");
 const { auth } = require("../middlewares/auth");
 const { UserModel } = require("../models/userModel");
+const { DemandsModel } = require("../models/demandModel");
+const { sendEmailNotification } = require("./emailService");
 
 const router = express.Router();
 
@@ -49,22 +51,23 @@ router.get("/getAllUndisplay", async (req, res) => {
 })
 
 //add post by token-must be login
-router.post("/", auth, async (req, res) => {
-    let validBody = validPost(req.body);
-    if (validBody.error) {
-        return res.status(400).json(validBody.error.details);
-    }
-    try {
-        let post = new PostsModel(req.body);
-        post.idDriver = req.tokenData._id
-        await post.save();
-        res.status(201).json(post);
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).json({ msg: "err", err })
-    }
-})
+// router.post("/", auth, async (req, res) => {
+//     let validBody = validPost(req.body);
+//     if (validBody.error) {
+//         return res.status(400).json(validBody.error.details);
+//     }
+//     try {
+//         let post = new PostsModel(req.body);
+//         post.idDriver = req.tokenData._id
+//         const newPost = await handleNewPost(req);
+//         await post.save();
+//         res.status(201).json(post);
+//     }
+//     catch (err) {
+//         console.log(err);
+//         res.status(500).json({ msg: "err", err })
+//     }
+// })
 
 
 //delete post by token-must be login and id`s post in params
@@ -201,6 +204,58 @@ router.get("/:id", auth, async (req, res) => {
         console.error(err);  // Add this line to log the error
         res.status(500).json({ msg: "Internal Server Error" });
       }
+  });
+
+
+  const handleNewPost = async (req) => {
+    console.log(req.body,"req")
+    const newPostDetails=req.body;
+    try {
+        let post = new PostsModel(req.body);
+        post.idDriver = req.tokenData._id;
+        await post.save();
+  
+      // Retrieve relevant demands based on source and destination of the new post
+      const relevantDemands = await DemandsModel.find({
+        // Criteria to find demands with matching source and destination
+        'source.city': newPostDetails.source.city,
+        'destination.city': newPostDetails.destination.city,
+      });
+  console.log(relevantDemands)
+      const relevantUserIds = relevantDemands.map((demand) => demand.idUser);
+      console.log(relevantUserIds)
+  
+      // Retrieve users associated with relevant demands
+      const relevantUsers = await UserModel.find({ _id: { $in: relevantUserIds } });
+      console.log(relevantUsers)
+  
+      // Send email notifications to relevant users associated with these demands
+      relevantUsers.forEach(async (user) => {
+        await sendEmailNotification(user.email, newPostDetails); // Use your email service to send emails
+      });
+  
+      // Return the newly created post
+      return post;
+    } catch (error) {
+      console.error('Error handling new post:', error);
+      throw error; // Handle or log the error accordingly
+    }
+  };
+  
+//add post by token-must be login
+router.post('/', auth, async (req, res) => {
+    let validBody = validPost(req.body);
+    if (validBody.error) {
+      return res.status(400).json(validBody.error.details);
+    }
+    try {
+        
+      const newPost = await handleNewPost(req);
+      res.status(201).json(newPost);
+    } catch (error) {
+      console.error('Error adding new post:', error);
+      res.status(500).json({ msg: 'Error adding new post' });
+    }
   });
 
 

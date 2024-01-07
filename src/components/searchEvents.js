@@ -57,8 +57,10 @@ const SearchEvents = ({ items, setData }) => {
         setData(locationArr)
     }
     return (
-        <>
-            <select onChange={(e) => {
+        <div className='container '>
+        <p className='w-40 m-2  m-auto'>חיפוש אירוע:</p>
+            <div className='row justify-content-around '>     
+            <select className='w-60 m-2 border  bg-black text-white p-3 ' style={{borderRadius:"10px"}} onChange={(e) => {
                 setChosenOption(e.target.value)
                 sortByDateDescending('Date')
             }} >
@@ -66,14 +68,14 @@ const SearchEvents = ({ items, setData }) => {
                 <option value="1">הקרוב ביותר </option>
                 <option value="2"> הרחוק ביותר</option>
             </select>
-            <select id="rec_mode" onChange={(e)=>{
+            <select className='w-60 border m-2 text-white bg-black p-3' style={{borderRadius:"10px"}} id="rec_mode" onChange={(e)=>{
                 sortByLocation(e.target.value)
             }}></select>
 
 
+</div>
 
-
-        </>
+        </div>
     )
 }
 

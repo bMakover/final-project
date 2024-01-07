@@ -84,45 +84,55 @@ const NewPost = ({ SetidEvent }) => {
     }
 
     const UpdateMyPosts = async (_id) => {
-        let user = await methodAuthData("users/myInfoWithPass", {}, "GET")
-        user = user.data
-        user.myPosts.push(_id)
-        console.log(user)
-        const userid = user._id
-        delete user._id
-        delete user.__v
-        delete user.password
-        let data = await methodAuthData(`users/updateUserPosts/${userid}`, user, "PUT")
-        console.log(data)
+        try {
+            let user = await methodAuthData("users/myInfoWithPass", {}, "GET")
+            user = user.data
+            if (user.carDescription.brand == null || user.carDescription.color == null || user.carDescription.seatsNumber==null) {
+                alert("עדכני פרטייך לנהגת")
+                return
+            }
+            user.myPosts.push(_id)
+            console.log(user)
+            const userid = user._id
+            delete user._id
+            delete user.__v
+            delete user.password
+            let data = await methodAuthData(`users/updateUserPosts/${userid}`, user, "PUT")
+            console.log(data)
+            alert("נוסף פוסט בהצלחה!")
+        }
+        catch (err) {
+            alert("עדכני פרטייך לנהגת")
+        }
     }
-    return (<div className="container" style={{ display: 'flex' ,justifyContent:'center'}}>
-        <img src='images/carPost.jpg' className=' d-lg-block d-sm-none' style={{ width: '700px',marginBottom:'20px' }} />
-<div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', height: '300px' }} className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" >
-            <div className='m-0 p-0 ' >
-                <label>מקור הנסיעה:</label>
-                <GoogleMaps onInput={handelSRC} />
-            </div>
-            <div className='m-0 p-0'>
-                <label>יעד הנסיעה:</label>
-                <GoogleMaps onInput={handelDES} />  </div></div>
-        <form className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSub)}>
+    return (<div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
+        <img src='images/carPost.jpg' className=' d-lg-block d-sm-none' style={{ width: '700px', marginBottom: '20px' }} />
+        <div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', height: '300px' }} className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" >
+                <div className='m-0 p-0 ' >
+                    <label>מקור הנסיעה:</label>
+                    <GoogleMaps onInput={handelSRC} />
+                </div>
+                <div className='m-0 p-0'>
+                    <label>יעד הנסיעה:</label>
+                    <GoogleMaps onInput={handelDES} />  </div></div>
+            <form className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSub)}>
 
-            <label>זמן יציאה:</label>
-            <label>תאריך</label>
-            <input class="form-control w-200" id="dateInput"  {...departure_dateRef} type='date' />
-            {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
-            <label >שעה:</label>
-            <input class="form-control" id="timeInput"  {...departure_hourRef} type='time' />
-            {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
-            <label>כמות מקומות ישיבה</label>
-            <input class="form-control"  {...seatSCountRef} type='number' />
-            {errors.seatSCount && <div>חובה להכניס כמות מושבים*</div>}
-            <label>תאור הפוסט</label>
-            <textarea class="form-control"  {...descriptionRef}></textarea>
-            {errors.description && <div>חובה להכניס תאור*</div>}
-            <button className="mybtn text-white font-bold py-2 px-4 rounded-full">פרסום הפוסט</button>
-        </form>
+                <label>זמן יציאה:</label>
+                <label>תאריך</label>
+                <input class="form-control w-200" id="dateInput"  {...departure_dateRef} type='date' />
+                {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
+                <label >שעה:</label>
+                <input class="form-control" id="timeInput"  {...departure_hourRef} type='time' />
+                {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
+                <label>כמות מקומות ישיבה</label>
+                <input class="form-control"  {...seatSCountRef} type='number' />
+                {errors.seatSCount && <div>חובה להכניס כמות מושבים*</div>}
+                <label>תאור הפוסט</label>
+                <textarea class="form-control"  {...descriptionRef}></textarea>
+                {errors.description && <div>חובה להכניס תאור*</div>}
+                <button className="button-56" >פרסום הפוסט</button>
+            </form>
         </div>
     </div>
     )

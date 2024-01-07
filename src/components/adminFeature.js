@@ -13,10 +13,10 @@ const AdminFeature = () => {
             {newEventFlag && <NewEvent />} */}
            
            
-            <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+            {/* <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
                 setseeEventsFlag(!seeEventsFlag)
-            }}>צפייה באירועים <i class="fa fa-eye" aria-hidden="true"></i></button>
-            {seeEventsFlag && <ShowEvents />}
+            }}>צפייה באירועים <i class="fa fa-eye" aria-hidden="true"></i></button> */}
+         <ShowEvents />
         </>
     )
 }

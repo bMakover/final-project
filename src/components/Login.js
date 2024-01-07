@@ -57,9 +57,9 @@ const Login = () => {
         <input type="password" className=" myFiled appearance-none  border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" name="password" value={formData.password} onChange={handleInputChange} required />
 
       </div>
-      <div className="container">
-        <button className="mybtn  m-3 text-white font-bold py-2 px-4 rounded-full" type="submit">התחברות</button>
-        <Link className='m-3 text-light' to="/register">עוד לא רשומה?</Link></div></div>
+      <div className="container d-flex justify-contant-around">
+        <button  className="button-56" type="submit">התחברות</button>
+        <Link className='mt-4 ' style={{textDecoration:'underline'}} to="/register">עוד לא רשומה?</Link></div></div>
     </form>
 
 

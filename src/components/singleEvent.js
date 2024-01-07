@@ -17,30 +17,38 @@ const SingleEvent = (props) => {
     const hourRef = register("hour", { required: true })
     let des = {}
     const onSub = async (databody) => {
-        let flag = validateDate(document.querySelector("#dateId").value, document.querySelector("#timeId").value)
-        console.log(flag)
-        if (flag == true && des.city) {
-            const obj = {
-                Name: databody.name,
-                Date: databody.date,
-                hour: databody.hour,
-                location: des,
-                description: databody.description,
-                travels: item.travels,
-                dateCreated: item.dateCreated
+        try {
+            let flag = validateDate(document.querySelector("#dateId").value, document.querySelector("#timeId").value)
+            console.log(flag)
+            if (flag == true && des.city) {
+                const obj = {
+                    Name: databody.name,
+                    Date: databody.date,
+                    hour: databody.hour,
+                    location: des,
+                    description: databody.description,
+                    travels: item.travels,
+                    dateCreated: item.dateCreated
+                }
+                console.log(obj)
+                const data = await methodAuthData(`events/${item._id}`, obj, "PUT")
+                alert(" האירוע עודכן בהצלחה!")
             }
-            console.log(obj)
-            const data = await methodAuthData(`events/${item._id}`, obj, "PUT")
-
+            else {
+                alert("הכניסי כתובת שוב")
+            }
         }
-        else {
-            alert("הכניסי כתובת שוב")
+        catch (err) {
+
+            alert("ישנה בעיה נסה מאוחר יותר")
+
         }
     }
     const daleteEvent = async () => {
         try {
             const data = await methodAuthData(`events/${item._id}`, {}, "DELETE")
             console.log(data)
+            alert("האירוע נמחק בהצלחה!")
         }
         catch (err) {
             alert("פג תוקף התחברותך התחברי שוב")
@@ -87,33 +95,46 @@ const SingleEvent = (props) => {
     }
 
     return (
-        <>
-            <div>
+        <div className=''>
+            <div className='border m-3 d-flex justify-contant-between '>
                 <div>
-                    <p>שם האירוע:{item.Name}</p>
-                    <p>מיקום האירוע: {item.location.city} {item.location.street} {item.location.houseNumber}</p>
-                    <p>תאריך האירוע:{new Date(item.Date).toLocaleDateString()}</p>
-                    <p>שעת האירוע:{item.hour}</p>
-                    <p>פרטים:{item.description}</p>
-
-                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                    <p><strong>שם האירוע:</strong></p>
+                    <p>{item.Name}</p>
+                    <p><strong>כתובת:</strong></p>
+                    <p>{item.location.city} {item.location.street} {item.location.houseNumber}.</p>
+                    <p><strong>
+                        תאריך:</strong></p>
+                    <p>{new Date(item.Date).toLocaleDateString()}</p>
+                    <p><strong>שעה:</strong></p>
+                    <p>{item.hour}</p>
+                    <p><strong>
+                        פרטים:</strong></p>
+                    <p>{item.description}</p>
+                    <button className="mybtn  font-bold py-2 px-4 rounded-full" onClick={() => { daleteEvent() }} ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <button className="mybtn  font-bold py-2 px-4 rounded-full" onClick={() => {
                         setUpdateFlag(!UpdateFlag)
-                    }}><i class="fa fa-pencil" aria-hidden="true"></i></button>{UpdateFlag && <div>
-                        <form onSubmit={handleSubmit(onSub)}>
-                            <input {...nameRef} defaultValue={item.Name} type='text' />
-                            <input {...dateRef} id="dateId" defaultValue={date} type='date' />
-                            <input {...hourRef} id="timeId" defaultValue={item.hour} type='time' />
-                            <textarea {...descriptionRef} defaultValue={item.description}></textarea>
-                            <button className="mybtn text-white font-bold py-2 px-4 rounded-full">עדכון </button>
-                        </form>
+                    }}><i class="fa fa-pencil" aria-hidden="true"></i></button>      </div>{UpdateFlag && <div>
+                        <label><strong>כתובת:</strong></label>
                         <GoogleMaps onInput={handelDES} />
+                        <form onSubmit={handleSubmit(onSub)}>
+                            <label><strong>שם האירוע:</strong></label>
+                            <input className='m-4 border' {...nameRef} defaultValue={item.Name} type='text' />
+                            <label><strong>תאריך:</strong></label>
+                            <input className='m-4 border' {...dateRef} id="dateId" defaultValue={date} type='date' />
+                            <label><strong>שעה:</strong></label>
+                            <input className='m-4 border'{...hourRef} id="timeId" defaultValue={item.hour} type='time' />
+                            <div>
+                                <label className="form-label"><strong>פרטים:</strong></label>
+                                <textarea class="form-control"{...descriptionRef} defaultValue={item.description}></textarea></div>
+                            <button className="button-56">עדכון </button>
+                        </form>
+
                     </div>
-                    }
-                </div>
-                <button   className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => { daleteEvent() }} ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                }
+
             </div>
 
-        </>
+        </div>
     )
 }
 

@@ -26,7 +26,7 @@ const DeleteMyPost = ({ item }) => {
 
     return (
         <>
-            <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+            <button  className="button-56" role="button" onClick={() => {
                 deletepost()
             }}>האם את בטוחה שברצונך למחוק פוסט זה?</button>
         </>

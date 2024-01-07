@@ -210,7 +210,7 @@ const uploadImage = async (file) => {
           </div>
         }
 
-        <button className="mybtn text-white font-bold py-2 px-4 rounded-full m-3">הרשמה</button></div>
+        <button className="button-56"  >הרשמה</button></div>
     </form>
 
     <div style={{height:'400px'}} className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4">    <h2>כתובות:</h2>

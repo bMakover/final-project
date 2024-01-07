@@ -33,19 +33,21 @@ const ShowEvents = () => {
 
 
     return (
-        <>
+        <div className='container-fluid'>
 
             <SearchEvents items={allEvents} setData={setData} />
             {thisUser.role == "admin" ? <>{allEvents?.map((item, i) => (
                 <SingleEvent item={item} key={item._id} />
-            ))}  <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+            ))}  <button className="button-56" onClick={() => {
                 setNewEventFlag(!newEventFlag)
             }}>הוספת אירוע  <i class="fa fa-plus" aria-hidden="true"></i></button>
-                {newEventFlag && <NewEvent />}</> : allEvents?.map((item, i) => (
-                    <JoinToTravelEvent item={item} key={item._id} />
-                ))}
+                {newEventFlag && <NewEvent />}</> : <div className='container' >
+                {allEvents?.map((item, i) => (
+                    <JoinToTravelEvent item={item} key={item._id} />))}</div>
 
-        </>
+            }
+
+        </div>
     )
 }
 

@@ -58,7 +58,7 @@ function UserWaitingList() {
             <p><strong>כתובת יעד:</strong></p>
             <p> {post.destination.city}, {post.destination.street}, {post.destination.houseNumber}</p>
 
-            <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => handleWaitClick(post)}>
+            <button cclassName="button-56" onClick={() => handleWaitClick(post)}>
               {selectedWait === post ? 'הסתר פרטים' : 'הראה פרטים'}
             </button>
             {selectedWait === post && (

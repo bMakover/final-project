@@ -14,6 +14,7 @@ const ShowPost = (props) => {
         }
         try {
             getMyInfo()
+            console.log(item)
         }
         catch (err) {
             alert("פג תוקף התחברותך התחברי שוב")
@@ -26,7 +27,7 @@ const ShowPost = (props) => {
     return (
 
         <div  className='  col-md-4 col-sm-12 col-lg-4 col-xl-4 p-0 m-0' >
-            <button className='myPostButton ' data-toggle="modal" data-target="#myModal" style={{  backgroundImage: 'url("images/steering wheel.jpg")',height: "280px",minWidth:"280px", color: 'white',color: 'white', backgroundColor: 'rgba(255, 0, 0, 1)'}}>
+            <button className='myPostButton ' data-toggle="modal" data-target={`#myModal-${item._id}`} style={{  backgroundImage: 'url("images/steering wheel.jpg")',height: "280px",minWidth:"280px", color: 'white',color: 'white', backgroundColor: 'rgba(255, 0, 0, 1)'}}>
                 <strong>
                     הפוסט של:</strong>
                 {driverDetails?.fullName}<br></br>
@@ -37,7 +38,7 @@ const ShowPost = (props) => {
                 <strong>
                     צפייה בפוסט &gt;&gt;</strong>
             </button>
-                <div className="  modal-dialog-scrollable modal fade m-0" id='myModal' role="dialog">
+                <div className="  modal-dialog-scrollable modal fade m-0" id={`myModal-${item._id}`} role="dialog">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="row modal-content mypost" style={{ borderRadius: "20px" }}>
                             <div className="modal-header"> <h4 className="modal-title" style={{ direction: 'rtl' }}>פרטי הפוסט</h4>
@@ -63,7 +64,7 @@ const ShowPost = (props) => {
                             <p>{item.description}</p>
                             <strong>כמות מושבים:</strong>
                             <p>  {item.seatsCount}</p>
-                            <strong>תאריך יציאה:</strong>
+                            <strong>זמן יציאה:</strong>
                             <div style={{ width:'100%',display:'flex',justifyContent:'space-between',margin:"0px",padding:"0px"}}>
                             <p>{new Date(item.departure.date).toLocaleDateString()}  {item.departure.hour}</p>
                             <img src='images/littelcar.png' style={{width:"200px",height:"100px"}}/>

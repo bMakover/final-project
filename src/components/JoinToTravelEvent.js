@@ -33,21 +33,28 @@ const JoinToTravelEvent = ({ item }) => {
         await methodAuthData(`events/${id}`, obj, "PUT")
     }
     return (
-        <>
-            <p>שם האירוע:{item.Name}</p>
-            <p>כתובת:{item.location.city} {item.location.street} {item.location.houseNumber}</p>
-            <p>תאריך:{new Date(item.Date).toLocaleDateString()}</p>
-            <p>שעה:{item.hour}</p>
-            <p>פרטים:{item.description}</p>
+        <div className='border m-3'>
+            <p><strong>שם האירוע:</strong></p>
+            <p>{item.Name}</p>
+            <p><strong>כתובת:</strong></p>
+            <p>{item.location.city} {item.location.street} {item.location.houseNumber}.</p>
+            <p><strong>
+                תאריך:</strong></p>
+            <p>{new Date(item.Date).toLocaleDateString()}</p>
+            <p><strong>שעה:</strong></p>
+                <p>{item.hour}</p>
+            <p><strong>
+                פרטים:</strong></p>
+                <p>{item.description}</p>
 
-            <button  className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+            <button  className="button-56 m-2" role="button" onClick={() => {
                 setflag(!flag)
             }}>צור פוסט נסיעה לארוע זה</button>
-
+<div>
             {flag &&
                 <NewPost SetidEvent={setIDPost} />
-            }
-        </>
+            }</div>
+        </div>
     )
 }
 

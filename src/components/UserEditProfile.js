@@ -235,7 +235,7 @@ function UserEditProfile() {
           </div>
         }
 
-        <button className="d-block mybtn text-white font-bold py-2 px-4 rounded-full m-3"  >עדכן</button>
+        <button className="button-56"  >עדכן</button>
       </form>
 
 

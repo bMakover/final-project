@@ -50,19 +50,19 @@ const MyPosts = () => {
                     <p><strong>שעת יציאה:</strong></p>
                     <p> {item.departure.hour}</p>
                     <img src='images/littelcar.png' style={{ width: "200px", height: "100px" }} />
-                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                    <button   className="mybtn  font-bold py-2 px-4 rounded-full" onClick={() => {
                         setFlagUpdateMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
                     }}><i className="fa fa-pencil" aria-hidden="true"></i></button>
-                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                    <button  className="mybtn  font-bold py-2 px-4 rounded-full"  onClick={() => {
                         setFlagDeleteMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]
                         }));
                     }}><i class="fa fa-trash" aria-hidden="true"></i></button>
-                    <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => {
+                    <button  className="mybtn  font-bold py-2 px-4 rounded-full6" onClick={() => {
                         setFlagPassengersMap((prev) => ({
                             ...prev,
                             [postId]: !prev[postId]

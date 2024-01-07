@@ -14,8 +14,9 @@ const MyDemandsList = () => {
     try {
       const response = await methodAuthData('demands/getMyDemand', {}, 'GET');
       // Filter demands with limitDate before today's date
+      console.log(response)
       const filteredDemands = response.data.filter(
-        (demand) => new Date(demand.limitDate) < new Date()
+        (demand) => Date.parse(demand.limitDate)-Date.parse(new Date())>0
       );
       setMyDemands(filteredDemands);
     } catch (error) {
@@ -25,7 +26,7 @@ const MyDemandsList = () => {
   };
 
   const handleDeleteDemand = async (demandId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this demand?');
+    const confirmDelete = window.confirm('בטוחה שברצונך למחוק בקשה זו?');
     if (confirmDelete) {
       try {
         // Send a request to delete the demand
@@ -41,7 +42,6 @@ const MyDemandsList = () => {
 
   return (
     <div className='container d-flex d-flex-wrap align-items-start'>
-      <h2>רשימת הבקשות שלי:</h2>
       <ul>
         {myDemands.map((demand) => (
           <li className='border m-2 w-80' key={demand._id}>
@@ -49,7 +49,7 @@ const MyDemandsList = () => {
             <strong>כתובת יעד:</strong> {demand.destination.city}, {demand.destination.street}, {demand.destination.houseNumber}<br />
             <strong>תאריך אחרון למימוש הבקשה :</strong> {new Date(demand.limitDate).toLocaleDateString()}<br />
             {/* Add other demand details as needed */}
-            <button className="mybtn text-white font-bold py-2 px-4 rounded-full" onClick={() => handleDeleteDemand(demand._id)}> מחק בקשה זו <i className="fa fa-trash" aria-hidden="true"></i></button>
+            <button className="button-56 m-3" onClick={() => handleDeleteDemand(demand._id)}> מחק בקשה זו <i className="fa fa-trash" aria-hidden="true"></i></button>
           </li>
         ))}
       </ul>

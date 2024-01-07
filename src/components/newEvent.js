@@ -43,6 +43,7 @@ const NewEvent = () => {
 
 
     const onSub = async (databody) => {
+        
         let flag = validateDate(document.querySelector("#dateInput").value, document.querySelector("#timeInput").value)
         try {
             if (flag == true && src.city != " ") {
@@ -58,6 +59,7 @@ const NewEvent = () => {
                 await methodAuthData("events/", obj, "POST")
                 console.log(obj)
                 console.log(databody)
+                alert("האירוע נוסף בהצלחה!")
             }
             else {
                 alert("הכנס כתובת שוב")
@@ -68,22 +70,35 @@ const NewEvent = () => {
     }
     return (
         <>
+            {/* <p><strong>שם האירוע:</strong></p>
+            <p>{item.Name}</p>
+            <p><strong>כתובת:</strong></p>
+            <p>{item.location.city} {item.location.street} {item.location.houseNumber}.</p>
+            <p><strong>
+                תאריך:</strong></p>
+            <p>{new Date(item.Date).toLocaleDateString()}</p>
+            <p><strong>שעה:</strong></p>
+                <p>{item.hour}</p>
+            <p><strong>
+                פרטים:</strong></p>
+                <p>{item.description}</p>
+ */} <p><strong>כתובת:</strong></p>
+            <GoogleMaps onInput={handelSRC} />
             <form onSubmit={handleSubmit(onSub)}>
-                <label>שם האירוע</label>
+                <p><strong>שם האירוע:</strong></p>
                 <input  {...nameRef} type='text' />
-                {errors.name && <div>*חובה להכניס עיר מקור</div>}
-                <label>תאריך</label>
+                {errors.name && <div>*חובה להכניס שם אירוע </div>}
+                <p><strong>תאריך:</strong></p>
                 <input id="dateInput"  {...dateRef} type='date' />
                 {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
-                <label >שעה:</label>
+                <p><strong>שעה:</strong></p>
                 <input id="timeInput"  {...hourRef} type='time' />
                 {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
-                <label>תאור האירוע</label>
-                <textarea  {...descriptionRef}></textarea>
+                <p><strong>פרטי האירוע:</strong></p>
+                <textarea className='form-control w-80' {...descriptionRef}></textarea>
                 {errors.description && <div>חובה להכניס תאור*</div>}
-                <button className="mybtn text-white font-bold py-2 px-4 rounded-full">פרסום האירוע</button>
+                <button  className="button-56" >פרסום האירוע</button>
             </form>
-            <GoogleMaps onInput={handelSRC} />
         </>
     )
 }

@@ -17,6 +17,7 @@ import UpdateMyPost from './components/updateMyPost';
 import MyTravelsList from './components/myTravelsList';
 import "./cssFiles/buttons.css"
 import PersonalArea from './components/PersonalArea';
+import Footer from './components/footer';
 
 function App() {
   return (
@@ -40,8 +41,10 @@ function App() {
           <Route path="/ex" element={<Exmple />} />
           <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
         </Routes>
+        <Footer />
       </BrowserRouter>
       {/* <Exmple/> */}
+
     </>
 
 

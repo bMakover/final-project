@@ -105,7 +105,7 @@ const UpdateMyPost = ({ item }) => {
             <label className='block'><strong>תאור הפוסט</strong></label>
             <textarea className='  appearance-none border-none w-50  text-gray-700 mr-3 py-1  px-2 leading-tight ' defaultValue={item.description}  {...descriptionRef}></textarea>
             {errors.description && <div>חובה להכניס תאור*</div>}
-            <button  className=" d-block mybtn text-white font-bold py-2 px-4 rounded-full m-2">עידכון הפוסט</button>
+            <button  className="button-56">עידכון הפוסט</button>
         </form>
    
     </div>

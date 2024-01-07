@@ -45,7 +45,7 @@ const Login = () => {
     {/* <h2 style={{margin:'auto',color:'red'}}>התחברות</h2> */}
     <form className="container mt-2 myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
       <div style={{display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
-      <img src='images/login.jpg' style={{ width: '85%', height: "200px" ,borderRadius:'20px'}} />
+      <img src='images/loginpic.jpg' style={{ width: '200px', height: "200px" ,borderRadius:'50%'}} className='shadow' />
       {error}
       <div className="flex m-3 items-center border-b border-black-500 py-2">
         <label> מייל: </label>

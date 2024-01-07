@@ -3,16 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { apiService } from '../services/apiService ';
 import { useForm } from 'react-hook-form';
 import GoogleMaps from './Demo';
+import Axios  from 'axios';
+import { useNavigate } from 'react-router';
 
 
 const SignUp = () => {
   const { postData } = apiService();
+  const nav=useNavigate()
   const { register, handleSubmit, formState: { errors }, getValues } = useForm()
   const fullNameRef = register("fullName", { required: true, minLength: 4, type: Date })
   const emailRef = register("email", { required: true, minLength: 10 })
   const phoneRef = register("phone", { minLength: 10, required: true })
   const passwordRef = register("password", { required: true, minLength: 1 })
-  const imageRef = register("image", { required: true, minLength: 1 })
+  // const imageRef = register("image", { required: true, minLength: 1 })
   const [check, setCheck] = useState(true)
   const carDescription_brandRef = register("brand", { minLength: 1, type: Date })
   const carDescription_colorRef = register("color", { minLength: 1 })
@@ -20,7 +23,47 @@ const SignUp = () => {
   let locationObj = {}
   let pickUpLocationOBJ = " "
   let defaultDestinationObj = {}
+const[formatDate,setFormData]=useState()
+ 
+const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const imageUrl = await uploadImage(file);
+  // Update the form state with the Cloudinary image URL
+        setFormData(imageUrl);
+      } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+      }
+    }
+  };
 
+const uploadImage = async (file) => {
+    if (!file) {
+      throw new Error('No file provided');
+    }
+  
+    try {
+      const cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dnwujnjie/image/upload';
+      const uploadPreset = 'l9gnom66';
+  
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', uploadPreset);
+  
+      const response = await Axios.post(cloudinaryUrl, formData);
+  
+      if (response.status === 200) {
+        return response.data.secure_url;
+      } else {
+        console.error('Cloudinary Response:', response);
+        throw new Error('Failed to upload image to Cloudinary');
+      }
+    } catch (error) {
+      console.error('Error uploading image to Cloudinary:', error);
+      throw error;
+    }
+  };
 
 
   const onSub = async (databody) => {
@@ -31,7 +74,7 @@ const SignUp = () => {
         email: databody.email,
         phone: databody.phone,
         password: databody.password,
-        image: databody.image,
+        image: formatDate,
         location: locationObj,
         defaultDestination: defaultDestinationObj,
         travels: [],
@@ -55,6 +98,7 @@ const SignUp = () => {
         await postData("users", obj);
         // Assuming 'users' is the endpoint you want to hit
         console.log('User registered successfully');
+        nav("/login")
         alert("נרשמת בהצלחה!!")
       } catch (error) {
         console.error('Error registering user:', error);
@@ -128,12 +172,16 @@ const SignUp = () => {
           <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="password" {...passwordRef} />
 
         </div > 
-        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-picture-o" aria-hidden="true"></i>
+        {/* <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-picture-o" aria-hidden="true"></i>
           <label className='m-2'>
             תמונת פרופיל:</label>
           <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" {...imageRef} />
 
-        </div>
+        </div> */}
+        <label>
+        תמונה:
+        <input type="file" name="image" onChange={(e)=>{handleImageChange(e)}} />
+      </label>
         <label>
           האם אתה נהג?
           {check?<i class="fa fa-toggle-on" aria-hidden="true" onClick={()=>{setCheck(false)}}></i>:<i class="fa fa-toggle-off" aria-hidden="true"  onClick={()=>{setCheck(true)}}></i>}

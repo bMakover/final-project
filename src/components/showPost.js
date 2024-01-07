@@ -3,7 +3,6 @@ import { apiService } from '../services/apiService '
 
 const ShowPost = (props) => {
     let item = props.item
-    const [flag, setflag] = useState(false)
     const [driverDetails, setDriverDetails] = useState()
     const { getData } = apiService()
     useEffect(() => {
@@ -27,7 +26,7 @@ const ShowPost = (props) => {
     return (
 
         <div  className='  col-md-4 col-sm-12 col-lg-4 col-xl-4 p-0 m-0' >
-            <button className='myPostButton ' data-toggle="modal" data-target="#myModal" style={{  backgroundImage: 'url("images/road.jpg")',height: "220px",minWidth:"280px", color: 'white',color: 'white', backgroundColor: 'rgba(255, 0, 0, 1)'}} onClick={() => { setflag(!flag) }}>
+            <button className='myPostButton ' data-toggle="modal" data-target="#myModal" style={{  backgroundImage: 'url("images/steering wheel.jpg")',height: "280px",minWidth:"280px", color: 'white',color: 'white', backgroundColor: 'rgba(255, 0, 0, 1)'}}>
                 <strong>
                     הפוסט של:</strong>
                 {driverDetails?.fullName}<br></br>
@@ -38,12 +37,11 @@ const ShowPost = (props) => {
                 <strong>
                     צפייה בפוסט &gt;&gt;</strong>
             </button>
-            {flag &&
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal fade" id='myModal' role="dialog">
-                    <div className="modal-dialog">
+                <div className="  modal-dialog-scrollable modal fade m-0" id='myModal' role="dialog">
+                    <div className="modal-dialog modal-dialog-centered">
                         <div className="row modal-content mypost" style={{ borderRadius: "20px" }}>
                             <div className="modal-header"> <h4 className="modal-title" style={{ direction: 'rtl' }}>פרטי הפוסט</h4>
-                                <button type="button" className="close" data-dismiss="modal" onClick={() => { setflag(false) }}>&times;</button>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
 
                             </div>
                             <div>
@@ -72,7 +70,7 @@ const ShowPost = (props) => {
                             </div>
                             </div>
                         </div>
-                    </div></div>}
+                    </div></div>
         </div>
     )
 }

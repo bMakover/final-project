@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { apiService } from '../services/apiService ';
 import GoogleMaps from "./Demo";
+import Axios from "axios";
 
 
 function UserEditProfile() {
@@ -39,7 +40,7 @@ function UserEditProfile() {
   const emailRef = register("email", { minLength: 2, defaultValues: formData.email })
   const phoneRef = register("phone", { minLength: 6, defaultValues: formData.phone })
   const passwordRef = register("password", { defaultValue: formData.password })
-  const imageRef = register("image", { defaultValues: formData.image })
+  // const imageRef = register("image", { defaultValues: formData.image })
   const brandRef = register("brand", { defaultValues: formData.carDescription.brand })
   const colorRef = register("color", { defaultValues: formData.carDescription.color })
   const seatsNumberRef = register("seatsNumber", { defaultValues: formData.carDescription.seatsNumber })
@@ -61,7 +62,48 @@ function UserEditProfile() {
     }
   };
 
-
+  const[formatDateImage,setFormDataImage]=useState()
+ 
+  const handleImageChange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        try {
+          const imageUrl = await uploadImage(file);
+    // Update the form state with the Cloudinary image URL
+    setFormDataImage(imageUrl);
+        } catch (error) {
+          console.error('Error uploading image to Cloudinary:', error);
+        }
+      }
+    };
+  
+  const uploadImage = async (file) => {
+      if (!file) {
+        throw new Error('No file provided');
+      }
+    
+      try {
+        const cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dnwujnjie/image/upload';
+        const uploadPreset = 'l9gnom66';
+    
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', uploadPreset);
+    
+        const response = await Axios.post(cloudinaryUrl, formData);
+    
+        if (response.status === 200) {
+          return response.data.secure_url;
+        } else {
+          console.error('Cloudinary Response:', response);
+          throw new Error('Failed to upload image to Cloudinary');
+        }
+      } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+        throw error;
+      }
+    };
+  
 
   const handleSourceSelect = (obj) => {
     const parts = obj?.description.split(', ');
@@ -109,6 +151,7 @@ function UserEditProfile() {
         password: databody.password,
         location: locationObj,
         defaultDestination: defaultDestinationObj,
+        image:formatDateImage||formData.image,
         isDriver: check,
         carDescription: {
           brand: databody.brand || null,
@@ -161,9 +204,10 @@ function UserEditProfile() {
           {errors.password && <p>*חובה להכניס סיסמא </p>}
         </div>
         <div className="flex m-3 items-center border-b border-black-500 py-2">
-          <label>
-          <i class="fa fa-picture-o" aria-hidden="true"></i>  תמונה:</label>
-          <input type="text" name="image" {...imageRef} /></div>
+        <label>
+        תמונה:
+        <input type="file" name="image" onChange={(e)=>{handleImageChange(e)}} />
+      </label></div>
         <label>
           האם את נהגת?
           {check ? <i class="fa fa-toggle-on" aria-hidden="true" onClick={() => { setCheck(false) }}></i> : <i class="fa fa-toggle-off" aria-hidden="true" onClick={() => { setCheck(true) }}></i>}

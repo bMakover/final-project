@@ -13,7 +13,8 @@ import NewPost from './components/newPost';
 import ShowEvents from './components/showEvents';
 import UserEditProfile from './components/UserEditProfile';
 import MyDemandsList from './components/MyDemandsList';
-
+import Levels from './components/levels'
+import Try from './components/try'
 function App() {
 
     return (
@@ -35,7 +36,11 @@ function App() {
                    <Route path="/demand-list" element={<MyDemandsList />}/>
 
                    <Route path="/events" element={<ShowEvents/>}/>
+                   <Route path="/levels" element={<Levels/>}/>
+
                    <Route path="/profile" element={<UserEditProfile />}/>
+                   <Route path="/try" element={<Try />}/>
+
 
 
 

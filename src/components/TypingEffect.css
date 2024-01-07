@@ -1,0 +1,28 @@
+/* TypingEffect.css */
+.typing-text {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: .15em solid none; /* This creates the typing cursor effect */
+    display: inline-block;
+  }
+  
+  .typing-cursor {
+    display: inline-block;
+    width: 0.1em;
+    height: 1.1em;
+    margin-left: 2px;
+    background-color: none;
+    animation: blink-caret .75s step-end infinite;
+  }
+  
+  @keyframes blink-caret {
+    from, to {
+      background-color: transparent;
+    }
+    50% {
+      background-color: none;
+    }
+  }
+  

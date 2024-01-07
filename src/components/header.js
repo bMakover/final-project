@@ -44,6 +44,9 @@ const Header = () => {
                         <Link to="/searchdrives" style={{ textDecoration: 'none', color: 'inherit', marginRight: '10px' }}>
                             <Typography variant="subtitle1">חיפוש נסיעות</Typography>
                         </Link>
+                        <Link to="/newPost" style={{ textDecoration: 'none', color: 'inherit', marginRight: '10px' }}>
+                            <Typography variant="subtitle1">הוסף נסיעה</Typography>
+                        </Link>
                     </div>
                 </Toolbar>
             </AppBar>

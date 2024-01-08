@@ -32,6 +32,7 @@ const Header = () => {
                     <div className=''>
                     </div>
                     <nav className='nav-col-auto  navbar-nav p-0 justify-content-around'>
+                        <img src="images/logo.png" style={{width:"100px",borderRadius:"50%"}} onClick={()=>{nav("/")}}/>
                         <ul className='d-flex justify-content-around align-items-center'>
                             <li >
                                 <i class="fa fa-sign-in " aria-hidden="true" style={{ color: "white", fontSize: "large", fontSmooth: "large" }}></i>

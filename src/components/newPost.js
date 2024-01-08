@@ -94,6 +94,7 @@ const NewPost = ({ SetidEvent }) => {
             user.myPosts.push(_id)
             console.log(user)
             const userid = user._id
+            if(user.image=="") user.image="  ";
             delete user._id
             delete user.__v
             delete user.password

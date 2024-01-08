@@ -52,6 +52,7 @@
   outline: 0;
 }
 
+
 @media (min-width: 768px) {
   .button-56 {
     padding: 0 40px;
@@ -92,6 +93,12 @@ width:100%
 
   
 }
+footer {
 
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 1rem 0;
+  bottom: 0;
+}
 
 

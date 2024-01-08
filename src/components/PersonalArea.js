@@ -17,10 +17,14 @@ const PersonalArea = () => {
   const [formatDate,setFormData]=useState()
   useEffect(() => {
    const getMyData = async () => {
+    try{
       const response = await methodAuthData('users/myInfo', {}, 'GET');
      let userData = response.data;
       console.log(userData); 
-      setFormData(userData);
+      setFormData(userData);}
+      catch(err){
+        alert("לצפיה באזור האישי עלייך להתחבר תחילה")
+      }
     }
     getMyData()
   },[])

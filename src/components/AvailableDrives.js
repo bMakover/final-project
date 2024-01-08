@@ -8,8 +8,8 @@ const location = useLocation();
   console.log(drivesData)
   return (
     <>
-      <div>
-        <h2>Available Drives:</h2>
+      <div className='mt-3'>
+      
         {drivesData.map((drive) => (
           <Post key={drive._id} drive={drive} dataType={dataType} />
         ))}

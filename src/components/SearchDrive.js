@@ -124,7 +124,7 @@ const SearchDrive = () => {
   };
 
   return (
-    <div className='container d-flex justify-contant-center'>
+    <div className='container d-flex justify-contant-center' style={{height:"500px"}}>
       <Box sx={{ maxWidth: 400 }}>
         <Stepper activeStep={activeStep} orientation="vertical" sx={{ direction: 'rtl' }}>
           {steps.map((step, index) => (
@@ -186,7 +186,9 @@ const SearchDrive = () => {
           </Paper>
         )}
         {/* Additional buttons or components based on conditions... */}
-      </Box></div>
+      </Box>
+    
+      </div>
   );
 };
 

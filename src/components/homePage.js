@@ -81,7 +81,7 @@ const HomePage = () => {
 
                 {passengersByMonth.length > 0 ? (
 
-                    <BarChart
+                    <BarChart 
                         xAxis={[
                             {
                                 id: 'months',
@@ -96,6 +96,7 @@ const HomePage = () => {
                         ]}
                         width={900}
                         height={300}
+                        colors={'pink'}
                     ></BarChart>
                 ) : (
                     <p>Loading...</p>

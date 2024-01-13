@@ -1,16 +1,19 @@
 import axios from "axios";
 
-const baseUrl="http://localhost:3001/";
+const baseUrl = "http://localhost:3001/";
 
 export const apiService = () => {
 
     const postData = async (url, body) => {
-        try  {
+        try {
             const response = await axios.post(`${baseUrl}${url}`, body);
-        return response; // Add this line to return the response
+            return response; // Add this line to return the response
         }
         catch (err) {
             if (err.response) {
+                if (err.response.data.code == 11000) {
+                    return 11000
+                }
                 // The request was made and the server responded with a status code
                 console.error(`Server responded with error: ${err.response.status}`, err.response.data);
             } else if (err.request) {
@@ -25,9 +28,9 @@ export const apiService = () => {
     }
 
     const getData = async (url) => {
-        
+
         try {
-           console.log(`${baseUrl}${url}`)
+            console.log(`${baseUrl}${url}`)
             return await axios.get(`${baseUrl}${url}`);
         }
         catch (err) {
@@ -48,7 +51,7 @@ export const apiService = () => {
         }
     };
 
-    const deleteData = async (url, params,query) => {
+    const deleteData = async (url, params, query) => {
         try {
             console.log(url);
             const res = await axios.delete(`${baseUrl}${url}${params}${query}`);
@@ -61,18 +64,18 @@ export const apiService = () => {
     };
 
     // console.log(data);
-    const methodAuthData = async (url, body,method) => {
-        try  {
-            const token =  localStorage.getItem("token")
+    const methodAuthData = async (url, body, method) => {
+        try {
+            const token = localStorage.getItem("token")
             const response = await axios({
                 url: `${baseUrl}${url}`,
                 data: body,
                 method: method,
                 headers: {
-                  "x-api-key": token
+                    "x-api-key": token
                 }
             })
-        return response; // Add this line to return the response
+            return response; // Add this line to return the response
         }
         catch (err) {
             if (err.response) {
@@ -91,5 +94,5 @@ export const apiService = () => {
 
 
 
-    return { getData, postData, updateData, deleteData,methodAuthData }
+    return { getData, postData, updateData, deleteData, methodAuthData }
 }

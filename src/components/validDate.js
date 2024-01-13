@@ -9,15 +9,16 @@ export const validateDate = (date, time) => {
     let year = parseInt(parts[0], 10);
     let currentYear = now.getFullYear();
     let currentMonth = now.getMonth();
+    currentMonth += currentMonth + 1
     let currentDay = now.getDate();
     let month = (parts[1][0] === '0') ? parseInt(parts[1][1], 10) : parseInt(parts[1], 10);
     let day = (parts[2][0] === '0') ? parseInt(parts[2][1], 10) : parseInt(parts[2], 10);
-
-    if (year >= currentYear) {
-        if (month >= currentMonth) {
+    console.log(currentDay + " " + currentMonth + " " + currentYear)
+    if (year == currentYear) {
+        if (month == currentMonth) {
             if (day >= currentDay) {
                 if (day == currentDay) {
-                  return  validateDateTime(time)
+                    return validateDateTime(time)
                 }
                 else return true
             }
@@ -26,14 +27,16 @@ export const validateDate = (date, time) => {
                 return false
             }
         }
+        else if (month > currentMonth) { return true }
         else {
-            alert("חודש שגויה")
+            alert("חודש שגוי")
             return false
         }
     }
-    else if (year > currentYear || month > currentMonth) { return true }
+    else if (year > currentYear) { return true }
     else {
         alert("שנה שגויה")
+
         return false
     }
 };
@@ -41,13 +44,12 @@ const validateDateTime = (time) => {
     const inputTime = time;
     const currentDate = new Date();
     const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false });
-
-    if (inputTime > currentTime) {
+    console.log("ggggggg")
+    if (inputTime >= currentTime) {
         alert('התאריך והשעה חוקיים.');
         return true
     } else {
         alert('השעה עברה כבר. אנא בחר שעה חדשה.');
-
         return false
     }
 

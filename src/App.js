@@ -18,11 +18,18 @@ import MyTravelsList from './components/myTravelsList';
 import "./cssFiles/buttons.css"
 import PersonalArea from './components/PersonalArea';
 import Footer from './components/footer';
+import { AppContext } from './context/context'
+import { useState } from 'react';
 
 function App() {
+  const [MyLogUser,setMyLogUser]=useState()
+  
   return (
     <>
       <BrowserRouter>
+      <AppContext.Provider value={{
+      MyLogUser,setMyLogUser
+      }}>
         <Header />
         <Routes>
           <Route index element={<HomePage />}></Route>
@@ -41,6 +48,7 @@ function App() {
           <Route path="/ex" element={<Exmple />} />
           <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
         </Routes>
+        </AppContext.Provider>
         <Footer />
       </BrowserRouter>
       {/* <Exmple/> */}

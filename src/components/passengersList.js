@@ -12,22 +12,24 @@ const PassengersList = ({ itemId }) => {
         }
         getPassengers()
     }, [])
-    return (
-        <>
+    return (<>
+    {myPassengers?.length>0?
+        <table className='table' >
+            <tr>
+                <th className='p-1'>שם הנוסעת: </th>
+                <th className='p-1'>טלפון:   </th>
+                <th className='p-1'>אימייל: </th></tr>
             {myPassengers?.map(item => {
-                return (<table className='table' key={item._id}>
-                    <tr>
-                    <th  className='p-1'>שם הנוסעת: </th>
-                    <th  className='p-1'>טלפון:   </th>
-                    <th  className='p-1'>אימייל: </th></tr>
+                return (
                     <tr >
                         <td>{item.fullName}</td>
                         <td>{item.phone}</td>
                         <td>{item.email}</td>
                     </tr>
-                </table>)
+                )
             })}
-        </>
+        </table>:<p>אין נוסעים מצורפים כרגע</p>}
+    </>
     )
 }
 

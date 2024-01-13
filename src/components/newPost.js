@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { apiService } from '../services/apiService ';
 import { validateDate } from './validDate'
 import GoogleMaps from './Demo';
-
-
+import { AppContext } from '../context/context'
 const NewPost = ({ SetidEvent }) => {
     const { register, handleSubmit, formState: { errors }, getValues } = useForm()
     // const nav = useNavigate()
+    const { MyLogUser, setMyLogUser } = useContext(AppContext);
     let src = {}
     let des = {}
     const { methodAuthData, getData } = apiService()
@@ -53,8 +53,12 @@ const NewPost = ({ SetidEvent }) => {
     const onSub = async (databody) => {
         let flag = validateDate(document.querySelector("#dateInput").value, document.querySelector("#timeInput").value)
         console.log(flag)
+        if (MyLogUser.carDescription.brand == null || MyLogUser.carDescription.color == null || MyLogUser.carDescription.seatsNumber==null) {
+            alert("עדכני פרטייך לנהגת")
+            return
+        }
         try {
-            if (flag == true && src.city != " " && des.city != " ") {
+            if (flag == true && src.city  && des.city) {
                 const obj = {
                     isDisplay: true,
                     source: src,
@@ -77,6 +81,9 @@ const NewPost = ({ SetidEvent }) => {
                 if (SetidEvent)
                     SetidEvent(data.data._id)
             }
+            else{
+                alert("הכנסי כתובות שוב")
+            }
         }
         catch (err) {
             alert("פג תוקף התחברותך התחברי שוב")
@@ -87,14 +94,9 @@ const NewPost = ({ SetidEvent }) => {
         try {
             let user = await methodAuthData("users/myInfoWithPass", {}, "GET")
             user = user.data
-            if (user.carDescription.brand == null || user.carDescription.color == null || user.carDescription.seatsNumber==null) {
-                alert("עדכני פרטייך לנהגת")
-                return
-            }
             user.myPosts.push(_id)
             console.log(user)
             const userid = user._id
-            if(user.image=="") user.image="  ";
             delete user._id
             delete user.__v
             delete user.password
@@ -122,16 +124,16 @@ const NewPost = ({ SetidEvent }) => {
                 <label>זמן יציאה:</label>
                 <label>תאריך</label>
                 <input class="form-control w-200" id="dateInput"  {...departure_dateRef} type='date' />
-                {errors.departure_date && <div>חובה להכניס תאריך יציאה*</div>}
+                {errors.departure_date && <div className='text-danger'>חובה להכניס תאריך יציאה*</div>}
                 <label >שעה:</label>
                 <input class="form-control" id="timeInput"  {...departure_hourRef} type='time' />
-                {errors.departure_hour && <div>חובה להכניס שעת יציאה*</div>}
+                {errors.departure_hour && <div className='text-danger'>חובה להכניס שעת יציאה*</div>}
                 <label>כמות מקומות ישיבה</label>
                 <input class="form-control"  {...seatSCountRef} type='number' />
-                {errors.seatSCount && <div>חובה להכניס כמות מושבים*</div>}
+                {errors.seatSCount && <div className='text-danger'>חובה להכניס כמות מושבים*</div>}
                 <label>תאור הפוסט</label>
                 <textarea class="form-control"  {...descriptionRef}></textarea>
-                {errors.description && <div>חובה להכניס תאור*</div>}
+                {errors.description && <div className='text-danger'>חובה להכניס תאור*</div>}
                 <button className="button-56" >פרסום הפוסט</button>
             </form>
         </div>

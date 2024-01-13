@@ -3,13 +3,15 @@ import { useForm } from "react-hook-form";
 import { apiService } from '../services/apiService ';
 import GoogleMaps from "./Demo";
 import Axios from "axios";
+import { AppContext } from '../context/context'
 
 
 function UserEditProfile() {
   const { methodAuthData } = apiService()
+  const { MyLogUser, setMyLogUser } = useContext(AppContext);
   const [check, setCheck] = useState(false)
   let locationObj = {}
-  let pickUpLocationOBJ = " "
+  let pickUpLocationOBJ = ""
   let defaultDestinationObj = {}
   const [formData, setFormData] = useState({
     fullName: '',
@@ -39,8 +41,7 @@ function UserEditProfile() {
   const fullNameRef = register("fullName", { minLength: 2, defaultValues: formData.fullName })
   const emailRef = register("email", { minLength: 2, defaultValues: formData.email })
   const phoneRef = register("phone", { minLength: 6, defaultValues: formData.phone })
-  const passwordRef = register("password", { defaultValue: formData.password })
-  // const imageRef = register("image", { defaultValues: formData.image })
+  const passwordRef = register("password", {required:true, defaultValue: formData.password })
   const brandRef = register("brand", { defaultValues: formData.carDescription.brand })
   const colorRef = register("color", { defaultValues: formData.carDescription.color })
   const seatsNumberRef = register("seatsNumber", { defaultValues: formData.carDescription.seatsNumber })
@@ -48,7 +49,6 @@ function UserEditProfile() {
   useEffect(() => {
     fetchUserData();
   }, []);
-
   let userData
   const fetchUserData = async () => {
     try {
@@ -143,7 +143,7 @@ function UserEditProfile() {
     console.log(pickUpLocationOBJ)
   }
   const onSub = async (databody) => {
-    if (defaultDestinationObj.city && locationObj.city && pickUpLocationOBJ != " ") {
+    if (defaultDestinationObj.city && locationObj.city && pickUpLocationOBJ != "") {
       const obj = {
         fullName: databody.fullName || formData.fullName,
         email: databody.email || formData.email,
@@ -160,9 +160,9 @@ function UserEditProfile() {
         },
         pickUpLocation: pickUpLocationOBJ,
       };
-
       await methodAuthData(`users/${formData._id}`, obj, "PUT");
       console.log(obj);
+      setMyLogUser(obj)
       alert("הנתונים התעדכנו בהצלחה!")
     }
     else {
@@ -183,26 +183,26 @@ function UserEditProfile() {
             <input className="myFiled  appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" {...fullNameRef} defaultValue={formData.fullName} />
           </label>
         </div>
-        {errors.fullName && <p>*חובה להכניס שם </p>}
+        {errors.fullName && <p className="text-danger">*חובה להכניס שם </p>}
         <div className="flex m-3 items-center border-b border-black-500 py-2">
           <label>
           <i class="fa fa-envelope-o" aria-hidden="true"></i>  אימייל:
             <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="email"  {...emailRef} defaultValue={formData.email} />
           </label></div>
-        {errors.email && <p>*חובה להכניס אימייל </p>}
+        {errors.email && <p className="text-danger">*חובה להכניס אימייל </p>}
         <div className="flex m-3 items-center border-b border-black-500 py-2">
           <label>
           <i class="fa fa-phone-square" aria-hidden="true"></i> טלפון:
             <input type="tel" className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none"  {...phoneRef} defaultValue={formData.phone} />
           </label>
-        </div>   {errors.phone && <p>*חובה להכניס טלפון </p>}
+        </div>   {errors.phone && <p className="text-danger">*חובה להכניס טלפון </p>}
         <div className="flex m-3 items-center border-b border-black-500 py-2">
           <label>
           <i class="fa fa-unlock-alt" aria-hidden="true"></i>    סיסמא:
             <input type="password" className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none"  {...passwordRef} defaultValue={formData.password} />
           </label>
-          {errors.password && <p>*חובה להכניס סיסמא </p>}
-        </div>
+        </div> 
+          {errors.password && <p className="text-danger">*חובה להכניס סיסמא </p>}
         <div className="flex m-3 items-center border-b border-black-500 py-2">
         <label>
         תמונה:

@@ -1,27 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { apiService } from '../services/apiService '
+import { apiService } from '../services/apiService ';
+import { AppContext } from '../context/context'
 
 const Header = () => {
-    const { methodAuthData } = apiService()
-    const [formatDate, setFormData] = useState()
+    const { MyLogUser, setMyLogUser } = useContext(AppContext);
+    console.log(MyLogUser)
     const nav = useNavigate()
-    useEffect(() => {
-
-        const getMyData = async () => {
-            try {
-                const response = await methodAuthData('users/myInfo', {}, 'GET');
-                let userData = response.data;
-                console.log(userData);
-                setFormData(userData);
-            }
-            catch (err) {
-
-                alert("לחוויה מלאה התחברי תחילה!")
-            }
-        }
-        getMyData()
-    }, [])
     return (
         <><header style={{ width: "100%", height: "120px" }} className="container-fluid  navbar navbar-expand bg-dark w-100% ">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,12 +42,12 @@ const Header = () => {
                         </ul>
 
                         <div>
-                            {formatDate?.image && formatDate?.image != null ?
-                                <div style={{ cursor: 'pointer' }} onClick={() => { nav("/PersonalArea") }}>  <img src={formatDate?.image} style={{ width: "70px", borderRadius: "50%", margin: 'auto' }} />
-                                    <p className='text-white'>שלום {formatDate?.fullName}</p></div> :
+                            {MyLogUser?.image && MyLogUser?.image != null ?
+                                <div style={{ cursor: 'pointer' }} onClick={() => { nav("/PersonalArea") }}>  <img src={MyLogUser?.image} style={{ width: "70px",height:"70px", borderRadius: "50%", margin: 'auto' }} />
+                                    <p className='text-white'>שלום {MyLogUser?.fullName}</p></div> :
                                 <div>
                                     <img onClick={() => { nav("/PersonalArea") }} src="images/user.png" style={{ width: "70px", cursor: 'pointer', borderRadius: "50%", margin: 'auto' }} />
-                                    <p className='text-white'>שלום {formatDate?.fullName}</p>
+                                    <p className='text-white'>שלום {MyLogUser?.fullName}</p>
                                 </div>}
                         </div>
                     </nav>

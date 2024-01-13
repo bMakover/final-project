@@ -17,9 +17,9 @@ router.get("/getAllEvents/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const event = await EventModel.findById(req.params.id).populate('travels');
-        if (!event) return res.status(404).json({ message: "Event not found8888" });
-
-        res.json(event);
+        const allTravels = event.travels.filter(item => { return (item.passengersList.length < item.seatsCount &&item.isDisplay == true) })
+        if (!event) return res.status(404).json({ message: "Event not found" });
+        res.json(allTravels);
     } catch (err) {
         res.status(500).json({ message: "Failed to retrieve event", error: err.message });
     }

@@ -29,7 +29,9 @@ router.get("/getPostsByDesNSrc/:src/:des", async (req, res) => {
 router.get("/getAllDisplay", async (req, res) => {
     try {
         let data;
-        data = await PostsModel.find({ isDisplay: true })
+        data = await PostsModel.find({ isDisplay: true,
+            $expr: { $gt: ['$seatsCount', { $size: '$passengersList' }] }
+        }).exec(); 
         res.json(data);
     }
     catch (err) {

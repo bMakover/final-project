@@ -3,12 +3,14 @@ import { apiService } from '../services/apiService '
 import { useForm } from 'react-hook-form'
 import { validateDate } from './validDate'
 import GoogleMaps from './Demo'
-
+import PostsForEvents from './postsForEvents'
+import { useNavigate } from 'react-router'
 
 const SingleEvent = (props) => {
     let item = props.item
     const [date, setDate] = useState()
     const [UpdateFlag, setUpdateFlag] = useState(false)
+    const [PostEventsFlag, setPOSTSEventFlag] = useState(false)
     const { methodAuthData } = apiService()
     const { register, handleSubmit, formState: { errors }, getValues } = useForm()
     const nameRef = register("name", { required: true, minLength: 2 })
@@ -16,6 +18,7 @@ const SingleEvent = (props) => {
     const descriptionRef = register("description", { minLength: 4, required: true })
     const hourRef = register("hour", { required: true })
     let des = {}
+    const nav=useNavigate()
     const onSub = async (databody) => {
         try {
             let flag = validateDate(document.querySelector("#dateId").value, document.querySelector("#timeId").value)
@@ -96,8 +99,13 @@ const SingleEvent = (props) => {
 
     return (
         <div className=''>
+                 <button className='button-89' style={{textAlign:'center'}} onClick={()=>{
+                  setPOSTSEventFlag(!PostEventsFlag)
+                 }}>צפייה בפוסטים לאירוע</button>
+                 {PostEventsFlag&&   <PostsForEvents id={item._id}/>}
             <div className='border m-3 d-flex justify-contant-between '>
                 <div>
+            
                     <p><strong>שם האירוע:</strong></p>
                     <p>{item.Name}</p>
                     <p><strong>כתובת:</strong></p>

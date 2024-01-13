@@ -22,7 +22,7 @@ import { AppContext } from './context/context'
 import { useState } from 'react';
 
 function App() {
-  const [MyLogUser,setMyLogUser]=useState()
+  const [MyLogUser,setMyLogUser]=useState(null)
   
   return (
     <>

@@ -36,7 +36,7 @@ const MyPosts = () => {
         <div className='container d-flex d-flex-wrap align-items-start'>
             {myPosts?.map((item) => {
                 const postId = item._id;
-                return (<div className='border m-2 w-80' key={postId}>
+                return (<div className='border m-2 w-120' key={postId}>
                     <h2>הפוסט שלי</h2>
                     <p><strong>מיקום מקור נסיעה:</strong></p>
                     <p>{item.source.city}  {item.source.street}   {item.source.houseNumber}</p>

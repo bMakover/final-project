@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { apiService } from '../services/apiService '
 import ShowPost from './showPost'
 import { useNavigate } from 'react-router'
 import { BarChart, BarSeries, Bar, Tooltip } from '@mui/x-charts';
+import { AppContext } from '../context/context';
 const HomePage = () => {
+    const { MyLogUser, setMyLogUser } = useContext(AppContext);
     const months = [
         'January', 'February', 'March', 'April',
         'May', 'June', 'July', 'August',
@@ -19,9 +21,12 @@ const HomePage = () => {
 
         const getAllPosts = async () => {
             try {
-                const postData = await getData('posts/getAllDisplay', '/', '/');
+                let postData = await getData('posts/getAllDisplay', '/', '/');
+                if(MyLogUser?._id){
+                    postData.data=postData.data.filter(item=>{return(item.idDriver!=MyLogUser._id)}
+                    )
+                }
                 setAllPosts(postData.data);
-
                 // Calculate total passengers for each month
                 const passengersByMonth = Array.from({ length: 12 }, () => 0);
                 postData.data.forEach(post => {
@@ -29,7 +34,7 @@ const HomePage = () => {
                     passengersByMonth[postMonth] += post.passengersList.length; // Using passengersList array length
                 });
                 setPassengersByMonth(passengersByMonth);
-
+        
                 // Calculate the number of different destinations
                 const uniqueDestinations = calculateUniqueDestinations(postData.data);
                 setUniqueDestinations(uniqueDestinations);
@@ -52,6 +57,7 @@ const HomePage = () => {
         };
 
         getAllPosts();
+  
     }, [])
 
 

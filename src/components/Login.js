@@ -2,7 +2,8 @@
 import React, { useContext, useState } from 'react';
 import { apiService } from '../services/apiService ';
 import { Link } from 'react-router-dom';
-import { AppContext } from '../context/context'
+import { AppContext } from '../context/context';
+import Cookies from 'js-cookie';
 const Login = () => {
   const { postData,methodAuthData } = apiService();
   const { MyLogUser, setMyLogUser } = useContext(AppContext);
@@ -36,6 +37,8 @@ const Login = () => {
       const res = await methodAuthData('users/myInfo',{},"GET");
       setMyLogUser(res.data)
       console.log('Login successful! Token:', token);
+      const myObject = JSON.stringify(res.data );
+      Cookies.set('myUserData', myObject);
       alert("התחברת בהצלחה!")
     } catch (error) {
       console.error('Error logging in:', error);

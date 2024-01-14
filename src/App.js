@@ -19,13 +19,19 @@ import "./cssFiles/buttons.css"
 import PersonalArea from './components/PersonalArea';
 import Footer from './components/footer';
 import { AppContext } from './context/context'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 function App() {
   const [MyLogUser,setMyLogUser]=useState(null)
   
+  useEffect(() => {
+    const cookieData = Cookies.get('myUserData');
+    setMyLogUser(JSON.parse(cookieData) || null);
+  }, []);
+
   return (
-    <>
+    <div >
       <BrowserRouter>
       <AppContext.Provider value={{
       MyLogUser,setMyLogUser
@@ -53,7 +59,7 @@ function App() {
       </BrowserRouter>
       {/* <Exmple/> */}
 
-    </>
+    </div>
 
 
   );

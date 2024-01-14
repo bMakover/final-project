@@ -33,7 +33,7 @@ const MyPosts = () => {
 
 
     return (
-        <div className='container d-flex d-flex-wrap align-items-start'>
+        <div className='container d-flex flex-wrap align-items-start'>
             {myPosts?.map((item) => {
                 const postId = item._id;
                 return (<div className='border m-2 w-120' key={postId}>

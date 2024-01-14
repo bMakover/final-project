@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/apiService ';
 import Demo from './Demo';
@@ -11,6 +11,13 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TypingEffect from './TypingEffect';
+import { ChakraProvider, theme } from '@chakra-ui/react'
+import RouteMap from './RouteMap';
+
+
+// const GOOGLE_MAPS_API_KEY = 'AIzaSyA7ekcgt6U0BOxTJgmYtxBn6Xqrz2AklYc';
+
+
 
 
 const steps = [
@@ -38,6 +45,9 @@ const SearchDrive = () => {
   const [showSelectDate, setShowSelectDate] = useState(false)
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('')
+
+
+
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
@@ -124,8 +134,8 @@ const SearchDrive = () => {
   };
 
   return (
-    <div className='container d-flex justify-contant-center' style={{height:"500px"}}>
-      <Box sx={{ maxWidth: 400 }}>
+    <div className='container-fluid text-center d-flex justify-contant-center my-3' style={{height:""}}>
+      <Box className='shadow p-3 text-center' sx={{ maxWidth: 600}}>
         <Stepper activeStep={activeStep} orientation="vertical" sx={{ direction: 'rtl' }}>
           {steps.map((step, index) => (
             <Step key={step.label}>
@@ -187,6 +197,15 @@ const SearchDrive = () => {
         )}
         {/* Additional buttons or components based on conditions... */}
       </Box>
+      <div className='container-fluid'>
+  {source && destination ? (
+    <ChakraProvider  theme={theme}>
+      <RouteMap source={source} destination={destination} />
+    </ChakraProvider>
+  ) : (
+    <img src='images/googlemap.png' alt='Alternative Text' style={{ width: '100%', height: '100%' }} />
+  )}
+</div>
     
       </div>
   );

@@ -11,13 +11,13 @@ const router = express.Router();
 //get by source and destination and quary isdisplay (isdisplay need to be true or false)
 router.get("/getPostsByDesNSrc/:src/:des", async (req, res) => {
     try {
-       
-        let isdisplay=req.query.isdisplay
-        if(isdisplay!="true" && isdisplay!="false"){ return res.status(500).json({ msg: "isdisplay must to be boolean" })}
+
+        let isdisplay = req.query.isdisplay
+        if (isdisplay != "true" && isdisplay != "false") { return res.status(500).json({ msg: "isdisplay must to be boolean" }) }
         let src = req.params.src;
         let des = req.params.des
         let data;
-        data = await PostsModel.find({ 'source.city': src, 'destination.city': des,isDisplay:isdisplay })
+        data = await PostsModel.find({ 'source.city': src, 'destination.city': des, isDisplay: isdisplay })
         res.json(data);
     }
     catch (err) {
@@ -29,9 +29,10 @@ router.get("/getPostsByDesNSrc/:src/:des", async (req, res) => {
 router.get("/getAllDisplay", async (req, res) => {
     try {
         let data;
-        data = await PostsModel.find({ isDisplay: true,
+        data = await PostsModel.find({
+            isDisplay: true,
             $expr: { $gt: ['$seatsCount', { $size: '$passengersList' }] }
-        }).exec(); 
+        }).exec();
         res.json(data);
     }
     catch (err) {
@@ -111,6 +112,23 @@ router.put("/:editId", auth, async (req, res) => {
         res.status(500).json({ msg: "there error try again later", err })
     }
 })
+
+router.put("/:editId/putPassengerList", auth, async (req, res) => {
+    let validBody = validPost(req.body);
+    if (validBody.error) {
+        return res.status(400).json(validBody.error.details);
+    }
+    try {
+        let editId = req.params.editId;
+        let data;
+        data = await PostsModel.updateOne({ _id: editId }, req.body)
+        res.json(data);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ msg: "there error try again later", err })
+    }
+})
 //user join to post
 router.post('/addTravel/:userId/:postId', async (req, res) => {
     const userId = req.params.userId;
@@ -131,8 +149,8 @@ router.post('/addTravel/:userId/:postId', async (req, res) => {
 
 
         if (post.passengersList.length < post.seatsCount) {
-       
-            if (post.passengersList.length == post.seatsCount-1)
+
+            if (post.passengersList.length == post.seatsCount - 1)
                 post.isDisplay = false
             post.passengersList.push(userId); // Add user to passengers list
             await post.save();
@@ -154,7 +172,7 @@ router.post('/addTravel/:userId/:postId', async (req, res) => {
 router.post('/addWait/:userId/:postId', async (req, res) => {
     const userId = req.params.userId;
     const postId = req.params.postId;
-    
+
     try {
         // Find the user by ID
         const user = await UserModel.findById(userId);
@@ -168,12 +186,12 @@ router.post('/addWait/:userId/:postId', async (req, res) => {
             return res.status(404).json({ message: 'Post not found' });
         }
 
-            user.waits.push(postId); 
-            await user.save();
-            post.waitingList.push(userId);
-            await post.save();
-            return res.status(200).json({ message: 'Wait added to user successfully' });
-  
+        user.waits.push(postId);
+        await user.save();
+        post.waitingList.push(userId);
+        await post.save();
+        return res.status(200).json({ message: 'Wait added to user successfully' });
+
     } catch (error) {
         console.error('Error adding wait to user:', error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -181,8 +199,8 @@ router.post('/addWait/:userId/:postId', async (req, res) => {
 });
 router.get('/passengersList/:idPassengers', auth, async (req, res) => {
     try {
-        const idPassengers=req.params.idPassengers
-        const post = await PostsModel.findOne({idDriver:req.tokenData._id,_id:idPassengers}).populate('passengersList');
+        const idPassengers = req.params.idPassengers
+        const post = await PostsModel.findOne({ idDriver: req.tokenData._id, _id: idPassengers }).populate('passengersList');
         if (!post) {
             return res.status(404).json({ msg: "User not found" });
         }
@@ -195,70 +213,70 @@ router.get('/passengersList/:idPassengers', auth, async (req, res) => {
 //get post by id
 router.get("/:id", auth, async (req, res) => {
     try {
-      const id = req.params.id;
-      // Find the post by ID
-      const data = await PostsModel.findOne({ _id: id });
-      if (!data) {
-        return res.status(404).json({ msg: "Post not found" });
-      }
-      res.json(data);
+        const id = req.params.id;
+        // Find the post by ID
+        const data = await PostsModel.findOne({ _id: id });
+        if (!data) {
+            return res.status(404).json({ msg: "Post not found" });
+        }
+        res.json(data);
     } catch (err) {
         console.error(err);  // Add this line to log the error
         res.status(500).json({ msg: "Internal Server Error" });
-      }
-  });
+    }
+});
 
 
-  const handleNewPost = async (req) => {
-    console.log(req.body,"req")
-    const newPostDetails=req.body;
+const handleNewPost = async (req) => {
+    console.log(req.body, "req")
+    const newPostDetails = req.body;
     try {
         let post = new PostsModel(req.body);
         post.idDriver = req.tokenData._id;
         await post.save();
-  
-      // Retrieve relevant demands based on source and destination of the new post
-      const relevantDemands = await DemandsModel.find({
-        // Criteria to find demands with matching source and destination
-        'source.city': newPostDetails.source.city,
-        'destination.city': newPostDetails.destination.city,
-      });
-  console.log(relevantDemands)
-      const relevantUserIds = relevantDemands.map((demand) => demand.idUser);
-      console.log(relevantUserIds)
-  
-      // Retrieve users associated with relevant demands
-      const relevantUsers = await UserModel.find({ _id: { $in: relevantUserIds } });
-      console.log(relevantUsers)
-  
-      // Send email notifications to relevant users associated with these demands
-      relevantUsers.forEach(async (user) => {
-        await sendEmailNotification(user.email, newPostDetails); // Use your email service to send emails
-      });
-  
-      // Return the newly created post
-      return post;
+
+        // Retrieve relevant demands based on source and destination of the new post
+        const relevantDemands = await DemandsModel.find({
+            // Criteria to find demands with matching source and destination
+            'source.city': newPostDetails.source.city,
+            'destination.city': newPostDetails.destination.city,
+        });
+        console.log(relevantDemands)
+        const relevantUserIds = relevantDemands.map((demand) => demand.idUser);
+        console.log(relevantUserIds)
+
+        // Retrieve users associated with relevant demands
+        const relevantUsers = await UserModel.find({ _id: { $in: relevantUserIds } });
+        console.log(relevantUsers)
+
+        // Send email notifications to relevant users associated with these demands
+        relevantUsers.forEach(async (user) => {
+            await sendEmailNotification(user.email, newPostDetails); // Use your email service to send emails
+        });
+
+        // Return the newly created post
+        return post;
     } catch (error) {
-      console.error('Error handling new post:', error);
-      throw error; // Handle or log the error accordingly
+        console.error('Error handling new post:', error);
+        throw error; // Handle or log the error accordingly
     }
-  };
-  
+};
+
 //add post by token-must be login
 router.post('/', auth, async (req, res) => {
     let validBody = validPost(req.body);
     if (validBody.error) {
-      return res.status(400).json(validBody.error.details);
+        return res.status(400).json(validBody.error.details);
     }
     try {
-        
-      const newPost = await handleNewPost(req);
-      res.status(201).json(newPost);
+
+        const newPost = await handleNewPost(req);
+        res.status(201).json(newPost);
     } catch (error) {
-      console.error('Error adding new post:', error);
-      res.status(500).json({ msg: 'Error adding new post' });
+        console.error('Error adding new post:', error);
+        res.status(500).json({ msg: 'Error adding new post' });
     }
-  });
+});
 
 
 module.exports = router;

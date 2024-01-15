@@ -72,9 +72,9 @@ const SingleEvent = (props) => {
         console.log(parts)
         if (parts != undefined) {
             // המספר בית יהיה המספר הראשון שמופיע בקטע שבו יש מספרים
-            const houseNumber = " "
-            let street = parts[1];
-            let city = parts[0];
+            const houseNumber = parts[parts.length-4]||" "
+            let street = parts[parts.length-3]||" ";
+            let city = parts[parts.length-2];
             if (/\d+/.test(city)) {
                 street = parts[0]
                 city = parts[1]
@@ -123,7 +123,7 @@ const SingleEvent = (props) => {
                         setUpdateFlag(!UpdateFlag)
                     }}><i class="fa fa-pencil" aria-hidden="true"></i></button>      </div>{UpdateFlag && <div>
                         <label><strong>כתובת:</strong></label>
-                        <GoogleMaps onInput={handelDES} />
+                        <GoogleMaps  onInput={handelDES} />
                         <form onSubmit={handleSubmit(onSub)}>
                             <label><strong>שם האירוע:</strong></label>
                             <input className='m-4 border' {...nameRef} defaultValue={item.Name} type='text' />

@@ -69,21 +69,21 @@ function RouteMap(place) {
   }
 
   return (
-    <div style={{width:'1200px'}}>
+    <div className='container'>
     <Flex
       position='relative'
       flexDirection='column'
       alignItems='center'
       h='660px'
-      w='80%'
-      margin='0px'
+      w='100%'
+
     >
-      <Box position='left' left={1} top={0} h='100%' w='1200px'>
+      <Box position='left' left={1} top={0} h='100%' w='100%'>
         {/* Google Map Box */}
-        <GoogleMap
+        <GoogleMap 
           center={center}
           zoom={15}
-          mapContainerStyle={{ width: '100%', height: '100%' }}
+          mapContainerStyle={{ width: '80%', height: '100%' }}
           options={{
             zoomControl: false,
             streetViewControl: false,
@@ -129,7 +129,7 @@ function RouteMap(place) {
 
           <ButtonGroup>
             <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
-              Calculate Route
+             חישוב מסלול
             </Button>
             <IconButton
               aria-label='center back'

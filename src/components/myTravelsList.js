@@ -24,35 +24,16 @@ const MyTravelsList = () => {
 
 
 
-    const cancelJoin = async (arg) => {
+    const cancelJoin = async (travel) => {
         try {
-            let arr = thisuser.travels.filter(val => { return val != arg._id });
-            let obj = thisuser
-            let userID = thisuser._id
-            let TravelID = arg._id
-            obj.travels = arr
-            delete obj._id
-            delete obj.__v
-            console.log(obj)
-            console.log(userID)
-            const user = await methodAuthData(`users/updateUserPosts/${userID}`, obj, "PUT")
-            let Parr = arg.passengersList.filter(val => { return val != userID });
-            let Pobj = arg
-            Pobj.passengersList = Parr
-            delete Pobj._id
-            delete Pobj.__v
-            console.log(Pobj)
-            const post = await methodAuthData(`posts/${TravelID}`, Pobj, "PUT")
-            alert("השתתפותך בוטלה בהצלחה!!")
+            await methodAuthData(`posts/cancelJoin/${thisuser._id}/${travel._id}`, travel, "DELETE");
+            setMyTravels((prevTravels) => prevTravels.filter((item) => item._id !== travel._id));
+        } catch (err) {
+            console.error("Error cancelling join:", err);
         }
-        catch (err) {
-            alert(" נסי להתחבר שוב פוסט זה ככל הנראה נמחק!")
-        }
-
-
-    }
+    };
     return (
-        <div className='container d-flex d-flex-wrap align-items-start'>
+        <div className='container d-flex flex-wrap align-items-start'>
             {mytravels?.map(item => {
                 return (
                     <div className='border m-2 w-80' key={item._id}>
@@ -66,9 +47,9 @@ const MyTravelsList = () => {
                         <p>{item.seatsCount}</p>
                         <p><strong>תאריך יציאה:</strong></p>
                         <p>{new Date(item.createDate).toLocaleDateString()}</p>
-                        <button className="button-56 m-2" onClick={() => {
-                            cancelJoin(item)
-                        }}>ביטול השתתפות</button>
+                        <button className="button-56 m-2" onClick={() => cancelJoin(item)}>
+                            ביטול השתתפות
+                        </button>
                     </div>
                 )
             })}

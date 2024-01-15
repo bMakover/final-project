@@ -23,37 +23,42 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
 function App() {
-  const [MyLogUser,setMyLogUser]=useState(null)
-  
+  const [MyLogUser, setMyLogUser] = useState(null)
+
   useEffect(() => {
-    const cookieData = Cookies.get('myUserData');
-    setMyLogUser(JSON.parse(cookieData) || null);
+    try {
+      const cookieData = Cookies.get('myUserData');
+      setMyLogUser(JSON.parse(cookieData) || null);
+    }
+    catch (err) {
+
+    }
   }, []);
 
   return (
     <div >
       <BrowserRouter>
-      <AppContext.Provider value={{
-      MyLogUser,setMyLogUser
-      }}>
-        <Header />
-        <Routes>
-          <Route index element={<HomePage />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<SignUp />}></Route>
-          <Route path='/newPost' element={<NewPost />}></Route>
-          <Route path='/showSinglePost' element={<ShowPost />}></Route>
-          <Route path="/SearchDrive" element={<SearchDrive />} />
-          <Route path="/drives" element={<AvailableDrives />} />
-          <Route path="/myPosts" element={<MyPosts />} />
-          <Route path="/updateMyPost" element={<UpdateMyPost />} />
-          <Route path="/travelslist" element={<MyTravelsList />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/events" element={<AdminFeature />} />
-          <Route path="/PersonalArea" element={<PersonalArea />} />
-          <Route path="/ex" element={<Exmple />} />
-          <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
-        </Routes>
+        <AppContext.Provider value={{
+          MyLogUser, setMyLogUser
+        }}>
+          <Header />
+          <Routes>
+            <Route index element={<HomePage />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/register" element={<SignUp />}></Route>
+            <Route path='/newPost' element={<NewPost />}></Route>
+            <Route path='/showSinglePost' element={<ShowPost />}></Route>
+            <Route path="/SearchDrive" element={<SearchDrive />} />
+            <Route path="/drives" element={<AvailableDrives />} />
+            <Route path="/myPosts" element={<MyPosts />} />
+            <Route path="/updateMyPost" element={<UpdateMyPost />} />
+            <Route path="/travelslist" element={<MyTravelsList />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/events" element={<AdminFeature />} />
+            <Route path="/PersonalArea" element={<PersonalArea />} />
+            <Route path="/ex" element={<Exmple />} />
+            <Route path="*" element={<h2>Page 404 page not found</h2>}></Route>
+          </Routes>
         </AppContext.Provider>
         <Footer />
       </BrowserRouter>

@@ -47,7 +47,7 @@ function UserWaitingList() {
 
   return (
     <div className='container d-flex d-flex-wrap align-items-start'>
-      <h2> רשימת המתנה:</h2>
+  
       <ul>
         {waitingList.map((post) => (
           <li className='border m-2 w-80' key={post._id}>

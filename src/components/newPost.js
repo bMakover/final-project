@@ -23,9 +23,9 @@ const NewPost = ({ SetidEvent }) => {
         console.log(parts)
         if (parts != undefined) {
             // המספר בית יהיה המספר הראשון שמופיע בקטע שבו יש מספרים
-            const houseNumber = " "
-            let street = parts[1];
-            let city = parts[0];
+            const houseNumber = parts[parts.length-4]||" "
+            let street = parts[parts.length-3]||" ";
+            let city = parts[parts.length-2];
             if (/\d+/.test(city)) {
                 street = parts[0]
                 city = parts[1]

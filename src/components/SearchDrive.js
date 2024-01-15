@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/apiService ';
 import Demo from './Demo';
@@ -75,25 +75,38 @@ const SearchDrive = () => {
   };
 
   const handleInput = (value, inputType) => {
-    const descriptionArray = value.description.split(',');
+    const descriptionArray = value?.description.split(',');
+    if(descriptionArray!=undefined)
+    {
     const city = descriptionArray[descriptionArray.length - 2]?.trim();
     if (inputType === 'source') {
       setSource(city);
     } else if (inputType === 'destination') {
       setDestination(city);
     }
+  }
   };
+
+  const ArrFull = async (arr) => {
+    const userResponse = await methodAuthData('users/myInfo', {}, 'GET');
+    const userDriverId = userResponse.data._id;
+    console.log(userDriverId)
+    const drivesData = arr.filter(drive =>{return(drive.idDriver !=userDriverId)});
+    console.log(drivesData)
+    return drivesData
+  }
 
   const findDrives = async () => {
     try {
       const response = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=true`);
-      console.log(destination, "ללל")
-      console.log(response);
-      if (response && response.data && response.data.length > 0) {
-        const drivesData = response.data;
-        console.log(drivesData);
+      console.log(response.data, "ללל")
+      response.data =await ArrFull(response.data)
+      console.log(response.data);
+      if (response?.data?.length>0) {
+        const drivesData = response.data
         navigate('/drives', { state: { drivesData, dataType: 'travels' } });
-      } else {
+      }
+      else {
         setNoDrivesFound(true);
         const undisplayedResponse = await getData(`posts/getPostsByDesNSrc/${source}/${destination}?isdisplay=false`);
         if (undisplayedResponse && undisplayedResponse.data && undisplayedResponse.data.length > 0) {
@@ -134,8 +147,8 @@ const SearchDrive = () => {
   };
 
   return (
-    <div className='container-fluid text-center d-flex justify-contant-center my-3' style={{height:""}}>
-      <Box className='shadow p-3 text-center' sx={{ maxWidth: 600}}>
+    <div className='container-fluid text-center d-flex justify-contant-center my-3' style={{ height: "" }}>
+      <Box className='shadow p-3 text-center' sx={{ maxWidth: 600 }}>
         <Stepper activeStep={activeStep} orientation="vertical" sx={{ direction: 'rtl' }}>
           {steps.map((step, index) => (
             <Step key={step.label}>
@@ -155,7 +168,7 @@ const SearchDrive = () => {
                           }}
                           sx={{ mt: 1, mr: 1 }}
                         >
-                          {index === steps.length - 1 ? 'סיום' : 'המשך'}
+                          {index === steps.length - 1 ? 'חפשי' : 'המשיכי'}
                         </Button>
                         <Button
                           disabled={index === 0}
@@ -198,16 +211,16 @@ const SearchDrive = () => {
         {/* Additional buttons or components based on conditions... */}
       </Box>
       <div className='container-fluid'>
-  {source && destination ? (
-    <ChakraProvider  theme={theme}>
-      <RouteMap source={source} destination={destination} />
-    </ChakraProvider>
-  ) : (
-    <img src='images/googlemap.png' alt='Alternative Text' style={{ width: '100%', height: '100%' }} />
-  )}
-</div>
-    
+        {source && destination ? (
+          <ChakraProvider theme={theme}>
+            <RouteMap source={source} destination={destination} />
+          </ChakraProvider>
+        ) : (
+          <img src='images/back.jpg' alt='Alternative Text' style={{ width: '100%', height: '100%' }} />
+        )}
       </div>
+
+    </div>
   );
 };
 

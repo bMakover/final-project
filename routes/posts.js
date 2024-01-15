@@ -277,6 +277,53 @@ router.post('/', auth, async (req, res) => {
         res.status(500).json({ msg: 'Error adding new post' });
     }
 });
+const notifyWaitingUsers = async (post) => {
+    const waitingUsers = await UserModel.find({ travels: post._id }); 
+    const emailsToSend = waitingUsers.map(user => user.email);
 
+    emailsToSend.forEach(async email => {
+        try {
+            await sendEmailNotification(email, post);
+        } catch (error) {
+            console.error('Error sending email notification:', error);
+            // Handle error while sending email (e.g., log error, skip user, etc.)
+        }
+    });
+};
+router.delete('/cancelJoin/:userId/:postId', async (req, res) => {
+    const userId = req.params.userId;
+    const postId = req.params.postId;
+    try {
+        // Find the user by ID
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Find the post by ID
+        const post = await PostsModel.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        // Remove the user from the post's passengers list
+        post.passengersList = post.passengersList.filter(passengerId => passengerId.toString() !== userId);
+        // Update isDisplay flag if needed
+        if (!post.isDisplay && post.passengersList.length < post.seatsCount) {
+            post.isDisplay = true;
+            await notifyWaitingUsers(post);
+        }
+        await post.save();
+
+        // Remove the post ID from the user's travels array
+        user.travels = user.travels.filter(travelId => travelId.toString() !== postId);
+        await user.save();
+
+        return res.status(200).json({ message: 'Successfully canceled joining the drive' });
+    } catch (error) {
+        console.error('Error canceling joining the drive:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 module.exports = router;

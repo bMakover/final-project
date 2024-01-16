@@ -88,7 +88,7 @@ const PersonalArea = () => {
           setmyEDIT(false)
         }}> הנסיעות שלי <i class="fa fa-car" aria-hidden="true"></i></button>
 
-<button className='button-89' onClick={()=>{logout()}}>התנתקי</button>
+<button className='button-89 m-auto' onClick={()=>{logout()}}>התנתקי</button>
       </div>
 <div className='container d-flex justify-content-center my-5'>
       <div className=' flex-wrap' style={{}}>

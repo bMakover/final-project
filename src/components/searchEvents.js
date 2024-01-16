@@ -58,7 +58,6 @@ const SearchEvents = ({ items, setData }) => {
     }
     return (
         <div className='container '>
-        <p className='w-40 m-2  m-auto'>חיפוש אירוע:</p>
             <div className='row justify-content-around '>     
             <select className='w-60 m-2 border  bg-black text-white p-3 ' style={{borderRadius:"10px"}} onChange={(e) => {
                 setChosenOption(e.target.value)

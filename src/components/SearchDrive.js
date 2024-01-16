@@ -147,79 +147,80 @@ const SearchDrive = () => {
   };
 
   return (
-    <div className='container-fluid text-center d-flex justify-contant-center my-3' style={{ height: "" }}>
-      <Box className='shadow p-3 text-center' sx={{ maxWidth: 600 }}>
-        <Stepper activeStep={activeStep} orientation="vertical" sx={{ direction: 'rtl' }}>
-          {steps.map((step, index) => (
-            <Step key={step.label}>
-              <StepLabel>{step.label}</StepLabel>
-              <StepContent>
-                {activeStep === index && (
-                  <>
-                    <TypingEffect text={step.label} /> {/* Show typing effect */}
-                    <Demo className="w-50" onInput={(value) => handleInput(value, step.input)} />
-                    <Box sx={{ mb: 2 }}>
-                      <div>
-                        <Button className="button-56" style={{ backgroundColor: "#fee6e3" }}
-                          variant="contained"
-                          onClick={() => {
-                            handleNext();
-                            handleStepCompletion();
-                          }}
-                          sx={{ mt: 1, mr: 1 }}
-                        >
-                          {index === steps.length - 1 ? 'חפשי' : 'המשיכי'}
-                        </Button>
-                        <Button
-                          disabled={index === 0}
-                          onClick={handleBack}
-                          sx={{ mt: 1, mr: 1 }}
-                        >
-                          חזור
-                        </Button>
-                      </div>
-                    </Box>
-                  </>
-                )}
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === steps.length && (
-          <Paper square elevation={0} sx={{ p: 3 }}>
-
-            {noDrivesFound && <><p>לא נמצאו נסיעות </p>
-              {catchedDrivesFound && (
-                <Button className='button-56' variant="outlined" onClick={() => navigate('/drives', { state: { undisplayedDrives, dataType: 'waits' } })}>
-                  ישנה נסיעה קרובה רוצה להכניסה לרשימת המתנה?
-                </Button>
+    <div className='container-fluid text-center d-flex justify-contant-center my-3 ' style={{height:""}}>
+    <Box className='shadow p-3 text-center' sx={{ maxWidth: 600}}>
+      <Stepper activeStep={activeStep} orientation="vertical" sx={{ direction: 'rtl' }}>
+        {steps.map((step, index) => (
+          <Step key={step.label}>
+            <StepLabel>{step.label}</StepLabel>
+            <StepContent>
+              {activeStep === index && (
+                <>
+                  <TypingEffect  text={step.label} /> {/* Show typing effect */}
+                  <Demo  className="w-50" onInput={(value) => handleInput(value, step.input)} />
+                  <Box sx={{ mb: 2 }}>
+                    <div>
+                      <Button  style={{ backgroundColor: "#fee6e3", color:"black" ,marginTop:"150px"}}
+                        // variant="contained"
+                        onClick={() => {
+                          handleNext();
+                          handleStepCompletion();
+                        }}
+                        sx={{ mt: 1, mr: 1 }}
+                      >
+                        {index === steps.length - 1 ? 'סיום' : 'המשך'}
+                      </Button>
+                      <Button style={{ backgroundColor: "#fee6e3", color:"black",marginTop:"150px" }}
+                        disabled={index === 0}
+                        onClick={handleBack}
+                        
+                        sx={{ mt: 1, mr: 1 }}
+                      >
+                        חזור
+                      </Button>
+                    </div>
+                  </Box>
+                </>
               )}
-              <Button className='button-56' style={{ color: "pink", border: "2px solid pink" }} variant="outlined" onClick={() => setShowSelectDate(true)}>
-                רוצה לשמור בקשה
-              </Button>
-              {showSelectDate && <> <label htmlFor="datePicker">בחר תאריך:</label>
-                <input className='form-control m-2' type="date" id="datePicker" value={selectedDate} onChange={handleDateChange} />
-                <label htmlFor="timePicker"> בחרי זמן:</label>
-                <input className='form-control m-2' type="time" id="timePicker" value={selectedTime} onChange={handleTimeChange} />
-                <Button className='button-56' style={{ color: "pink", border: "2px solid pink" }} variant="outlined" onClick={saveDemand}>
-                  שלח לי כשיהיה
-                </Button>
-              </>}
-            </>}
-          </Paper>
-        )}
-        {/* Additional buttons or components based on conditions... */}
-      </Box>
-      <div className='container-fluid'>
-        {source && destination ? (
-          <ChakraProvider theme={theme}>
-            <RouteMap source={source} destination={destination} />
-          </ChakraProvider>
-        ) : (
-          <img src='images/back.jpg' alt='Alternative Text' style={{ width: '100%', height: '100%' }} />
-        )}
-      </div>
+            </StepContent>
+          </Step>
+        ))}
+      </Stepper>
+      {activeStep === steps.length && (
+        <Paper square elevation={0} sx={{ p: 3 }}>
 
+          {noDrivesFound && <><p>לא נמצאו נסיעות </p>
+            {catchedDrivesFound && (
+              <Button className='button-56' variant="outlined" onClick={() => navigate('/drives', { state: { undisplayedDrives, dataType: 'waits' } })}>
+                ישנה נסיעה קרובה רוצה להכניסה לרשימת המתנה?
+              </Button>
+            )}
+            <Button className='button-56' style={{ color: "pink", border: "2px solid pink" }} variant="outlined" onClick={() => setShowSelectDate(true)}>
+              רוצה לשמור בקשה
+            </Button>
+            {showSelectDate && <> <label htmlFor="datePicker">בחר תאריך:</label>
+              <input className='form-control m-2' type="date" id="datePicker" value={selectedDate} onChange={handleDateChange} />
+              <label htmlFor="timePicker"> בחרי זמן:</label>
+              <input className='form-control m-2' type="time" id="timePicker" value={selectedTime} onChange={handleTimeChange} />
+              <Button className='button-56' style={{ color: "pink", border: "2px solid pink" }} variant="outlined" onClick={saveDemand}>
+                שלח לי כשיהיה
+              </Button>
+            </>}
+          </>}
+        </Paper>
+      )}
+      {/* Additional buttons or components based on conditions... */}
+    </Box>
+    <div className='container-fluid'>
+{source && destination ? (
+  <ChakraProvider  theme={theme}>
+    <RouteMap source={source} destination={destination} />
+  </ChakraProvider>
+) : (
+  <img src='images/back.jpg' alt='Alternative Text' style={{ width: '100%', height: '100%' }} />
+)}
+</div>
+  
     </div>
   );
 };

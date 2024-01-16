@@ -28,11 +28,12 @@ function App() {
   useEffect(() => {
     try {
       const cookieData = Cookies.get('myUserData');
-      setMyLogUser(JSON.parse(cookieData) || null);
+      setMyLogUser(JSON.parse(cookieData));
     }
     catch (err) {
 
     }
+    console.log(MyLogUser)
   }, []);
 
   return (
@@ -43,7 +44,7 @@ function App() {
         }}>
           <Header />
           <Routes>
-            <Route index element={<HomePage />}></Route>
+            <Route index element={<SearchDrive />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<SignUp />}></Route>
             <Route path='/newPost' element={<NewPost />}></Route>

@@ -16,7 +16,6 @@ const ShowPost = (props) => {
         }
         try {
             getMyInfo()
-            console.log(item)
         }
         catch (err) {
             alert("פג תוקף התחברותך התחברי שוב")
@@ -27,8 +26,7 @@ const ShowPost = (props) => {
 
     const joinToTravel = async () => {
         try {
-            console.log(MyLogUser)
-            console.log(item)
+       
             if (MyLogUser != null) {
                 if (item.passengersList.includes(MyLogUser._id) == false) {
                     item.passengersList.push(MyLogUser._id)
@@ -46,7 +44,6 @@ const ShowPost = (props) => {
                         waitingList: item.waitingList
                     };
                     let res = await methodAuthData(`posts/${item._id}/putPassengerList`, obj, "PUT")
-                    console.log(res)
                     userUpdate()
                     alert("הצטרפת בהצלחה!!")
                 }

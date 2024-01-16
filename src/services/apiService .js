@@ -30,7 +30,6 @@ export const apiService = () => {
     const getData = async (url) => {
 
         try {
-            console.log(`${baseUrl}${url}`)
             return await axios.get(`${baseUrl}${url}`);
         }
         catch (err) {
@@ -40,10 +39,7 @@ export const apiService = () => {
 
     const updateData = async (url, params, body) => {
         try {
-            console.log(`${baseUrl}${url}/${params}`);
-            console.log(body);
             const res = await axios.put(`${baseUrl}${url}/${params}`, body);
-            console.log(res);
             return res
         }
         catch (err) {
@@ -53,9 +49,7 @@ export const apiService = () => {
 
     const deleteData = async (url, params, query) => {
         try {
-            console.log(url);
             const res = await axios.delete(`${baseUrl}${url}${params}${query}`);
-            console.log(res);
             return res
         }
         catch (err) {

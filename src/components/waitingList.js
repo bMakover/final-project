@@ -47,32 +47,31 @@ function UserWaitingList() {
 
   return (
     <div className='container d-flex d-flex-wrap align-items-start'>
-  
-      <ul>
-        {waitingList.map((post) => (
-          <li className='border m-2 w-80' key={post._id}>
-            <p><strong>כתובת מקור:</strong></p>
-            <p>
-              {post.source.city}, {post.source.street}, {post.source.houseNumber} </p>
-            <br />
-            <p><strong>כתובת יעד:</strong></p>
-            <p> {post.destination.city}, {post.destination.street}, {post.destination.houseNumber}</p>
+    <ul>
+      {waitingList.map((post) => (
+        <li className='border m-2 w-80 card shadow p-2' key={post._id}>
+          <p><strong>כתובת מקור:</strong></p>
+          <p>
+            {post.source.city}, {post.source.street}, {post.source.houseNumber} </p>
+          <br />
+          <p><strong>כתובת יעד:</strong></p>
+          <p> {post.destination.city}, {post.destination.street}, {post.destination.houseNumber}</p>
 
-            <button cclassName="button-56" onClick={() => handleWaitClick(post)}>
-              {selectedWait === post ? 'הסתר פרטים' : 'הראה פרטים'}
-            </button>
-            {selectedWait === post && (
-              <div>
-                <p><strong>פרטים:</strong></p>
-                <p> {post.description}</p>
-                <p><strong>זמן יציאה:</strong></p>
-                <p>{new Date(post.departure.date).toLocaleDateString()}, {post.departure.hour}</p>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+          <button cclassName="button-56" onClick={() => handleWaitClick(post)}>
+            {selectedWait === post ? 'הסתר פרטים' : 'הראה פרטים'}
+          </button>
+          {selectedWait === post && (
+            <div>
+              <p><strong>פרטים:</strong></p>
+              <p> {post.description}</p>
+              <p><strong>זמן יציאה:</strong></p>
+              <p>{new Date(post.departure.date).toLocaleDateString()}, {post.departure.hour}</p>
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
   );
 }
 

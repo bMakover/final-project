@@ -8,7 +8,7 @@ const Header = () => {
     console.log(MyLogUser)
     const nav = useNavigate()
     return (
-        <><header style={{ width: "100%", height: "120px" }} className="container-fluid  navbar navbar-expand bg-dark w-100% ">
+        <><header style={{ width: "100%", height: "120px" }} className="container-fluid   navbar navbar-expand bg-dark w-100% position-sticky ">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -38,7 +38,7 @@ const Header = () => {
                                 <li className='nav-item'>
                                 <i class="fa fa-search" aria-hidden="true" style={{ color: "white" }}></i>
 
-                                <Link className='m-3  text-light' to="/SearchDrive">חיפוש נסיעה/פוסט </Link></li>
+                                <Link className='m-3  text-light' to="/home">צפייה בפוסטים</Link></li>
                         </ul>
 
                         <div>

@@ -149,81 +149,84 @@ const SignUp = () => {
     pickUpLocationOBJ = obj.description
     console.log(pickUpLocationOBJ)
   }
-  return (<div className="col-md-12 mt-4" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-
-    <form className="col-md-3 myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSub)}> <h2>פרטים אישיים:</h2>
-      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-user" aria-hidden="true"></i>
-          <label className='m-2'>
-          </label>    שם מלא:
-          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" name="fullname" type="text" {...fullNameRef} />
-        </div>
-        {errors.fullName && <p className='text-danger'>*חובה להכניס שם מלא. לפחות 4 תויים</p>}
-        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-envelope-o" aria-hidden="true"></i>
-          <label className='m-2'>
-            אימייל: </label>
-          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" name="email" type="email" {...emailRef} />
-        </div>
-        {errors.email && <p className='text-danger'>*חובה להכניס  כתובת מייל. </p>}
-        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-phone-square" aria-hidden="true"></i>
-          <label className='m-2'>
-            טלפון:  </label>
-          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="tel" {...phoneRef} />
-        </div>
-        {errors.phone && <p className='text-danger'>*חובה להכניס טלפון</p>}
-        <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
-          <label className='m-2'>
-            סיסמא:</label>
-          <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="password" {...passwordRef} />
-        </div >
-        {errors.password && <p className='text-danger'>*חובה להכניס סיסמא. לפחות 6 תויים</p>}
-        <label>
-          תמונה:
-          <input type="file" name="image" onChange={(e) => { handleImageChange(e) }} />
-        </label>
-        <label>
-          האם אתה נהג?
-          {check ? <i class="fa fa-toggle-on" aria-hidden="true" onClick={() => { setCheck(false) }}></i> : <i class="fa fa-toggle-off" aria-hidden="true" onClick={() => { setCheck(true) }}></i>}
-          {/* <input type="checkbox" defaultChecked={true} onChange={() => {  }} /> */}
-        </label>
-        {
-          check &&
-          <div>
-            <div className="flex m-3 items-center border-b border-black-500 py-2"> <i class="fa fa-car" aria-hidden="true"></i>
+  return (
+    <div className="col-12 mt-4" style={{ display: 'flex', flexWrap: 'wrap', justifyContent:'center' }}>     
+        <form className="col-md-3 myform shadow-2xl rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSub)}>      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-user" aria-hidden="true"></i>
               <label className='m-2'>
-                סוג הרכב:</label>
-              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" name="brand" {...carDescription_brandRef} />
+              </label>    שם מלא:
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" name="fullname" type="text" {...fullNameRef} />
             </div>
-            {errors.brand && <p className='text-danger'>*לפחות תו אחד</p>}
-            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-paint-brush" aria-hidden="true"></i>
+            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-envelope-o" aria-hidden="true"></i>
               <label className='m-2'>
-                צבע רכב: </label>
-              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" {...carDescription_colorRef} />
+                אימייל: </label>
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" name="email" type="email" {...emailRef} />
             </div>
-            {errors.color && <p className='text-danger'>*לפחות תו אחד</p>}
-            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-users" aria-hidden="true"></i>
+            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-phone-square" aria-hidden="true"></i>
               <label className='m-2'>
-                כמות מושבים:</label>
-              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="number" {...carDescription_seatsNumberRef} />
+                טלפון:  </label>
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="tel" {...phoneRef} />
+    
             </div>
-            {errors.seatsNumber && <p className='text-danger'>*לפחות תו אחד</p>}
-          </div>
-        }
-
-        <button className="button-56"  >הרשמה</button></div>
-    </form>
-
-    <div style={{ height: '400px' }} className="col-md-4  myform  shadow-2xl rounded px-8 pt-6 pb-8 mb-4">    <h2>כתובות:</h2>
-      <p className="text-danger">מלאי כתובות אלו לפני לחיצה על ההרשמה!</p>
-      <br></br>
-      <br></br>
-      <label>מיקום</label>
-      <GoogleMaps id="1" onInput={handelSRC} />
-      <label>מיקום ברירת מחדל לפוסטים</label>
-      <GoogleMaps id="2" onInput={handelDefDes} />
-      <label>נקודת מפגש</label>
-      <GoogleMaps id="3" onInput={handelPickUp} /></div>
-  </div>
+            <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+              <label className='m-2'>
+                סיסמא:</label>
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="password" {...passwordRef} />
+    
+            </div > 
+            {/* <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-picture-o" aria-hidden="true"></i>
+              <label className='m-2'>
+                תמונת פרופיל:</label>
+              <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" {...imageRef} />
+    
+            </div> */}
+            <label>
+            תמונה:
+            <input type="file" name="image" onChange={(e)=>{handleImageChange(e)}} />
+          </label>
+            <label>
+              האם אתה נהג?
+              {check?<i class="fa fa-toggle-on" aria-hidden="true" onClick={()=>{setCheck(false)}}></i>:<i class="fa fa-toggle-off" aria-hidden="true"  onClick={()=>{setCheck(true)}}></i>}
+            </label>
+            {
+              check &&
+              <div>
+                <div className="flex m-3 items-center border-b border-black-500 py-2"> <i class="fa fa-car" aria-hidden="true"></i>
+                  <label className='m-2'>
+                  סוג הרכב:</label>
+                  <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" name="brand" {...carDescription_brandRef} />
+    
+                </div>
+                <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-paint-brush" aria-hidden="true"></i>
+                  <label className='m-2'>
+                    צבע רכב: </label>
+                  <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="text" {...carDescription_colorRef} />
+    
+                </div>
+                <div className="flex m-3 items-center border-b border-black-500 py-2"><i class="fa fa-users" aria-hidden="true"></i>
+                  <label className='m-2'>
+                    כמות מושבים:</label>
+                  <input className="myFiled appearance-none border-none w-full text-gray-700 mr-3 py-1  px-2 leading-tight focus:outline-none" type="number" {...carDescription_seatsNumberRef} />
+                </div>
+              </div>
+            }
+    
+            <button className="button-56"  >הרשמה</button></div>
+        </form>
+    <div className='d-flex space-between'>
+        <div style={{ height: '400px' }} className="col-4 myform shadow-2xl rounded px-8 pt-6 pb-8 mb-4">      <p className="text-danger">מלאי כתובות אלו לפני לחיצה על ההרשמה!</p>
+          <br></br>
+          <br></br>
+        <label>מיקום</label>
+        <GoogleMaps id="1" onInput={handelSRC} />
+        <label>מיקום ברירת מחדל לפוסטים</label>
+        <GoogleMaps id="2" onInput={handelDefDes} />
+        <label>נקודת מפגש</label>
+        <GoogleMaps id="3" onInput={handelPickUp} /></div>
+      
+      </div>
+     
+      </div>
   );
 };
 

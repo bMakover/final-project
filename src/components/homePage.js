@@ -14,18 +14,20 @@ const HomePage = () => {
     const [passengersByMonth, setPassengersByMonth] = useState([]);
     const [uniqueDestinations, setUniqueDestinations] = useState([]);
     const data = Array.from({ length: 12 }, (_, index) => Math.floor(Math.random() * 21));
-    const { getData } = apiService()
+    const { getData,methodAuthData } = apiService()
     const [allPosts, setAllPosts] = useState()
     const nav = useNavigate()
     useEffect(() => {
-
         const getAllPosts = async () => {
             try {
+                const userData = await methodAuthData("users/myInfo", {},"GET");
+                const today= new Date()
+                console.log(today)
                 let postData = await getData('posts/getAllDisplay', '/', '/');
-                if(MyLogUser?._id){
-                    postData.data=postData.data.filter(item=>{return(item.idDriver!=MyLogUser._id)}
-                    )
+                if(userData.data?._id){
+                    postData.data=postData.data.filter(item=>{return(item.idDriver!=userData.data._id)} )
                 }
+                postData.data=postData.data.filter(item=>{return((new Date(item.departure.date))>=new Date())})
                 setAllPosts(postData.data);
                 // Calculate total passengers for each month
                 const passengersByMonth = Array.from({ length: 12 }, () => 0);
@@ -64,21 +66,10 @@ const HomePage = () => {
     return (
 
         <div className='container-fluid m-0 p-0  shadow'>
-            <h2 className='h2 text-center mt-5'>נסיעות פתוחות:</h2>
-            <div className='d-flex overflow-x-scroll text-color-dark'>
-                {(
-                    <div className='buttons-container d-flex'>
-                        {allPosts?.map((item) => (
-                            <div className=' m-4'>
-                                <ShowPost key={item._id} item={item} show={true} />
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
+      
 
 
-            <div className='container d-flex text-center mt-4 '>
+            <div className='container d-flex text-center mt-4 ' data-aos="fade-up">
                 <div>
                     <h2 className='h2 text-center m-5'>כמות הנוסעים שנסעו איתנו החודש:</h2>
                     <h2 className='h5 text-center m-5'>רוצים גם להגיע בקלות ממקום למקום?</h2>
@@ -102,10 +93,21 @@ const HomePage = () => {
                         ]}
                         width={900}
                         height={300}
-                        colors={'pink'}
+                        colors={"pink"}
                     ></BarChart>
                 ) : (
                     <p>Loading...</p>
+                )}
+            </div>
+            <div className='d-flex overflow-x-scroll text-color-dark'>
+                {(
+                    <div className='buttons-container d-flex'>
+                        {allPosts?.map((item) => (
+                            <div className=' m-4'>
+                                <ShowPost key={item._id} item={item} show={true} />
+                            </div>
+                        ))}
+                    </div>
                 )}
             </div>
             <div className='container d-flex mt-5 shadow' style={{ justifyContent: "center" }}>

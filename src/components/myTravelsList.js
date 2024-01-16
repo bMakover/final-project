@@ -11,7 +11,7 @@ const MyTravelsList = () => {
                 const user = await methodAuthData("users/myInfo", {}, "GET")
                 setthisuser(user.data)
                 const data = await getData(`users/${user.data._id}/travels`)
-                console.log(data.data)
+                data.data=data.data.filter(item=>{return((new Date(item?.departure?.date))>=new Date())})
                 setMyTravels(data.data)
             }
             catch (err) {
@@ -33,27 +33,27 @@ const MyTravelsList = () => {
         }
     };
     return (
-        <div className='container d-flex flex-wrap align-items-start'>
-            {mytravels?.map(item => {
-                return (
-                    <div className='border m-2 w-80' key={item._id}>
-                        <p><strong>מיקום מקור נסיעה:</strong></p>
-                        <p>{item.source.city} {item.source.street} {item.source.houseNumber}</p>
-                        <p><strong>יעד נסיעה:</strong> </p>
-                        <p>{item.destination.city} {item.destination.street} {item.destination.houseNumber}</p>
-                        <p><strong>פרטי פוסט:</strong></p>
-                        <p>{item.description}</p>
-                        <p><strong>כמות מושבים:</strong></p>
-                        <p>{item.seatsCount}</p>
-                        <p><strong>תאריך יציאה:</strong></p>
-                        <p>{new Date(item.createDate).toLocaleDateString()}</p>
-                        <button className="button-56 m-2" onClick={() => cancelJoin(item)}>
-                            ביטול השתתפות
-                        </button>
-                    </div>
-                )
-            })}
-        </div>
+        <div className='container row col-3  align-items-center mx-5' style={{alignItems:"center"}}>
+        {mytravels?.map(item => {
+            return (
+                <div className='border m-2 w-80 card shadow p-2' key={item._id}>
+                    <p><strong>מיקום מקור נסיעה:</strong></p>
+                    <p>{item.source.city} {item.source.street} {item.source.houseNumber}</p>
+                    <p><strong>יעד נסיעה:</strong> </p>
+                    <p>{item.destination.city} {item.destination.street} {item.destination.houseNumber}</p>
+                    <p><strong>פרטי פוסט:</strong></p>
+                    <p>{item.description}</p>
+                    <p><strong>כמות מושבים:</strong></p>
+                    <p>{item.seatsCount}</p>
+                    <p><strong>תאריך יציאה:</strong></p>
+                    <p>{new Date(item.createDate).toLocaleDateString()}</p>
+                    <button className="button-56 m-2 " onClick={() => {
+                        cancelJoin(item)
+                    }}>ביטול השתתפות</button>
+                </div>
+            )
+        })}
+    </div>
     )
 }
 
